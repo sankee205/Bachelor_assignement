@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  // calls the class HomePage to run
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
 }
 
@@ -9,7 +10,9 @@ class HomePage extends StatefulWidget {
   HomePage_State createState() => HomePage_State();
 }
 
+// this class represents a home page with a grid layout
 class HomePage_State extends State<HomePage> {
+  //list of pictures for the grid
   final List<String> _listItem = [
     'assets/images/1.jpg',
     'assets/images/2.jpg',
@@ -21,7 +24,9 @@ class HomePage_State extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //returns a material design
     return Scaffold(
+        //this is the appbar for the home page
         appBar: AppBar(
             backgroundColor: Colors.grey[600],
             elevation: 0,
@@ -42,6 +47,8 @@ class HomePage_State extends State<HomePage> {
                 ),
               ),
             ]),
+
+        //here comes the body of the home page, includes the grid
         body: SafeArea(
             child: Container(
           padding: EdgeInsets.all(20),
@@ -50,6 +57,8 @@ class HomePage_State extends State<HomePage> {
               SizedBox(
                 height: 30,
               ),
+
+              //container for the upper image
               Container(
                 width: double.infinity,
                 height: 250,
@@ -73,6 +82,8 @@ class HomePage_State extends State<HomePage> {
               SizedBox(
                 height: 20,
               ),
+
+              //Expands a gridview for the image listet below the upper image
               Expanded(
                   child: GridView.count(
                 crossAxisCount: 2,
