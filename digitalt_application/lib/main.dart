@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:digitalt_application/case.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
  * the appbar a slider for newest/top X images, and at the end a gridview for all 
  * images in the list of items; _listItem.
  * 
- * @Sander Keedklang
+ * @Sander Keedklang 
+ * @Mathias Gjærde Forberg
  */
 void main() {
   // calls the class HomePage to run
@@ -96,6 +98,7 @@ class HomePage_State extends State<HomePage> {
                 child: ListView(
                   children: <Widget>[
                     //this is the slider at the top of the homepage
+                    //should we add a play and stop button?
                     CarouselSlider(
                       height: 180,
                       enlargeCenterPage: true,
