@@ -30,10 +30,6 @@ class HomePage_State extends State<HomePage> {
         appBar: AppBar(
             backgroundColor: Colors.grey[600],
             elevation: 0,
-            leading: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
             title: Text("Home"),
             actions: <Widget>[
               Padding(
@@ -47,6 +43,37 @@ class HomePage_State extends State<HomePage> {
                 ),
               ),
             ]),
+        drawer: new Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: const <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                ),
+                child: Text(
+                  'Drawer Header',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.info),
+                title: Text('About'),
+              ),
+              ListTile(
+                leading: Icon(Icons.account_circle),
+                title: Text('Profile'),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+              ),
+            ],
+          ),
+        ),
 
         //here comes the body of the home page, includes the grid
         body: SafeArea(
