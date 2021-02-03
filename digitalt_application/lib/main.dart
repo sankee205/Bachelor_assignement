@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/case.dart';
+import 'package:digitalt_application/caseItem.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -31,6 +31,48 @@ class HomePage_State extends State<HomePage> {
     'assets/images/4.jpg',
     'assets/images/5.jpg',
     'assets/images/6.jpg',
+  ];
+
+  List<CaseItem> caseList = [
+    CaseItem(
+        image: 'assets/images/1.jpg',
+        title: 'Flower',
+        description: 'This is a beautiful flower'),
+    CaseItem(
+        image: 'assets/images/2.jpg',
+        title: 'Stones',
+        description: 'This is a beautiful Stone'),
+    CaseItem(
+        image: 'assets/images/3.jpg',
+        title: 'Butterflies',
+        description: 'This is some beautiful butterflies'),
+    CaseItem(
+        image: 'assets/images/4.jpg',
+        title: 'Sunset',
+        description: 'This is a beautiful sunset'),
+    CaseItem(
+        image: 'assets/images/5.jpg',
+        title: 'Bubbles',
+        description: 'This is some beautiful bubbles'),
+    CaseItem(
+        image: 'assets/images/6.jpg',
+        title: 'Swan',
+        description: 'This is a beautiful swan'),
+  ];
+
+  List<CaseItem> popularCases = [
+    CaseItem(
+        image: 'assets/images/2.jpg',
+        title: 'Stones',
+        description: 'This is a beautiful Stone'),
+    CaseItem(
+        image: 'assets/images/3.jpg',
+        title: 'Butterflies',
+        description: 'This is some beautiful butterflies'),
+    CaseItem(
+        image: 'assets/images/5.jpg',
+        title: 'Bubbles',
+        description: 'This is some beautiful bubbles'),
   ];
 
   @override
@@ -90,9 +132,11 @@ class HomePage_State extends State<HomePage> {
         //here comes the body of the home page
         body: SafeArea(
             child: Container(
-          padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
+              SizedBox(
+                height: 30,
+              ),
               SizedBox(
                 height: 200,
                 child: ListView(
@@ -108,15 +152,32 @@ class HomePage_State extends State<HomePage> {
                       autoPlayAnimationDuration: Duration(milliseconds: 800),
                       autoPlayInterval: Duration(seconds: 10),
                       viewportFraction: 0.8,
-                      items: _listItem.map((item) {
+                      items: popularCases.map((caseitem) {
                         return Builder(builder: (BuildContext context) {
                           return Container(
+                            width: 300,
                             margin: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                    image: AssetImage(item),
-                                    fit: BoxFit.cover)),
+                              borderRadius: BorderRadius.circular(20),
+                              image: DecorationImage(
+                                image: AssetImage(caseitem.image),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  caseitem.title,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                )
+                              ],
+                            ),
                           );
                         });
                       }).toList(),
@@ -128,19 +189,34 @@ class HomePage_State extends State<HomePage> {
               //Expands a gridview for the image listet below the slider above
               Expanded(
                   child: GridView.count(
+                padding: EdgeInsets.all(20),
                 crossAxisCount: 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
-                children: _listItem
-                    .map((item) => Card(
+                children: caseList
+                    .map((caseitems) => Card(
                           color: Colors.transparent,
                           elevation: 0,
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 image: DecorationImage(
-                                    image: AssetImage(item),
+                                    image: AssetImage(caseitems.image),
                                     fit: BoxFit.cover)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  caseitems.title,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ))
                     .toList(),
