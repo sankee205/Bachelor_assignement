@@ -154,29 +154,34 @@ class HomePage_State extends State<HomePage> {
                       viewportFraction: 0.8,
                       items: popularCases.map((caseitem) {
                         return Builder(builder: (BuildContext context) {
-                          return Container(
-                            width: 300,
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                image: AssetImage(caseitem.image),
-                                fit: BoxFit.cover,
+                          return GestureDetector(
+                            onTap: () {
+                              print(caseitem.title);
+                            },
+                            child: Container(
+                              width: 300,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                  image: AssetImage(caseitem.image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  caseitem.title,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                  ),
-                                )
-                              ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    caseitem.title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         });
@@ -195,8 +200,12 @@ class HomePage_State extends State<HomePage> {
                 mainAxisSpacing: 20,
                 children: caseList
                     .map((caseitems) => Card(
-                          color: Colors.transparent,
-                          elevation: 0,
+                        color: Colors.transparent,
+                        elevation: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            print(caseitems.title);
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -218,7 +227,7 @@ class HomePage_State extends State<HomePage> {
                               ],
                             ),
                           ),
-                        ))
+                        )))
                     .toList(),
               ))
             ],
