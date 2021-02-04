@@ -33,6 +33,7 @@ class HomePage_State extends State<HomePage> {
     'assets/images/6.jpg',
   ];
 
+  //example list for the grid layout
   List<CaseItem> caseList = [
     CaseItem(
         image: 'assets/images/1.jpg',
@@ -60,6 +61,7 @@ class HomePage_State extends State<HomePage> {
         description: 'This is a beautiful swan'),
   ];
 
+  // example list for the carousel slider
   List<CaseItem> popularCases = [
     CaseItem(
         image: 'assets/images/2.jpg',
