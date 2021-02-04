@@ -44,7 +44,7 @@ class SecondPage extends StatelessWidget {
               title: Text('About'),
             ),
             ListTile(
-              leading: Icon(Icons.info),
+              leading: Icon(Icons.home),
               title: Text('Home'),
               onTap: () {
                 Navigator.push(context,
