@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
+/**
+ * This is the case item class. it is suposed to reflect a 
+ * newspaper case, including title, image and description
+ * 
+ * @Sander Keedklang
+ */
 class CaseItem {
   final String image;
   final String title;
