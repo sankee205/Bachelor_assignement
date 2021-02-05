@@ -67,8 +67,9 @@ class CasePage extends StatelessWidget {
           ],
         ),
       ),
-
+      //here starts the body
       body: Container(
+        //this is the backgound image of the case
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(caseItem.image),
@@ -76,10 +77,12 @@ class CasePage extends StatelessWidget {
             alignment: FractionalOffset.topCenter,
           ),
         ),
+        //here starts the case
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Stack(
             children: <Widget>[
+              //back button
               Padding(
                 padding: EdgeInsets.only(top: 12),
                 child: IconButton(
@@ -94,7 +97,7 @@ class CasePage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 200.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, 220.0, 0.0, 0.0),
                 child: Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
@@ -105,6 +108,7 @@ class CasePage extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
+                        //this is the title
                         Padding(
                           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: Text(
@@ -118,6 +122,7 @@ class CasePage extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
+                        //in this row you find author and published date
                         Row(
                           children: [
                             SizedBox(
@@ -132,6 +137,7 @@ class CasePage extends StatelessWidget {
                             Text(caseItem.publishedDate)
                           ],
                         ),
+                        //this is the description of the case. the main text
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: Text(caseItem.description),

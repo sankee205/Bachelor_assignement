@@ -1,5 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/caseItem.dart';
 import 'package:digitalt_application/homePage.dart';
 import 'package:flutter/material.dart';
 
