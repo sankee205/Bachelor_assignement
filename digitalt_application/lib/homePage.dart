@@ -26,26 +26,38 @@ class HomePage_State extends State<HomePage> {
     CaseItem(
         image: 'assets/images/1.jpg',
         title: 'Flower',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is a beautiful flower'),
     CaseItem(
         image: 'assets/images/2.jpg',
         title: 'Stones',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is a beautiful Stone'),
     CaseItem(
         image: 'assets/images/3.jpg',
         title: 'Butterflies',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is some beautiful butterflies'),
     CaseItem(
         image: 'assets/images/4.jpg',
         title: 'Sunset',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is a beautiful sunset'),
     CaseItem(
         image: 'assets/images/5.jpg',
         title: 'Bubbles',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is some beautiful bubbles'),
     CaseItem(
         image: 'assets/images/6.jpg',
         title: 'Swan',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is a beautiful swan'),
   ];
 
@@ -54,15 +66,21 @@ class HomePage_State extends State<HomePage> {
     CaseItem(
         image: 'assets/images/2.jpg',
         title: 'Stones',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description:
             'This is a beautiful Stone. Adam Jones is one of rocks most talented and sonically innovative guitarists, from multi-platinum selling and multiple Grammy Award® winning band Tool. This limited-edition Gibson Custom Shop model recreates Adams #1 guitar - his prized original Silverburst 1979 Gibson Les Paul™ Custom. Finished in Antique Silverburst VOS, the graphic on the rear of the headstock was designed by Adam Jones, and a replica of his headstock mirror is included in the custom Adam Jones hardshell case. These guitars were hand-made by the expert luthiers and craftspeople of the Gibson Custom Shop as part of a very special run. This is a beautiful Stone. Adam Jones is one of rocks most talented and sonically innovative guitarists, from multi-platinum selling and multiple Grammy Award® winning band Tool. This limited-edition Gibson Custom Shop model recreates Adams #1 guitar - his prized original Silverburst 1979 Gibson Les Paul™ Custom. Finished in Antique Silverburst VOS, the graphic on the rear of the headstock was designed by Adam Jones, and a replica of his headstock mirror is included in the custom Adam Jones hardshell case. These guitars were hand-made by the expert luthiers and craftspeople of the Gibson Custom Shop as part of a very special run.'),
     CaseItem(
         image: 'assets/images/3.jpg',
         title: 'Butterflies',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is some beautiful butterflies'),
     CaseItem(
         image: 'assets/images/5.jpg',
         title: 'Bubbles',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
         description: 'This is some beautiful bubbles'),
   ];
 

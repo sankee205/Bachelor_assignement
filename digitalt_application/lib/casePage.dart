@@ -124,12 +124,12 @@ class CasePage extends StatelessWidget {
                               width: 20,
                             ),
                             Icon(Icons.person),
-                            Text("Author"),
+                            Text(caseItem.author),
                             SizedBox(
                               width: 20,
                             ),
                             Icon(Icons.date_range),
-                            Text("Published")
+                            Text(caseItem.publishedDate)
                           ],
                         ),
                         Padding(
