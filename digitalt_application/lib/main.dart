@@ -1,7 +1,7 @@
 import 'package:digitalt_application/homePage.dart';
 import 'package:flutter/material.dart';
 
-/**
+/*
  * This is the main file that wil start running when the app is open and
  * it redirects to the homepage file to run the home page
  * @Sander Keedklang 
