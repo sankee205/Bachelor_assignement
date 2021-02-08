@@ -68,86 +68,90 @@ class CasePage extends StatelessWidget {
         ),
       ),
       //here starts the body
-      body: Container(
-        //this is the backgound image of the case
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(caseItem.image),
-            fit: BoxFit.contain,
-            alignment: FractionalOffset.topCenter,
+      body: Center(
+        child: Container(
+          width: 800,
+          alignment: Alignment.topCenter,
+          //this is the backgound image of the case
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(caseItem.image),
+              fit: BoxFit.contain,
+              alignment: FractionalOffset.topCenter,
+            ),
           ),
-        ),
-        //here starts the case
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Stack(
-            children: <Widget>[
-              //back button
-              Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 40,
+          //here starts the case
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Stack(
+              children: <Widget>[
+                //back button
+                Padding(
+                  padding: EdgeInsets.only(top: 12),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 220.0, 0.0, 0.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(35),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        //this is the title
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                          child: Text(
-                            caseItem.title,
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 220, 0.0, 0.0),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(35),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          //this is the title
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            child: Text(
+                              caseItem.title,
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        //in this row you find author and published date
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(Icons.person),
-                            Text(caseItem.author),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Icon(Icons.date_range),
-                            Text(caseItem.publishedDate)
-                          ],
-                        ),
-                        //this is the description of the case. the main text
-                        Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text(caseItem.description),
-                        )
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          //in this row you find author and published date
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Icon(Icons.person),
+                              Text(caseItem.author),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Icon(Icons.date_range),
+                              Text(caseItem.publishedDate)
+                            ],
+                          ),
+                          //this is the description of the case. the main text
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(caseItem.description),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
