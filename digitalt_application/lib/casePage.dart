@@ -102,8 +102,8 @@ class CasePage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(
-                          0.0, MediaQuery.of(context).size.height, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(0.0,
+                          MediaQuery.of(context).size.height / 4, 0.0, 0.0),
                       child: Container(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
