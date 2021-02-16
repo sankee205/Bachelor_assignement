@@ -18,43 +18,62 @@ List<Widget> containers = [
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 10,
+                height: 30,
               ),
-              SizedBox(
-                child: Image(
-                  image: AssetImage('assets/images/1.jpg'),
-                  fit: BoxFit.contain,
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 2.0, color: Colors.grey)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'Om Digi-talt',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               //this is the title
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: Text(
-                  'Tittel',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: 400,
+                child: Image(
+                  image: AssetImage('assets/images/1.jpg'),
+                  fit: BoxFit.contain,
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
               //in this row you find author and published date
-              Row(
-                children: [
-                  SizedBox(
-                    width: 20,
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(width: 2.0, color: Colors.grey),
                   ),
-                  Icon(Icons.person),
-                  Text('author'),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Icon(Icons.date_range),
-                  Text('date')
-                ],
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Icons.person),
+                    Text('author'),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Icon(Icons.date_range),
+                    Text('date')
+                  ],
+                ),
               ),
+
               //this is the description of the case. the main text
               Padding(
                 padding: EdgeInsets.all(20),
@@ -141,7 +160,7 @@ class _InfoPageState extends State<InfoPage> {
               bottom: TabBar(
                 tabs: <Widget>[
                   Tab(
-                    text: 'Digi-talt',
+                    text: 'Om Digi-talt',
                   ),
                   Tab(
                     text: 'Contact us',
@@ -194,6 +213,7 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
             body: Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage('assets/images/2.jpg'),

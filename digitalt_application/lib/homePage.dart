@@ -160,7 +160,10 @@ class HomePageState extends State<HomePage> {
               SizedBox(
                 height: 30,
               ),
-              SizedBox(
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white10,
+                ),
                 height: 300,
                 child: ListView(
                   children: <Widget>[
@@ -196,12 +199,18 @@ class HomePageState extends State<HomePage> {
                               height: double.infinity,
                               margin: EdgeInsets.symmetric(horizontal: 10),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: AssetImage(caseitem.image),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                    image: AssetImage(caseitem.image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 7,
+                                        offset: Offset(0, 3),
+                                        spreadRadius: 5)
+                                  ]),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -226,7 +235,8 @@ class HomePageState extends State<HomePage> {
               ),
 
               //Expands a gridview for the image listet below the slider above
-              Expanded(
+              Container(
+                child: Expanded(
                   child: Container(
                       width: 600,
                       child: GridView.count(
@@ -253,7 +263,15 @@ class HomePageState extends State<HomePage> {
                                         borderRadius: BorderRadius.circular(20),
                                         image: DecorationImage(
                                             image: AssetImage(caseitems.image),
-                                            fit: BoxFit.cover)),
+                                            fit: BoxFit.cover),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              blurRadius: 7,
+                                              offset: Offset(0, 3),
+                                              spreadRadius: 5)
+                                        ]),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       crossAxisAlignment:
@@ -272,7 +290,9 @@ class HomePageState extends State<HomePage> {
                                   ),
                                 )))
                             .toList(),
-                      )))
+                      )),
+                ),
+              )
             ],
           ),
         )));
