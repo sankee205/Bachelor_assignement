@@ -143,6 +143,13 @@ class HomePageState extends State<HomePage> {
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
               ),
+              ListTile(
+                title: Text('Log in'),
+                // onTap: () {
+                //Navigator.push(context,
+                //MaterialPageRoute(builder: (context) => LogInPage()));
+                //}
+              ),
             ],
           ),
         ),
