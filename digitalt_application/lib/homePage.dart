@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digitalt_application/caseItem.dart';
 import 'package:digitalt_application/casePage.dart';
+import 'package:digitalt_application/infoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -126,6 +127,10 @@ class HomePageState extends State<HomePage> {
               ListTile(
                 leading: Icon(Icons.info),
                 title: Text('About'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => InfoPage()));
+                },
               ),
               ListTile(
                 leading: Icon(Icons.home),
