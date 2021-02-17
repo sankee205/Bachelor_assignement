@@ -1,4 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
+import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
 import 'package:digitalt_application/caseItem.dart';
 import 'package:digitalt_application/casePage.dart';
 import 'package:digitalt_application/infoPage.dart';
@@ -127,77 +129,13 @@ class HomePageState extends State<HomePage> {
     //returns a material design
     return Scaffold(
         //this is the appbar for the home page
-        appBar: AppBar(
-            backgroundColor: Colors.grey[600],
-            elevation: 0,
-            title: Text("Home"),
-            actions: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(30.0),
-                child: Container(
-                  width: 36,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular((20))),
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                      onTap: () {}, child: Icon(Icons.account_circle)))
-            ]),
-        //creates the menu in the appbar(drawer)
-        drawer: new Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'Drawer Header',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text('About'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => InfoPage()));
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profile'),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-              ),
-              ListTile(
-                title: Text('Log in'),
-                // onTap: () {
-                //Navigator.push(context,
-                //MaterialPageRoute(builder: (context) => LogInPage()));
-                //}
-              ),
-            ],
-          ),
+        appBar: BaseAppBar(
+          title: Text('title'),
+          appBar: AppBar(),
+          widgets: <Widget>[Icon(Icons.more_vert)],
         ),
+        //creates the menu in the appbar(drawer)
+        drawer: BaseAppDrawer(),
 
         //here comes the body of the home page
         body: SafeArea(
