@@ -1,6 +1,7 @@
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCarouselSlider.dart';
+import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
 import 'package:digitalt_application/Permanent%20services/caseItem.dart';
 import 'package:digitalt_application/casePage.dart';
 import 'package:flutter/material.dart';
@@ -27,100 +28,66 @@ class HomePageState extends State<HomePage> {
   //example list for the grid layout
   List<CaseItem> caseList = [
     CaseItem(
-        image: 'assets/images/1.jpg',
-        title: 'Flower',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_1.jpg',
+        title: 'Oslo gjør noen lettelser – men holder på skjenkestoppen',
+        author: 'Lars Hægeland',
         publishedDate: '12.01.2021',
-        description: 'This is a beautiful flower'),
+        description:
+            'Byrådsleder Raymond Johansen viser til at smitten igjen stiger i hovedstaden. – Selv med svært strenge tiltak står vi i en situasjon der smitten stiger, sier han – og peker blant annet på utbruddet i Norges største barnehage. LES OGSÅ: Smitteutbrudd i Oslo: Stenger Norges største barnehage Når regjeringen nå har opphevet de nasjonale ring-tiltakene som hovedstaden har vært omfattet av, velger imidlertid Oslo fortsatt å holde igjen noe. De nye endringene i Oslo-reglene skal vare i to uker før det blir gjort en ny vurdering. Dette er endringene i Oslo Dette er lettelsene som nå gjøres i hovedstaden: Barn og unge opp til 19 år får igjen drive med fritidsaktiviteter både innendørs og utendørs. Lesesaler og bibliotek på universiteter og høgskoler åpner for studenter. Oslo åpner også for utendørs aktivitet og idrett for voksne, i grupper på maks 10 personer og med krav om at de må holde minst en meters avstand. Tidligere denne uken gikk videregående skoler over til gult nivå.'),
     CaseItem(
-        image: 'assets/images/2.jpg',
-        title: 'Stones',
+        image: 'assets/images/artikkel_2.jpg',
+        title: 'TV 2 bekrefter: Stian Blipp slutter i «Senkveld»',
         author: 'Heidi Gundersen',
         publishedDate: '12.01.2021',
-        description: 'This is a beautiful Stone'),
+        description:
+            'Helene Olafsen og Stian Blipp har sammen ledet «Senkveld» på TV 2 siden høsten 2018. Blipp var på det tidspunktet kjent som programleder for «Norske Talenter», «Gullruten», «Idol», «Mitt Dansecrew» og «Stian Blipp Show». Nå nærmer det seg slutten for Stian Blipp i «Senkveld». Etter denne sesongen forlater han programmet. Det bekrefter både Blipp og TV 2 overfor VG. Samtidig gleder han seg til å begynne sitt soloshow. Det er på scenen han hører hjemme, forklarer han, likevel er det nok ikke siste gang man ser Blipp på TV-skjermen. Nå er han innstilt på å lage en god «Senkveld»-sesong. – Jeg har bevisst inntatt en sånn posisjon hvor jeg skal gjøre alt jeg kan for å lage en helsikens deilig sesong seks. Ellers har jeg på en måte ikke blandet meg inn for mye, sier Blipp videre.'),
     CaseItem(
-        image: 'assets/images/3.jpg',
-        title: 'Butterflies',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_3.jpg',
+        title: 'Ekspertenes kritiske corona-dom: − Alvorlig bekymret',
+        author: 'Ådne Husby Sadnes',
         publishedDate: '12.01.2021',
-        description: 'This is some beautiful butterflies'),
+        description:
+            'VG har intervjuet eksperter i helse og medisin, jus, økonomi, barneombudet og helsesjefen i hardt coronarammede Oslo. De har fått spørsmål om hva de tenker om dagens coronastrategi, hva som kan være problematisk med den og hva som er konsekvensene av dagens tiltak.Ekspertene kommer også med sine forslag til hvordan myndighetene kunne ha løst ulike utfordringer på en bedre måte.MEDISIN-EKSPERTEN:Mette Kalager, professor i medisin ved Universitetet i Oslo, mener det er fint at smittetiltakene er spisset mot områder der risikoen er størst. Det er likevel noe uklart for henne hva som er strategien nå:– Er det å redusere død, er det å redusere sykdom eller redusere smitte? Dette hører sammen, men vil kreve ulike tiltak og ha ulike konsekvenser for befolkningen. Derfor savner jeg en redegjørelse fra myndighetene der de veier fordeler av å stenge ned; for eksempel hvor mye lidelse og død har vi unngått, versus ulemper; som for eksempel hvor mye lidelse og eventuell død har vi hatt som følge av tiltakene, sier Kalager.'),
     CaseItem(
-        image: 'assets/images/4.jpg',
-        title: 'Sunset',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_4.jpg',
+        title: 'Falsk informasjon',
+        author: 'Synne Eggum',
         publishedDate: '12.01.2021',
-        description: 'This is a beautiful sunset'),
+        description:
+            'Forfatter av innlegget hevder å komme med fakta, der mediene angivelig presenterer tøv. Stortingspolitiker Christian Tybring-Gjedde (Frp) gjenga innlegget mandag kveld. – Det er farlig at stortingsrepresentanter deler falsk informasjon, sier Marian Hussein (SV). At Tybring-Gjedde skriver at han personlig ikke kjenner detaljene i saken om den somaliske familien på syv, mener hun er til liten hjelp. – Vi kan ikke fraskrive oss ansvar og samtidig dele falsk informasjon, sier vernepleieren som er vara til Stortinget og nominert på sikker plass for SV.'),
     CaseItem(
-        image: 'assets/images/5.jpg',
-        title: 'Bubbles',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_5.jpg',
+        title: 'GLIMT-TRENDEN SOM BØR SKREMME ROSENBORG',
+        author: 'Arilas Berg',
         publishedDate: '12.01.2021',
-        description: 'This is some beautiful bubbles'),
+        description:
+            'Ifølge VGs opplysninger nærmer Botheim seg en overgang til den regjerende seriemesteren etter å ha terminert kontrakten med Rosenborg mandag. 21-åringen trente onsdag formiddag for første gang med Bodø/Glimt etter å ha gjennomført den medisinske testen tirsdag. Det forhandles fortsatt om detaljer i kontrakten, men spissen forventes å signere innen kort tid.'),
     CaseItem(
-        image: 'assets/images/6.jpg',
-        title: 'Swan',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_6.jpg',
+        title: '15 tights til trening',
+        author: 'Heidi Haraldsen',
         publishedDate: '12.01.2021',
-        description: 'This is a beautiful swan'),
-    CaseItem(
-        image: 'assets/images/1.jpg',
-        title: 'Flower',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is a beautiful flower'),
-    CaseItem(
-        image: 'assets/images/2.jpg',
-        title: 'Stones',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is a beautiful Stone'),
-    CaseItem(
-        image: 'assets/images/3.jpg',
-        title: 'Butterflies',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is some beautiful butterflies'),
-    CaseItem(
-        image: 'assets/images/4.jpg',
-        title: 'Sunset',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is a beautiful sunset'),
-    CaseItem(
-        image: 'assets/images/5.jpg',
-        title: 'Bubbles',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is some beautiful bubbles'),
-    CaseItem(
-        image: 'assets/images/6.jpg',
-        title: 'Swan',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is a beautiful swan'),
+        description:
+            'En tights skal være behagelig, følge kroppen, gi deg full bevegelsesfrihet – i tillegg til å se fin ut. Tightsen er tross alt plagget du har på under all type trening – fra styrke til yoga. Man har alltid plass til en ny tights i treningsgarderoben, og nå som vi nærmer oss våren kan du ta en titt på nyhetene som har ankommet butikkene'),
   ];
 
   // example list for the carousel slider
   List<CaseItem> popularCases = [
     CaseItem(
-        image: 'assets/images/2.jpg',
-        title: 'Stones',
-        author: 'Heidi Gundersen',
+        image: 'assets/images/artikkel_7.jpg',
+        title: 'Trump raser mot McConnell: − Mutt, gretten gamp',
+        author: 'Sven Arne Buggeland',
+        publishedDate: '16.02.2021',
+        description:
+            '– Mitch er en mutt, gretten, smilløs politisk gamp. Hvis republikanske senatorer holder seg til ham, kommer de ikke til å vinne igjen, sier Trump tirsdag. McConnell – den mektigste republikaneren i Senatet – sa etter avstemningen i riksrettssaken at han mener Donald Trump er ansvarlig for hendelsene 6. januar, da opprørere stormet kongressbygningen. Like før hadde senator McConnell selv stemt for å frikjenne Trump. – Demokratene og Chuck Schumer spiller McConnell som en fele. De har aldri hatt det bedre, og de ønsker å bevare det slik, heter det i uttalelsen fra Donald Trump. Den tidligere presidenten skriver følgende om sin tidligere, nære støttespiller: – McConnells entusiasme for status quo-politikk, sammen med hans mangel på politisk innsikt, klokskap, dyktighet og personlighet, har raskt drevet ham fra majoritetsleder til minoritetsleder. Og det kommer bare til å bli verre, skriver Trump.'),
+    CaseItem(
+        image: 'assets/images/artikkel_8.jpg',
+        title:
+            '«Game of Thrones»-par har fått sitt første barn: − De er veldig lykkelige',
+        author: 'Ingrid Hovda Storaas',
         publishedDate: '12.01.2021',
         description:
-            'This is a beautiful Stone. Adam Jones is one of rocks most talented and sonically innovative guitarists, from multi-platinum selling and multiple Grammy Award® winning band Tool. This limited-edition Gibson Custom Shop model recreates Adams #1 guitar - his prized original Silverburst 1979 Gibson Les Paul™ Custom. Finished in Antique Silverburst VOS, the graphic on the rear of the headstock was designed by Adam Jones, and a replica of his headstock mirror is included in the custom Adam Jones hardshell case. These guitars were hand-made by the expert luthiers and craftspeople of the Gibson Custom Shop as part of a very special run. This is a beautiful Stone. Adam Jones is one of rocks most talented and sonically innovative guitarists, from multi-platinum selling and multiple Grammy Award® winning band Tool. This limited-edition Gibson Custom Shop model recreates Adams #1 guitar - his prized original Silverburst 1979 Gibson Les Paul™ Custom. Finished in Antique Silverburst VOS, the graphic on the rear of the headstock was designed by Adam Jones, and a replica of his headstock mirror is included in the custom Adam Jones hardshell case. These guitars were hand-made by the expert luthiers and craftspeople of the Gibson Custom Shop as part of a very special run.'),
-    CaseItem(
-        image: 'assets/images/3.jpg',
-        title: 'Butterflies',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is some beautiful butterflies'),
-    CaseItem(
-        image: 'assets/images/5.jpg',
-        title: 'Bubbles',
-        author: 'Heidi Gundersen',
-        publishedDate: '12.01.2021',
-        description: 'This is some beautiful bubbles'),
+            'Det bekrefter Haringtons talsperson Marianna Shafran overfor nyhetsbyrået AP.– De er veldig, veldig lykkelige, sier hun – uten å røpe flere detaljer. Nyheten om fødselen ble først meldt av New York Post sin Page Six, som tirsdag publiserte et bilde av paret gående med en barnevogn i London. Rose Leslie og Kit Harrington møtte hverandre på innspillingen til HBO-serien «Game of Thrones» i 2011. På skjermen var de i et intenst kjærlighetsforhold som Ygritte og Jon Snow.'),
   ];
 
   @override
@@ -139,10 +106,11 @@ class HomePageState extends State<HomePage> {
         //here comes the body of the home page
         body: SafeArea(
             child: Container(
+          color: Colors.grey.shade100,
           child: Column(
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(),
+                decoration: BoxDecoration(color: Colors.white),
                 height: 300,
                 child: ListView(
                   children: <Widget>[
@@ -158,7 +126,7 @@ class HomePageState extends State<HomePage> {
                       width: 600,
                       child: GridView.count(
                         padding: EdgeInsets.all(20),
-                        crossAxisCount: 3,
+                        crossAxisCount: 2,
                         crossAxisSpacing: 20,
                         mainAxisSpacing: 20,
                         children: caseList
@@ -167,45 +135,15 @@ class HomePageState extends State<HomePage> {
                                 elevation: 0,
                                 //makes the onclick available
                                 child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => CasePage(
-                                                  caseItem: caseitems,
-                                                )));
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                            image: AssetImage(caseitems.image),
-                                            fit: BoxFit.cover),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              blurRadius: 7,
-                                              offset: Offset(0, 3),
-                                              spreadRadius: 5)
-                                        ]),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          caseitems.title,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.0,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )))
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => CasePage(
+                                                    caseItem: caseitems,
+                                                  )));
+                                    },
+                                    child: BaseCaseBox(caseitems))))
                             .toList(),
                       )),
                 ),
