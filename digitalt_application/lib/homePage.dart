@@ -142,6 +142,10 @@ class HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular((20))),
                 ),
               ),
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                      onTap: () {}, child: Icon(Icons.account_circle)))
             ]),
         //creates the menu in the appbar(drawer)
         drawer: new Drawer(
@@ -183,6 +187,13 @@ class HomePageState extends State<HomePage> {
               ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
+              ),
+              ListTile(
+                title: Text('Log in'),
+                // onTap: () {
+                //Navigator.push(context,
+                //MaterialPageRoute(builder: (context) => LogInPage()));
+                //}
               ),
             ],
           ),
