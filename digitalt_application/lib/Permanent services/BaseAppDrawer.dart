@@ -18,7 +18,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.red,
             ),
             child: Text(
               'Drawer Header',
@@ -51,13 +51,6 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-          ),
-          ListTile(
-            title: Text('Log in'),
-            // onTap: () {
-            //Navigator.push(context,
-            //MaterialPageRoute(builder: (context) => LogInPage()));
-            //}
           ),
         ],
       ),

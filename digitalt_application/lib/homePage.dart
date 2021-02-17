@@ -2,7 +2,7 @@ import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
-import 'package:digitalt_application/Permanent%20services/caseItem.dart';
+import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:digitalt_application/casePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -116,6 +116,24 @@ class HomePageState extends State<HomePage> {
           appBar: AppBar(),
           widgets: <Widget>[Icon(Icons.more_vert)],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Business',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'School',
+            ),
+          ],
+          selectedItemColor: Colors.red,
+        ),
+
         //creates the menu in the appbar(drawer)
         drawer: BaseAppDrawer(),
 

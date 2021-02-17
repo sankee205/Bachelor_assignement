@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
-import 'package:digitalt_application/Permanent%20services/caseItem.dart';
+import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:flutter/material.dart';
 
 import '../casePage.dart';

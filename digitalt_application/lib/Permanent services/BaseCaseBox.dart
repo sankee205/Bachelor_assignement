@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../casePage.dart';
-import 'caseItem.dart';
+import 'BaseCaseItem.dart';
 
 class BaseCaseBox extends StatefulWidget {
   final CaseItem caseItem;
