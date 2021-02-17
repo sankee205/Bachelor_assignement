@@ -6,6 +6,7 @@ import 'package:digitalt_application/Permanent%20services/caseItem.dart';
 import 'package:digitalt_application/casePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /*
  * This is the main page of the flutter application and this is the window that will
@@ -69,6 +70,21 @@ class HomePageState extends State<HomePage> {
         publishedDate: '12.01.2021',
         description:
             'En tights skal være behagelig, følge kroppen, gi deg full bevegelsesfrihet – i tillegg til å se fin ut. Tightsen er tross alt plagget du har på under all type trening – fra styrke til yoga. Man har alltid plass til en ny tights i treningsgarderoben, og nå som vi nærmer oss våren kan du ta en titt på nyhetene som har ankommet butikkene'),
+    CaseItem(
+        image: 'assets/images/artikkel_7.jpg',
+        title: 'Trump raser mot McConnell: − Mutt, gretten gamp',
+        author: 'Sven Arne Buggeland',
+        publishedDate: '16.02.2021',
+        description:
+            '– Mitch er en mutt, gretten, smilløs politisk gamp. Hvis republikanske senatorer holder seg til ham, kommer de ikke til å vinne igjen, sier Trump tirsdag. McConnell – den mektigste republikaneren i Senatet – sa etter avstemningen i riksrettssaken at han mener Donald Trump er ansvarlig for hendelsene 6. januar, da opprørere stormet kongressbygningen. Like før hadde senator McConnell selv stemt for å frikjenne Trump. – Demokratene og Chuck Schumer spiller McConnell som en fele. De har aldri hatt det bedre, og de ønsker å bevare det slik, heter det i uttalelsen fra Donald Trump. Den tidligere presidenten skriver følgende om sin tidligere, nære støttespiller: – McConnells entusiasme for status quo-politikk, sammen med hans mangel på politisk innsikt, klokskap, dyktighet og personlighet, har raskt drevet ham fra majoritetsleder til minoritetsleder. Og det kommer bare til å bli verre, skriver Trump.'),
+    CaseItem(
+        image: 'assets/images/artikkel_8.jpg',
+        title:
+            '«Game of Thrones»-par har fått sitt første barn: − De er veldig lykkelige',
+        author: 'Ingrid Hovda Storaas',
+        publishedDate: '12.01.2021',
+        description:
+            'Det bekrefter Haringtons talsperson Marianna Shafran overfor nyhetsbyrået AP.– De er veldig, veldig lykkelige, sier hun – uten å røpe flere detaljer. Nyheten om fødselen ble først meldt av New York Post sin Page Six, som tirsdag publiserte et bilde av paret gående med en barnevogn i London. Rose Leslie og Kit Harrington møtte hverandre på innspillingen til HBO-serien «Game of Thrones» i 2011. På skjermen var de i et intenst kjærlighetsforhold som Ygritte og Jon Snow.'),
   ];
 
   // example list for the carousel slider
@@ -106,12 +122,12 @@ class HomePageState extends State<HomePage> {
         //here comes the body of the home page
         body: SafeArea(
             child: Container(
-          color: Colors.grey.shade100,
           child: Column(
             children: <Widget>[
               Container(
+                padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(color: Colors.white),
-                height: 300,
+                height: 310,
                 child: ListView(
                   children: <Widget>[
                     //should we add a play and stop button?
@@ -119,36 +135,35 @@ class HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
-              Container(
-                child: Expanded(
-                  child: Container(
-                      width: 600,
-                      child: GridView.count(
-                        padding: EdgeInsets.all(20),
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                        children: caseList
-                            .map((caseitems) => Card(
-                                color: Colors.transparent,
-                                elevation: 0,
-                                //makes the onclick available
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => CasePage(
-                                                    caseItem: caseitems,
-                                                  )));
-                                    },
-                                    child: BaseCaseBox(caseitems))))
-                            .toList(),
-                      )),
+              Expanded(
+                child: Container(
+                  color: Colors.grey.shade300,
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  width: 600,
+                  child: StaggeredGridView.countBuilder(
+                    primary: false,
+                    crossAxisCount: 4,
+                    itemCount: caseList.length,
+                    itemBuilder: (BuildContext context, int index) => InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CasePage(
+                              caseItem: caseList[index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: BaseCaseBox(caseList[index]),
+                    ),
+                    staggeredTileBuilder: (int index) =>
+                        new StaggeredTile.count(2, index.isEven ? 2 : 1),
+                    mainAxisSpacing: 6.0,
+                    crossAxisSpacing: 12.0,
+                  ),
                 ),
-              )
-              //Expands a gridview for the image listet below the slider above
+              ),
             ],
           ),
         )));

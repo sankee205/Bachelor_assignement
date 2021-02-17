@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../casePage.dart';
 import 'caseItem.dart';
 
 class BaseCaseBox extends StatefulWidget {
@@ -35,7 +36,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
             ),
-          )
+          ),
         ],
       ),
     );
