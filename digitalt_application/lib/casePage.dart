@@ -1,5 +1,6 @@
 import 'package:digitalt_application/caseItem.dart';
 import 'package:digitalt_application/homePage.dart';
+import 'package:digitalt_application/infoPage.dart';
 import 'package:flutter/material.dart';
 
 class CasePage extends StatelessWidget {
@@ -47,6 +48,10 @@ class CasePage extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.info),
               title: Text('About'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => InfoPage()));
+              },
             ),
             ListTile(
               leading: Icon(Icons.home),
