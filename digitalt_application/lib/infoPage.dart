@@ -1,5 +1,7 @@
-import 'package:digitalt_application/homePage.dart';
 import 'package:flutter/material.dart';
+
+import 'Permanent services/BaseAppBar.dart';
+import 'Permanent services/BaseAppDrawer.dart';
 
 class InfoPage extends StatefulWidget {
   @override
@@ -141,77 +143,13 @@ class _InfoPageState extends State<InfoPage> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.grey[600],
-              elevation: 0,
-              title: Text("About"),
-              actions: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Container(
-                    width: 36,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        borderRadius: BorderRadius.circular((20))),
-                  ),
-                ),
-              ],
-              bottom: TabBar(
-                tabs: <Widget>[
-                  Tab(
-                    text: 'Om Digi-talt',
-                  ),
-                  Tab(
-                    text: 'Contact us',
-                  )
-                ],
-              ),
+            appBar: BaseAppBar(
+              title: Text('DIGI-TALT'),
+              appBar: AppBar(),
+              widgets: <Widget>[Icon(Icons.more_vert)],
             ),
             //creates the menu in the appbar(drawer)
-            drawer: new Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                    child: Text(
-                      'Drawer Header',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text('About'),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => InfoPage()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.home),
-                    title: Text('Home'),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: Text('Profile'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
-                  ),
-                ],
-              ),
-            ),
+            drawer: BaseAppDrawer(),
             body: Container(
               padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
               decoration: BoxDecoration(
