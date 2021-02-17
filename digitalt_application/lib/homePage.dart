@@ -105,6 +105,10 @@ class HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular((20))),
                 ),
               ),
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                      onTap: () {}, child: Icon(Icons.account_circle)))
             ]),
         //creates the menu in the appbar(drawer)
         drawer: new Drawer(
