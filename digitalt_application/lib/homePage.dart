@@ -1,9 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
+import 'package:digitalt_application/Permanent%20services/BaseCarouselSlider.dart';
 import 'package:digitalt_application/caseItem.dart';
 import 'package:digitalt_application/casePage.dart';
-import 'package:digitalt_application/infoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -130,7 +129,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
         //this is the appbar for the home page
         appBar: BaseAppBar(
-          title: Text('title'),
+          title: Text('DIGI-TALT'),
           appBar: AppBar(),
           widgets: <Widget>[Icon(Icons.more_vert)],
         ),
@@ -148,62 +147,7 @@ class HomePageState extends State<HomePage> {
                 child: ListView(
                   children: <Widget>[
                     //should we add a play and stop button?
-                    CarouselSlider(
-                      options: CarouselOptions(
-                          height: 300,
-                          enlargeCenterPage: true,
-                          autoPlay: true,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          aspectRatio: 0.25,
-                          autoPlayAnimationDuration:
-                              Duration(milliseconds: 800),
-                          autoPlayInterval: Duration(seconds: 10),
-                          viewportFraction: 0.8,
-                          initialPage: 0),
-                      items: popularCases.map((caseitem) {
-                        return Builder(builder: (
-                          BuildContext context,
-                        ) {
-                          //makes the onclick available
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CasePage(
-                                            caseItem: caseitem,
-                                          )));
-                            },
-                            child: Container(
-                              width: 400,
-                              height: double.infinity,
-                              margin: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  image: AssetImage(caseitem.image),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    caseitem.title,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                      }).toList(),
-                    ),
+                    BaseCarouselSlider(this.popularCases)
                   ],
                 ),
               ),
