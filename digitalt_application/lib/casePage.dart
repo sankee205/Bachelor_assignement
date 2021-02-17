@@ -1,6 +1,6 @@
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
-import 'package:digitalt_application/caseItem.dart';
+import 'package:digitalt_application/Permanent%20services/caseItem.dart';
 import 'package:flutter/material.dart';
 
 class CasePage extends StatelessWidget {
