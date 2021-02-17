@@ -61,6 +61,42 @@ class HomePageState extends State<HomePage> {
         author: 'Heidi Gundersen',
         publishedDate: '12.01.2021',
         description: 'This is a beautiful swan'),
+    CaseItem(
+        image: 'assets/images/1.jpg',
+        title: 'Flower',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is a beautiful flower'),
+    CaseItem(
+        image: 'assets/images/2.jpg',
+        title: 'Stones',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is a beautiful Stone'),
+    CaseItem(
+        image: 'assets/images/3.jpg',
+        title: 'Butterflies',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is some beautiful butterflies'),
+    CaseItem(
+        image: 'assets/images/4.jpg',
+        title: 'Sunset',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is a beautiful sunset'),
+    CaseItem(
+        image: 'assets/images/5.jpg',
+        title: 'Bubbles',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is some beautiful bubbles'),
+    CaseItem(
+        image: 'assets/images/6.jpg',
+        title: 'Swan',
+        author: 'Heidi Gundersen',
+        publishedDate: '12.01.2021',
+        description: 'This is a beautiful swan'),
   ];
 
   // example list for the carousel slider
@@ -157,13 +193,8 @@ class HomePageState extends State<HomePage> {
             child: Container(
           child: Column(
             children: <Widget>[
-              SizedBox(
-                height: 30,
-              ),
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                ),
+                decoration: BoxDecoration(),
                 height: 300,
                 child: ListView(
                   children: <Widget>[
@@ -197,20 +228,14 @@ class HomePageState extends State<HomePage> {
                             child: Container(
                               width: 400,
                               height: double.infinity,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              margin: EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  image: DecorationImage(
-                                    image: AssetImage(caseitem.image),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 7,
-                                        offset: Offset(0, 3),
-                                        spreadRadius: 5)
-                                  ]),
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                  image: AssetImage(caseitem.image),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -234,7 +259,6 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
 
-              //Expands a gridview for the image listet below the slider above
               Container(
                 child: Expanded(
                   child: Container(
@@ -293,6 +317,7 @@ class HomePageState extends State<HomePage> {
                       )),
                 ),
               )
+              //Expands a gridview for the image listet below the slider above
             ],
           ),
         )));
