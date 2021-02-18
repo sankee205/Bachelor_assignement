@@ -226,39 +226,63 @@ class HomePageState extends State<HomePage> {
 
       //here comes the body of the home page
       body: SingleChildScrollView(
+          child: Center(
         child: Container(
+          width: 800,
           color: Colors.grey.shade300,
           child: Column(
             children: [
               ResponsiveGridRow(
                 children: [
                   ResponsiveGridCol(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(color: Colors.white),
-                          height: 310,
-                          child: ListView(
-                            children: <Widget>[
-                              //should we add a play and stop button?
-                              BaseCarouselSlider(this.popularCases)
-                            ],
+                    lg: 8,
+                    xs: 12,
+                    child: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                      ],
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(color: Colors.white),
+                            height: 320,
+                            child: ListView(
+                              children: <Widget>[
+                                //should we add a play and stop button?
+                                BaseCarouselSlider(this.popularCases)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   ResponsiveGridCol(
+                    lg: 4,
+                    xs: 12,
                     child: Container(
-                      margin: EdgeInsets.all(10),
+                      height: 325,
+                      width: 400,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              'Siste Nytt',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 25),
+                            Container(
+                              child: Text(
+                                'Siste Nytt',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 25,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
                             ),
                             Column(
                               children: sisteNyttList.map((caseObject) {
@@ -277,11 +301,20 @@ class HomePageState extends State<HomePage> {
                                       },
                                       child: Container(
                                         height: 40,
+                                        width: 500,
                                         decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                                BorderRadius.circular(5)),
-                                        margin: EdgeInsets.all(1),
+                                                BorderRadius.circular(5),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  blurRadius: 7,
+                                                  offset: Offset(0, 3),
+                                                  spreadRadius: 5)
+                                            ]),
+                                        margin: EdgeInsets.fromLTRB(5, 3, 5, 3),
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           caseObject.title,
@@ -293,7 +326,7 @@ class HomePageState extends State<HomePage> {
                                       ));
                                 });
                               }).toList(),
-                            )
+                            ),
                           ]),
                     ),
                   ),
@@ -303,8 +336,12 @@ class HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: caseList.map((e) {
                   return ResponsiveGridCol(
+                      lg: 4,
+                      md: 6,
+                      xs: 12,
                       child: Container(
-                          height: 300,
+                          margin: EdgeInsets.all(5),
+                          height: 250,
                           child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -320,7 +357,7 @@ class HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }
