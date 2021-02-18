@@ -7,6 +7,7 @@ import 'package:digitalt_application/casePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 /*
  * This is the main page of the flutter application and this is the window that will
@@ -224,111 +225,97 @@ class HomePageState extends State<HomePage> {
       drawer: BaseAppDrawer(),
 
       //here comes the body of the home page
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Container(
           color: Colors.grey.shade300,
           child: Column(
             children: [
-              Container(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(color: Colors.white),
-                      height: 310,
-                      child: ListView(
-                        children: <Widget>[
-                          //should we add a play and stop button?
-                          BaseCarouselSlider(this.popularCases)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: 800,
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 5.0,
-                    ),
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Siste Nytt',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 25),
-                              ),
-                              Column(
-                                children: sisteNyttList.map((caseObject) {
-                                  return Builder(builder: (
-                                    BuildContext context,
-                                  ) {
-                                    //makes the onclick available
-                                    return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CasePage(
-                                                        caseItem: caseObject,
-                                                      )));
-                                        },
-                                        child: Container(
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          margin: EdgeInsets.all(1),
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            caseObject.title,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontStyle: FontStyle.normal),
-                                          ),
-                                        ));
-                                  });
-                                }).toList(),
-                              )
-                            ]),
-                      ),
-                      StaggeredGridView.countBuilder(
-                        primary: false,
-                        crossAxisCount: 4,
-                        itemCount: caseList.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CasePage(
-                                  caseItem: caseList[index],
-                                ),
-                              ),
-                            );
-                          },
-                          child: BaseCaseBox(caseList[index]),
+              ResponsiveGridRow(
+                children: [
+                  ResponsiveGridCol(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(color: Colors.white),
+                          height: 310,
+                          child: ListView(
+                            children: <Widget>[
+                              //should we add a play and stop button?
+                              BaseCarouselSlider(this.popularCases)
+                            ],
+                          ),
                         ),
-                        staggeredTileBuilder: (int index) =>
-                            new StaggeredTile.count(2, index.isEven ? 2 : 1),
-                        mainAxisSpacing: 6.0,
-                        crossAxisSpacing: 12.0,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  ResponsiveGridCol(
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Siste Nytt',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 25),
+                            ),
+                            Column(
+                              children: sisteNyttList.map((caseObject) {
+                                return Builder(builder: (
+                                  BuildContext context,
+                                ) {
+                                  //makes the onclick available
+                                  return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => CasePage(
+                                                      caseItem: caseObject,
+                                                    )));
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        margin: EdgeInsets.all(1),
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          caseObject.title,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontStyle: FontStyle.normal),
+                                        ),
+                                      ));
+                                });
+                              }).toList(),
+                            )
+                          ]),
+                    ),
+                  ),
+                ],
+              ),
+              ResponsiveGridRow(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: caseList.map((e) {
+                  return ResponsiveGridCol(
+                      child: Container(
+                          height: 300,
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CasePage(
+                                              caseItem: e,
+                                            )));
+                              },
+                              child: BaseCaseBox(e))));
+                }).toList(),
               ),
             ],
           ),
