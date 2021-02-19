@@ -144,6 +144,50 @@ class HomePageState extends State<HomePage> {
           'Til magasinet fortalte hun at hun og Kit Harington tilbrakte mye tid sammen i det nye huset deres på landsbygda i England, som hun fleipete kaller «huset som Jon Snow bygget».',
           '– Det er et stort privilegium å være omgitt av grøntområder, fuglesang, hekker og våre herlige naboer. Det er så fredelig, sa hun blant annet da.',
         ]),
+    CaseItem(
+        image: 'assets/images/artikkel_9.jpg',
+        title: 'Frp-politikere ut mot Listhaug: − Det siste vi trenger',
+        author: ['RUNA FJELLANGER', 'SARAH BRENNSÆTER', 'EIRIK RØSVIK'],
+        publishedDate: '19.02.2021 kl. 11:16',
+        introduction:
+            'Sylvi Listhaug vil bli en splittende partileder, mener Frp-politiker Silje Flaten Haugli. Hun frykter masseutmelding av partiets liberalistiske medlemmer.',
+        description: [
+          '«Det er ikke akkurat hurramegrundt-stemning i Fremskrittspartiet om dagen, og vi er mange som opplever partiet som splittet og med en trykkende, klein stemning som ingen helt tørr å gjøre noe med i frykt for og gjøre seg selv upopulær», skriver Silje Flaten Haugli i en kronikk i VG.',
+          '«I et allerede splittet Frp er det siste vi da trenger en ny, splittende partileder med navn Sylvi Listhaug», skriver hun videre.',
+          'Haugli er 2. vara til Stortinget for Frp i Aust-Agder, lokallagsleder i Tvedestrand Frp og har vært tillitsvalgt i partiet i nesten 11 år.',
+          'Hun får støtte fra Tommy Skatland, fylkesleder i Trøndelag Frp.',
+          '– Partiet trenger en samlende leder som har bredest mulig støtte i partiet, sier han til Adresseavisen.',
+          'Og det er ikke Listhaug, sier Skatland.',
+          '– Båret på gullstol av de nasjonalkonservative',
+          'Torsdag kom Siv Jensen sjokknyheten om sin egen avgang som leder i Fremskrittspartiet. Samtidig pekte hun på nåværende nestleder Sylvi Listhaug som ny partileder etter landsmøtet i mai.',
+          '– Jeg er veldig ydmyk på at Siv har pekt på meg som arvtager. Sammen med mannen min Espen har jeg besluttet å takke ja til å bli leder i Frp, hvis partiet og landsmøtet ønsker det, sa Sylvi Listhaug på en pressekonferanse fredag formiddag.',
+          'Landsmøtet bør ikke gi den jobben til Listhaug, mener Haugli.',
+          '– Vi er avhengig av å ha en samlende leder, og hittil er det mangel på dette av ledelsen. Mange innrømmer ikke engang den pågående "fløykrigen", sier Haugli til VG.',
+          '«Selv om hun erklærer seg selv som liberalist og tilhenger av frihet for folk flest har hun ofte stått opp for verdier og holdninger vi som liberalister ikke kan vedkjenne oss og blitt nærmest båret på gullstol av de nasjonalkonservative», skriver hun i kronikken.',
+          '– Vi som er liberalistiske vil ikke stå inne for det Sylvi gjør og sier, dette nasjonalkonservative ønskes ikke av oss, kommenterer hun.',
+          'Haugli sier til VG at hun ble veldig overrasket over Sivs avskjed',
+          '–Selv om det har vært forventet fra tidligere at hun før eller siden kom til å gå, var det veldig uventet at det skulle skje så plutselig, også før en valgkamp. Det er leit: – Men jeg forstår at Siv må få være Siv nå, og respekterer det',
+        ]),
+    CaseItem(
+        image: 'assets/images/artikkel_10.jpeg',
+        title: 'Billie Eilish hevder «stalker» truer henne på livet',
+        author: ['CATHERINE GONSHOLT IGHANIAN'],
+        publishedDate: '19.02.21 kl. 12:10',
+        introduction:
+            'Popstjernen (19) krever beskyttelse mot en mann som angivelig camper utenfor huset hennes og sender truende, håndskrevne brev.',
+        description: [
+          '«Du kan ikke få det du ønsker deg, hvis ikke det du ønsker er å dø for meg. Så fort vannet stiger, vil du innse det. Og det er mye mulig at du dør. Du skal dø», skriver mannen i ett av de mange brevene ifølge TMZ.',
+          'Nettstedet viser til rettsdokumenter der Billie Eilish hevder at mannen siden august i fjor har campet utenfor en skole med innsyn til hennes inngangsparti i Los Angeles, og at han overvåker når hun kommer og går.',
+          '19-åringen skriver i anmeldelsen at mannen enten roper eller gestikulerer hver gang han ser henne, og at det kan dreie seg om å late som han kutter strupen.',
+          'Situasjonen skal ha gjort at Eilish ikke føler seg trygg hverken i eller utenfor sitt eget hjem.',
+          '«Hver gang jeg ser ham, får jeg lyst til å skrike», skal Eilish ha uttalt ifølge dokumentene, som også er omtalt av The Blast.',
+          'Pålagt å holde avstand',
+          'Popstjernen frykter både for egen sikkerhet samt for familiens.',
+          'Retten skal ha gitt artisten medhold i å ilegge personen rettslig forbud mot å nærme seg henne og foreldrene. Vedkommende er ikke arrestert, men må ifølge TMZ holde seg på 200 meters avstand.',
+          'Skjedd før',
+          'Det er ikke første gang Eilish har gått rettens vei for å stoppe en «stalker». Også i fjor sommer fikk hun rettens medhold i å gi en mann forbud mot å komme nærmere enn 100 meter. Forbudet ble besluttet å gjelde i tre år.',
+          'Angivelig er det ikke snakk om samme mann.'
+        ]),
   ];
   List<CaseItem> sisteNyttList = [
     CaseItem(
@@ -171,7 +215,7 @@ class HomePageState extends State<HomePage> {
           '–Selv om det har vært forventet fra tidligere at hun før eller siden kom til å gå, var det veldig uventet at det skulle skje så plutselig, også før en valgkamp. Det er leit: – Men jeg forstår at Siv må få være Siv nå, og respekterer det',
         ]),
     CaseItem(
-        image: 'assets/images/artikkel_10.jpg',
+        image: 'assets/images/artikkel_10.jpeg',
         title: 'Billie Eilish hevder «stalker» truer henne på livet',
         author: ['CATHERINE GONSHOLT IGHANIAN'],
         publishedDate: '19.02.21 kl. 12:10',
