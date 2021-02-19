@@ -169,7 +169,69 @@ class HomePageState extends State<HomePage> {
           '– Vi som er liberalistiske vil ikke stå inne for det Sylvi gjør og sier, dette nasjonalkonservative ønskes ikke av oss, kommenterer hun.',
           'Haugli sier til VG at hun ble veldig overrasket over Sivs avskjed',
           '–Selv om det har vært forventet fra tidligere at hun før eller siden kom til å gå, var det veldig uventet at det skulle skje så plutselig, også før en valgkamp. Det er leit: – Men jeg forstår at Siv må få være Siv nå, og respekterer det',
-        ])
+        ]),
+    CaseItem(
+        image: 'assets/images/artikkel_10.jpg',
+        title: 'Billie Eilish hevder «stalker» truer henne på livet',
+        author: ['CATHERINE GONSHOLT IGHANIAN'],
+        publishedDate: '19.02.21 kl. 12:10',
+        introduction:
+            'Popstjernen (19) krever beskyttelse mot en mann som angivelig camper utenfor huset hennes og sender truende, håndskrevne brev.',
+        description: [
+          '«Du kan ikke få det du ønsker deg, hvis ikke det du ønsker er å dø for meg. Så fort vannet stiger, vil du innse det. Og det er mye mulig at du dør. Du skal dø», skriver mannen i ett av de mange brevene ifølge TMZ.',
+          'Nettstedet viser til rettsdokumenter der Billie Eilish hevder at mannen siden august i fjor har campet utenfor en skole med innsyn til hennes inngangsparti i Los Angeles, og at han overvåker når hun kommer og går.',
+          '19-åringen skriver i anmeldelsen at mannen enten roper eller gestikulerer hver gang han ser henne, og at det kan dreie seg om å late som han kutter strupen.',
+          'Situasjonen skal ha gjort at Eilish ikke føler seg trygg hverken i eller utenfor sitt eget hjem.',
+          '«Hver gang jeg ser ham, får jeg lyst til å skrike», skal Eilish ha uttalt ifølge dokumentene, som også er omtalt av The Blast.',
+          'Pålagt å holde avstand',
+          'Popstjernen frykter både for egen sikkerhet samt for familiens.',
+          'Retten skal ha gitt artisten medhold i å ilegge personen rettslig forbud mot å nærme seg henne og foreldrene. Vedkommende er ikke arrestert, men må ifølge TMZ holde seg på 200 meters avstand.',
+          'Skjedd før',
+          'Det er ikke første gang Eilish har gått rettens vei for å stoppe en «stalker». Også i fjor sommer fikk hun rettens medhold i å gi en mann forbud mot å komme nærmere enn 100 meter. Forbudet ble besluttet å gjelde i tre år.',
+          'Angivelig er det ikke snakk om samme mann.'
+        ]),
+    CaseItem(
+        image: 'assets/images/artikkel_1.jpg',
+        title: 'Oslo gjør noen lettelser – men holder på skjenkestoppen',
+        author: [
+          'LARS HÆGELAND',
+          'SYNNE EGGUM MYRVANG',
+          'RUNA FJELLANGER',
+          'OLINE BIRGITTE NAVE',
+          'ENDRE ALSAKER-NØSTDAHL'
+        ],
+        publishedDate: '12.01.2021',
+        introduction:
+            'Oslo vil åpne campus for studenter og fritidsaktiviteter for at barn og unge kan drive med fritidsaktiviteter både innendørs og utendørs. Men stengte kjøpesenter, stengte treningssentre og skjenkestopp fortsetter.',
+        description: [
+          'Byrådsleder Raymond Johansen viser til at smitten igjen stiger i hovedstaden.',
+          '– Selv med svært strenge tiltak står vi i en situasjon der smitten stiger, sier han – og peker blant annet på utbruddet i Norges største barnehage.',
+          'Når regjeringen nå har opphevet de nasjonale ring-tiltakene som hovedstaden har vært omfattet av, velger imidlertid Oslo fortsatt å holde igjen noe. De nye endringene i Oslo-reglene skal vare i to uker før det blir gjort en ny vurdering.',
+          'Dette er endringene i Oslo: Dette er lettelsene som nå gjøres i hovedstaden:',
+          '-Barn og unge opp til 19 år får igjen drive med fritidsaktiviteter både innendørs og utendørs.',
+          '-Lesesaler og bibliotek på universiteter og høgskoler åpner for studenter.'
+              '-Oslo åpner også for utendørs aktivitet og idrett for voksne, i grupper på maks 10 personer og med krav om at de må holde minst en meters avstand.',
+          'Oslo kommune vil imidlertid fortsatt ha begrensninger for kjøpesenter og ha skjenkestopp. Det betyr at det bare er noen få butikker på kjøpesenter som kan holde åpent, som apotek og matbutikker. Treningssenter vil også fortsatt være stengt.',
+          '– Vi tar sikte på at kjøpesenter kan åpne i løpet av de neste ukene, sier byrådslederen.',
+          'Han sier at det er et voldsomt press og pågang om spesielt å åpne treningssentrene. Det er derfor det nå åpnes for at de kan ha små gruppetimer utendørs for voksne, sier Johansen.'
+        ]),
+    CaseItem(
+        image: 'assets/images/artikkel_2.jpg',
+        title: 'TV 2 bekrefter: Stian Blipp slutter i «Senkveld»',
+        author: ['JØRN PETTERSEN', 'MARIA STØRE'],
+        publishedDate: '12.01.2021',
+        introduction:
+            'Stian Blipps tid i «Senkveld» nærmer seg slutten, opplyser TV 2 og Stian Blipp selv.',
+        description: [
+          'Helene Olafsen og Stian Blipp har sammen ledet «Senkveld» på TV 2 siden høsten 2018. Blipp var på det tidspunktet kjent som programleder for «Norske Talenter», «Gullruten», «Idol», «Mitt Dansecrew» og «Stian Blipp Show».',
+          'Nå nærmer det seg slutten for Stian Blipp i «Senkveld». Etter denne sesongen forlater han programmet. Det bekrefter både Blipp og TV 2 overfor VG.',
+          '– Stian Blipp skal slutte i «Senkveld». Hva som skjer til høsten er det ikke tatt noen avgjørelse på. Men Stian er en av TV 2s viktigste profiler og vi regner med at han blir å se på TV 2 i fremtiden også, sier pressesjef Jan-Petter Dahl i TV 2 til VG.',
+          'Programlederen vil forsvinne fra «Senkveld» i løpet av 2021. Hvem som tar over for ham vites ikke. Men Blipp har annet spennende i vente dette året. Til høsten, akkurat tre år etter han begynte i «Senkveld», skal han ha sitt eget soloshow. Stand-up-showet skal starte i Bergen og heter «Cirque du Blipp». Slik presenterte han nyheten på sin instagram-profil for to uker siden:',
+          '– Dette var en kjempevanskelig avgjørelse og følelse, for den gjengen som jeg jobber med, vi har blitt en liten familie på kort tid, sier Blipp til VG, og legger til:',
+          '– Så det er veldig veldig vemodig og skulle si takk og farvel til det miljøet der, og alt vi har gjort sammen, men samtidig fint, for jeg gjør noe jeg har hatt veldig lyst til å gjøre en god stund.',
+          'Samtidig gleder han seg til å begynne sitt soloshow. Det er på scenen han hører hjemme, forklarer han, likevel er det nok ikke siste gang man ser Blipp på TV-skjermen. Nå er han innstilt på å lage en god «Senkveld»-sesong.',
+          '– Jeg har bevisst inntatt en sånn posisjon hvor jeg skal gjøre alt jeg kan for å lage en helsikens deilig sesong seks. Ellers har jeg på en måte ikke blandet meg inn for mye, sier Blipp videre.',
+        ]),
   ];
 
   // example list for the carousel slider
