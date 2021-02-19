@@ -9,20 +9,23 @@ import 'package:flutter/cupertino.dart';
 class CaseItem {
   final String image;
   final String title;
-  final String author;
+  final List<String> author;
   final String publishedDate;
-  final String description;
+  final String introduction;
+  final List<String> description;
 
   CaseItem(
       {@required this.image,
       @required this.title,
       @required this.author,
       @required this.publishedDate,
+      @required this.introduction,
       @required this.description}) {
     assert(image != null);
     assert(title != null);
     assert(author != null);
     assert(publishedDate != null);
+    assert(introduction != null);
     assert(description != null);
   }
 }
