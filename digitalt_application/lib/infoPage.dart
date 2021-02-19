@@ -148,6 +148,19 @@ class _InfoPageState extends State<InfoPage> {
               appBar: AppBar(),
               widgets: <Widget>[Icon(Icons.more_vert)],
             ),
+            bottomNavigationBar: TabBar(
+              labelColor: Colors.red,
+              indicatorColor: Colors.red,
+              unselectedLabelColor: Colors.grey,
+              tabs: <Widget>[
+                Tab(
+                  child: Text('Om Digi-talt'),
+                ),
+                Tab(
+                  child: Text('Kontakt oss'),
+                )
+              ],
+            ),
             //creates the menu in the appbar(drawer)
             drawer: BaseAppDrawer(),
             body: Container(
