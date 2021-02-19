@@ -3,6 +3,8 @@ import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:flutter/material.dart';
 
+import 'package:responsive_grid/responsive_grid.dart';
+
 class CasePage extends StatelessWidget {
   final CaseItem caseItem;
 
@@ -25,16 +27,17 @@ class CasePage extends StatelessWidget {
             width: 1200,
             alignment: Alignment.topCenter,
             //this is the backgound image of the case
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(caseItem.image),
-                fit: BoxFit.fitWidth,
-                alignment: FractionalOffset.topCenter,
-              ),
-            ),
+
             //here starts the case
             child: Container(
               width: 800,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(caseItem.image),
+                  fit: BoxFit.fitWidth,
+                  alignment: FractionalOffset.topCenter,
+                ),
+              ),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Stack(
@@ -53,11 +56,10 @@ class CasePage extends StatelessWidget {
                         },
                       ),
                     ),
+
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0,
-                          MediaQuery.of(context).size.height / 4, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 200, 0.0, 0.0),
                       child: Container(
-                        height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
                         child: Material(
                           borderRadius: BorderRadius.circular(35),
@@ -78,16 +80,32 @@ class CasePage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 20,
                               ),
                               //in this row you find author and published date
                               Row(
                                 children: [
-                                  SizedBox(
-                                    width: 20,
-                                  ),
                                   Icon(Icons.person),
-                                  Text(caseItem.author),
+                                  Container(
+                                    height: 100,
+                                    width: 200,
+                                    child: ResponsiveGridRow(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: caseItem.author.map((author) {
+                                        return ResponsiveGridCol(
+                                            xl: 12,
+                                            md: 12,
+                                            xs: 12,
+                                            child: Container(
+                                              child: Text(
+                                                author,
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ));
+                                      }).toList(),
+                                    ),
+                                  ),
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -95,10 +113,35 @@ class CasePage extends StatelessWidget {
                                   Text(caseItem.publishedDate)
                                 ],
                               ),
+
+                              Container(
+                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: Text(
+                                  caseItem.introduction,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               //this is the description of the case. the main text
-                              Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Text(caseItem.description),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: Column(
+                                  children: caseItem.description.map((item) {
+                                    return Container(
+                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               )
                             ],
                           ),
