@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:responsive_grid/responsive_grid.dart';
 
@@ -58,8 +61,11 @@ class CasePage extends StatelessWidget {
                     ),
 
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0,
-                          MediaQuery.of(context).size.width * 0.5, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(
+                          0.0,
+                          max(MediaQuery.of(context).size.width * 0.25, 300),
+                          0.0,
+                          0.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         child: Material(
@@ -88,7 +94,7 @@ class CasePage extends StatelessWidget {
                                 children: [
                                   Icon(Icons.person),
                                   Container(
-                                    height: 100,
+                                    margin: EdgeInsets.all(10),
                                     width: 200,
                                     child: ResponsiveGridRow(
                                       crossAxisAlignment:
