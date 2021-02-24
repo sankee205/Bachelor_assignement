@@ -22,12 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final Color logoGreen = Color(0xff25bcbb);
 
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   String email = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +47,22 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: primaryColor,
         body: Container(
-          alignment: Alignment.topCenter,
-          margin: EdgeInsets.symmetric(horizontal: 30),
-          child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Sign in to TGD and continue',
+                  'Logg inn her for å se alt av innhold hos DIGI-TALT',
                   textAlign: TextAlign.center,
                   style:
                       GoogleFonts.openSans(color: Colors.white, fontSize: 28),
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Enter your email and password below to continue to the The Growing Developer and let the learning begin!',
+                  'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT',
                   textAlign: TextAlign.center,
                   style:
                       GoogleFonts.openSans(color: Colors.white, fontSize: 14),
@@ -68,29 +70,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 50,
                 ),
-                _buildTextField(
-                    nameController, Icons.account_circle, 'Username'),
                 SizedBox(height: 20),
-                _buildTextField(passwordController, Icons.lock, 'Password'),
+                TextFormField(
+                    validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                    onChanged: (val) {
+                      setState(() => email = val);
+                    }),
                 SizedBox(height: 30),
+                TextFormField(
+                    obscureText: true,
+                    validator: (val) => val.length < 6
+                        ? 'Enter a password 6+ characters long'
+                        : null,
+                    onChanged: (val) {
+                      setState(() => password = val);
+                    }),
                 MaterialButton(
                   elevation: 0,
                   minWidth: double.maxFinite,
                   height: 50,
                   onPressed: () async {
-                    FirebaseUser firebaseUser;
-                    FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: 'hei@gmail.com', password: 'heihei')
-                        .then((AuthResult) {
-                      setState(() {
-                        firebaseUser = AuthResult.user;
-                      });
-                      print(firebaseUser.email);
-                    });
+                    if (_formKey.currentState.validate()) {
+                      dynamic result = await _auth.signInWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() =>
+                            error = 'Could not log in with those credentials!');
+                      }
+                    }
                   },
                   color: logoGreen,
-                  child: Text('Login',
+                  child: Text('Logg inn',
                       style: TextStyle(color: Colors.white, fontSize: 16)),
                   textColor: Colors.white,
                 ),
@@ -114,6 +124,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   textColor: Colors.white,
                 ),
+                SizedBox(height: 12.0),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                ),
                 SizedBox(height: 100),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -133,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
           'assets/tgd_white.png',
           height: 40,
         ),
-        Text('The Growing Developer',
+        Text('DIGI-TALT',
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
                 color: Colors.white,

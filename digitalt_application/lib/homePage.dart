@@ -8,6 +8,8 @@ import 'package:digitalt_application/casePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:flutter/src/material/flat_button.dart';
+import 'package:digitalt_application/Services/auth.dart';
 
 /*
  * This is the main page of the flutter application and this is the window that will
@@ -22,6 +24,9 @@ import 'package:responsive_grid/responsive_grid.dart';
 //creates a stateful widget
 class HomePage extends StatefulWidget {
   ExampleCases exampleCases = new ExampleCases();
+
+  
+
   @override
   HomePageState createState() => HomePageState();
 }
@@ -29,6 +34,8 @@ class HomePage extends StatefulWidget {
 // this class represents a home page with a grid layout
 class HomePageState extends State<HomePage> {
   //example list for the grid layout
+
+final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
