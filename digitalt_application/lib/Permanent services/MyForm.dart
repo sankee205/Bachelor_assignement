@@ -1,6 +1,12 @@
+
+import 'dart:io';
+
 import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
+import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_form_field/image_form_field.dart';
 
 import 'BaseAppBar.dart';
 import 'BaseAppDrawer.dart';
@@ -9,22 +15,61 @@ class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
 }
+class ImageInputAdapter {
+  /// Initialize from either a URL or a file, but not both.
+  ImageInputAdapter({
+    this.file,
+    this.url
+  }) : assert(file != null || url != null), assert(file != null && url == null), assert(file == null && url != null);
 
+  /// An image file
+  final File file;
+  /// A direct link to the remote image
+  final String url;
+
+  /// Render the image from a file or from a remote source.
+  Widget widgetize() {
+    if (file != null) {
+      return Image.file(file);
+    } else {
+      return FadeInImage(
+        image: NetworkImage(url),
+        placeholder: AssetImage("assets/images/placeholder.png"),
+        fit: BoxFit.contain,
+      );
+    }
+  }
+}
 class _MyFormState extends State<MyForm> {
   DateTime dateTime;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController;
-  static List<String> friendsList = [null];
+  TextEditingController title;
+  TextEditingController introduction;
+  TextEditingController date;
+  static List<String> descriptionList = [null];
+  static List<String> authorList = [null];
 
+  CaseItem newCase;
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController();
+    title = TextEditingController();
+    introduction = TextEditingController();
+    date = TextEditingController();
+    newCase = CaseItem(
+        image: 'assets/images/artikkel_1.jpg',
+        title: title.text,
+        author: authorList,
+        publishedDate: date.text,
+        introduction: introduction.text,
+        description: descriptionList);
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    title.dispose();
+    introduction.dispose();
+    date.dispose();
     super.dispose();
   }
 
@@ -63,6 +108,21 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
+                    Container(child: ImageFormField<ImageInputAdapter>(
+  previewImageBuilder: (_, ImageInputAdapter image) =>
+    image.widgetize(),
+  buttonBuilder: (_, int count) =>
+    Container(
+      child: Text(
+        count == null || count < 1 ? "Upload Image" : "Upload More"
+      )
+    )
+  initializeFileAsImage: (File file) =>
+    ImageInputAdapter(file: file),
+  initialValue: existingPhotoUrl == null ? null : (List<ImageInputImageAdapter>()..add(ImageInputImageAdapter(url: existingPhotoUrl))),
+  // Even if `shouldAllowMultiple` is true, images will always be a `List` of the declared type (i.e. `ImageInputAdater`).
+  onSaved: (images) _images = images,
+)),
                     Text(
                       'Title',
                       style:
@@ -75,7 +135,7 @@ class _MyFormState extends State<MyForm> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: _nameController,
+                        controller: title,
                         decoration:
                             InputDecoration(hintText: 'Enter your Title'),
                         validator: (v) {
@@ -99,6 +159,7 @@ class _MyFormState extends State<MyForm> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
+                        controller: introduction,
                         decoration: InputDecoration(
                             hintText: 'Enter your Introduction'),
                         validator: (v) {
@@ -115,20 +176,11 @@ class _MyFormState extends State<MyForm> {
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
+                    ..._getAuthors(),
                     SizedBox(
                       height: 5,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 32.0),
-                      child: TextFormField(
-                        decoration:
-                            InputDecoration(hintText: 'Enter your Author'),
-                        validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
-                          return null;
-                        },
-                      ),
-                    ),
+
                     SizedBox(
                       height: 40,
                     ),
@@ -164,7 +216,7 @@ class _MyFormState extends State<MyForm> {
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
-                    ..._getFriends(),
+                    ..._getParagraphs(),
                     SizedBox(
                       height: 40,
                     ),
@@ -174,6 +226,11 @@ class _MyFormState extends State<MyForm> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                           }
+                          print(newCase.title);
+                          print(newCase.introduction);
+                          print(newCase.author);
+                          print(newCase.publishedDate);
+                          print(newCase.description);
                         },
                         child: Text('Submit'),
                         color: Colors.green,
@@ -204,19 +261,43 @@ class _MyFormState extends State<MyForm> {
   DateTime selectedDate = DateTime.now();
 
   /// get firends text-fields
-  List<Widget> _getFriends() {
+  List<Widget> _getParagraphs() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < friendsList.length; i++) {
+    for (int i = 0; i < descriptionList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
-            Expanded(child: FriendTextFields(i)),
+            Expanded(
+                child:
+                    BaseTextFields(descriptionList, i, 5, 'Enter a paragraph')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(i == friendsList.length - 1, i),
+            _addRemoveButton(
+                i == descriptionList.length - 1, i, descriptionList),
+          ],
+        ),
+      ));
+    }
+    return friendsTextFields;
+  }
+
+  List<Widget> _getAuthors() {
+    List<Widget> friendsTextFields = [];
+    for (int i = 0; i < authorList.length; i++) {
+      friendsTextFields.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Row(
+          children: [
+            Expanded(
+                child: BaseTextFields(authorList, i, 1, 'Enter an Author')),
+            SizedBox(
+              width: 16,
+            ),
+            // we need add button at last friends row
+            _addRemoveButton(i == authorList.length - 1, i, authorList),
           ],
         ),
       ));
@@ -225,14 +306,14 @@ class _MyFormState extends State<MyForm> {
   }
 
   /// add / remove button
-  Widget _addRemoveButton(bool add, int index) {
+  Widget _addRemoveButton(bool add, int index, List<String> list) {
     return InkWell(
       onTap: () {
         if (add) {
           // add new text-fields at the top of all friends textfields
-          friendsList.insert(0, null);
+          list.insert(list.length, null);
         } else
-          friendsList.removeAt(index);
+          list.removeAt(index);
         setState(() {});
       },
       child: Container(
@@ -249,41 +330,6 @@ class _MyFormState extends State<MyForm> {
       ),
     );
   }
-}
 
-class FriendTextFields extends StatefulWidget {
-  final int index;
-  FriendTextFields(this.index);
-  @override
-  _FriendTextFieldsState createState() => _FriendTextFieldsState();
-}
-
-class _FriendTextFieldsState extends State<FriendTextFields> {
-  TextEditingController _nameController;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _nameController.text = _MyFormState.friendsList[widget.index] ?? '';
-    });
-
-    return TextField(
-      controller: _nameController,
-      onChanged: (v) => _MyFormState.friendsList[widget.index] = v,
-      decoration: InputDecoration(hintText: 'Enter your paragraph'),
-      maxLines: 5,
-    );
-  }
+  
 }
