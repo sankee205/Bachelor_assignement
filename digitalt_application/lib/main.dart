@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/homePage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/wrapper.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +13,9 @@ import 'package:digitalt_application/models/user.dart';
  * @Sander Keedklang 
  * @Mathias Gjærde Forberg
  */
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   // calls the class HomePage to run
   runApp(MyApp());
 }
@@ -20,7 +24,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
+    return StreamProvider<BaseUser>.value(
         value: AuthService().user,
         child: MaterialApp(
           home: Wrapper(),
