@@ -6,14 +6,14 @@ class DatabaseService {
 
   // collection reference
   final CollectionReference userCollection =
-      Firestore.instance.collection('Users'); //What to collect
+      FirebaseFirestore.instance.collection('Users'); //What to collect
   final CollectionReference caseCollection =
-      Firestore.instance.collection('Cases');
+      FirebaseFirestore.instance.collection('Cases');
   final CollectionReference authorCollection =
-      Firestore.instance.collection('Authors');
+      FirebaseFirestore.instance.collection('Authors');
 
   Future updateUserData(String name, String email, String phonenumber) async {
-    return await userCollection.document(uid).setData({
+    return await userCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phonenumber': phonenumber,
@@ -22,7 +22,7 @@ class DatabaseService {
 
   Future updateCaseData(String title, String image, String date, String author,
       String text) async {
-    return await caseCollection.document(uid).setData({
+    return await caseCollection.doc(uid).set({
       'title': title,
       'image': image,
       'date': date,
@@ -32,7 +32,7 @@ class DatabaseService {
   }
 
   Future updateAuthorData(String name, String email, String phonenumber) async {
-    return await authorCollection.document(uid).setData({
+    return await authorCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phonenumber': phonenumber,
