@@ -1,12 +1,8 @@
-
-import 'dart:io';
-
 import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_form_field/image_form_field.dart';
 
 import 'BaseAppBar.dart';
 import 'BaseAppDrawer.dart';
@@ -15,31 +11,7 @@ class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
 }
-class ImageInputAdapter {
-  /// Initialize from either a URL or a file, but not both.
-  ImageInputAdapter({
-    this.file,
-    this.url
-  }) : assert(file != null || url != null), assert(file != null && url == null), assert(file == null && url != null);
 
-  /// An image file
-  final File file;
-  /// A direct link to the remote image
-  final String url;
-
-  /// Render the image from a file or from a remote source.
-  Widget widgetize() {
-    if (file != null) {
-      return Image.file(file);
-    } else {
-      return FadeInImage(
-        image: NetworkImage(url),
-        placeholder: AssetImage("assets/images/placeholder.png"),
-        fit: BoxFit.contain,
-      );
-    }
-  }
-}
 class _MyFormState extends State<MyForm> {
   DateTime dateTime;
   final _formKey = GlobalKey<FormState>();
@@ -108,21 +80,7 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
-                    Container(child: ImageFormField<ImageInputAdapter>(
-  previewImageBuilder: (_, ImageInputAdapter image) =>
-    image.widgetize(),
-  buttonBuilder: (_, int count) =>
-    Container(
-      child: Text(
-        count == null || count < 1 ? "Upload Image" : "Upload More"
-      )
-    )
-  initializeFileAsImage: (File file) =>
-    ImageInputAdapter(file: file),
-  initialValue: existingPhotoUrl == null ? null : (List<ImageInputImageAdapter>()..add(ImageInputImageAdapter(url: existingPhotoUrl))),
-  // Even if `shouldAllowMultiple` is true, images will always be a `List` of the declared type (i.e. `ImageInputAdater`).
-  onSaved: (images) _images = images,
-)),
+
                     Text(
                       'Title',
                       style:
@@ -330,6 +288,4 @@ class _MyFormState extends State<MyForm> {
       ),
     );
   }
-
-  
 }
