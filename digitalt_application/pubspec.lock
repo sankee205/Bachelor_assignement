@@ -156,13 +156,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  hashcodes:
-    dependency: transitive
-    description:
-      name: hashcodes
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   http:
     dependency: transitive
     description:
@@ -185,7 +178,7 @@ packages:
     source: hosted
     version: "0.1.0"
   image_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
@@ -198,13 +191,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  image_size_getter:
+  image_picker_web:
     dependency: "direct main"
     description:
-      name: image_size_getter
+      name: image_picker_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "1.0.9"
   js:
     dependency: transitive
     description:
@@ -226,6 +219,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  mime_type:
+    dependency: "direct main"
+    description:
+      name: mime_type
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
   path:
     dependency: transitive
     description:

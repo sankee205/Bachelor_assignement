@@ -1,7 +1,13 @@
+import 'dart:html' as html;
+
+import 'package:mime_type/mime_type.dart';
+import 'package:path/path.dart' as Path;
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:flutter/material.dart';
+
 import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'BaseAppBar.dart';
@@ -20,6 +26,25 @@ class _MyFormState extends State<MyForm> {
   TextEditingController date;
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
+
+  html.File _cloudFile;
+  var _fileBytes;
+  Image _imageWidget;
+
+  Future<void> getImage() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
+      setState(() {
+        _cloudFile = mediaFile;
+        _fileBytes = mediaData.data;
+        _imageWidget = Image.memory(mediaData.data);
+      });
+    }
+  }
 
   CaseItem newCase;
   @override
@@ -79,6 +104,16 @@ class _MyFormState extends State<MyForm> {
                     ),
                     SizedBox(
                       height: 40,
+                    ),
+                    Center(
+                      child: _imageWidget == null
+                          ? Text('No image selected.')
+                          : _imageWidget,
+                    ),
+                    FloatingActionButton(
+                      onPressed: getImage,
+                      tooltip: 'Pick Image',
+                      child: Icon(Icons.add_a_photo),
                     ),
 
                     Text(
