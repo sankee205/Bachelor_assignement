@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
+import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -22,6 +23,7 @@ class CasePage extends StatelessWidget {
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
+      bottomNavigationBar: BaseBottomAppBar(),
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
       //here starts the body

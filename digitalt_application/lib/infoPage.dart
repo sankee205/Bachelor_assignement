@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:flutter/material.dart';
 
 import 'Permanent services/BaseAppBar.dart';
@@ -148,7 +149,7 @@ class _InfoPageState extends State<InfoPage> {
               appBar: AppBar(),
               widgets: <Widget>[Icon(Icons.more_vert)],
             ),
-            bottomNavigationBar: TabBar(
+            bottomSheet: TabBar(
               labelColor: Colors.red,
               indicatorColor: Colors.red,
               unselectedLabelColor: Colors.grey,
@@ -161,6 +162,7 @@ class _InfoPageState extends State<InfoPage> {
                 )
               ],
             ),
+            bottomNavigationBar: BaseBottomAppBar(),
             //creates the menu in the appbar(drawer)
             drawer: BaseAppDrawer(),
             body: Container(

@@ -1,5 +1,6 @@
 import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
+import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
 import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
@@ -46,23 +47,7 @@ final AuthService _auth = AuthService();
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
-        ],
-        selectedItemColor: Colors.red,
-      ),
+      bottomNavigationBar: BaseBottomAppBar(),
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),

@@ -1,3 +1,4 @@
+import 'package:digitalt_application/profilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,10 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ListTile(
             leading: Icon(Icons.account_circle),
             title: Text('Profile'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
