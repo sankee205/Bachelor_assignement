@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 
 import '../casePage.dart';
 
+/**
+ * this is the carouselslider. is will show the top X cases in the home page
+ */
 class BaseCarouselSlider extends StatefulWidget {
+  //list of cass it gets from the database
   final List<CaseItem> caseList;
 
   const BaseCarouselSlider(this.caseList);

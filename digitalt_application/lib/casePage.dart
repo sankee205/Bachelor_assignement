@@ -9,7 +9,13 @@ import 'package:flutter/rendering.dart';
 
 import 'package:responsive_grid/responsive_grid.dart';
 
+/**
+ * this is the case PAge. t takes in a caseitem and creates a layout 
+ * for the caseitem to be read.
+ */
 class CasePage extends StatelessWidget {
+
+  //caseItem to be layed out in the casepage
   final CaseItem caseItem;
 
   CasePage({Key key, @required this.caseItem}) : super(key: key);

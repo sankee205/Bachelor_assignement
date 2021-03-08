@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/**
+ * this is the bass bottom app bar. it is a class for the bottom app bar so 
+ * we dont need to implement the bottom app bar in every page
+ */
 class BaseBottomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar;
 

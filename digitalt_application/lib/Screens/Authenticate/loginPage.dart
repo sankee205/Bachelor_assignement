@@ -144,10 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Image.asset(
-          'assets/tgd_white.png',
-          height: 40,
-        ),
         Text('DIGI-TALT',
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(

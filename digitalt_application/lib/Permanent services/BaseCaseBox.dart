@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'BaseCaseItem.dart';
 
+/**
+ * this is the base case box. it is a static layout for all the 
+ * cases in the app.  
+ */
 class BaseCaseBox extends StatefulWidget {
+  //takes in the object caseITem and builds the box from image and title
   final CaseItem caseItem;
   const BaseCaseBox(this.caseItem);
 
