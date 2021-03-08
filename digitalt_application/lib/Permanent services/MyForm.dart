@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
 import 'package:image_picker_web/image_picker_web.dart';
@@ -27,9 +28,9 @@ class MyForm extends StatefulWidget {
 class _MyFormState extends State<MyForm> {
   DateTime dateTime;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController title;
-  TextEditingController introduction;
-  TextEditingController date;
+  final title = TextEditingController();
+  final introduction = TextEditingController();
+  final date = TextEditingController();
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 
@@ -37,7 +38,7 @@ class _MyFormState extends State<MyForm> {
   var _fileBytes;
   Image _imageWidget;
 
-//gets the image that is added 
+//gets the image that is added
   Future<void> getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
     String mimeType = mime(Path.basename(mediaData.fileName));
@@ -58,9 +59,6 @@ class _MyFormState extends State<MyForm> {
   @override
   void initState() {
     super.initState();
-    title = TextEditingController();
-    introduction = TextEditingController();
-    date = TextEditingController();
     newCase = CaseItem(
         image: 'assets/images/artikkel_1.jpg',
         title: title.text,
@@ -68,6 +66,13 @@ class _MyFormState extends State<MyForm> {
         publishedDate: date.text,
         introduction: introduction.text,
         description: descriptionList);
+  }
+
+  void addCaseItem() {
+    print(newCase);
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('CaseItems');
+    collectionReference.add(newCase.toMap());
   }
 
   @override
@@ -224,6 +229,7 @@ class _MyFormState extends State<MyForm> {
                     Center(
                       child: FlatButton(
                         onPressed: () {
+                          addCaseItem();
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                           }

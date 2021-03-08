@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
 
 /*
  * This is the case item class. it is suposed to reflect a 
@@ -17,6 +19,18 @@ class CaseItem {
   final String publishedDate;
   final String introduction;
   final List<String> description;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'image': image,
+      'title': title,
+      'author': jsonEncode(author),
+      'publishedDate': publishedDate,
+      'introduction' : introduction,
+      'description': jsonEncode(description),
+
+    };
+  }
 
   CaseItem(
       {@required this.image,
