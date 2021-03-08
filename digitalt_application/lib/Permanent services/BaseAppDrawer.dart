@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/profilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class BaseAppDrawer extends StatefulWidget {
   @override
   _BaseAppDrawerState createState() => _BaseAppDrawerState();
 }
+
+final AuthService _auth = AuthService();
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
   @override
@@ -62,6 +65,12 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             leading: Icon(Icons.settings),
             title: Text('Settings'),
           ),
+          ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Logg ut'),
+              onTap: () async {
+                await _auth.signOut();
+              })
         ],
       ),
     );

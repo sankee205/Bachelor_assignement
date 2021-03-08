@@ -124,6 +124,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   textColor: Colors.white,
                 ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  child: TextButton(
+                    child: Text('sign in anon'),
+                    onPressed: () async {
+                      dynamic result = await _auth.signInAnon();
+                      if (result == null) {
+                        print('error signing in');
+                      } else {
+                        print('signed in');
+                        print(result);
+                      }
+                    },
+                  ),
+                ),
                 SizedBox(height: 12.0),
                 Text(
                   error,
