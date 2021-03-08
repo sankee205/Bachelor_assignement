@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'BaseCaseItem.dart';
 
+/**
+ * theese are example cases for the project untill
+ * we start adding cases to the database
+ */
 class ExampleCases {
   List<CaseItem> caseList = [
     CaseItem(

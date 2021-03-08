@@ -1,11 +1,13 @@
 import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Permanent%20services/MyForm.dart';
-import 'package:digitalt_application/addCasePage.dart';
 import 'package:flutter/material.dart';
 
 import 'Permanent services/BaseAppBar.dart';
 import 'Permanent services/BaseAppDrawer.dart';
 
+/**
+ * this is the profile page. 
+ */
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();

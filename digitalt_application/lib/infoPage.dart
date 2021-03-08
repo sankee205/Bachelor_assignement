@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'Permanent services/BaseAppBar.dart';
 import 'Permanent services/BaseAppDrawer.dart';
 
+/**
+ * this is the infopage. it consists of information about digi-talt.no and
+ * contact inofrmation
+ */
 class InfoPage extends StatefulWidget {
   @override
   _InfoPageState createState() => _InfoPageState();

@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import '../homePage.dart';
 import '../infoPage.dart';
 
+/**
+ * this is a Base App Drawer. It wil be used in all the pages.
+ * It is a class made so we dont need to write this for every new 
+ * page in the app/ web app
+ */
 class BaseAppDrawer extends StatefulWidget {
   @override
   _BaseAppDrawerState createState() => _BaseAppDrawerState();

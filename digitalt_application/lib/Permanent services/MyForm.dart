@@ -13,6 +13,12 @@ import 'package:flutter/cupertino.dart';
 import 'BaseAppBar.dart';
 import 'BaseAppDrawer.dart';
 
+/**
+ * this is the add case form. it is used by the admin to add cases
+ * to the database and the app. 
+ * 
+ * this page is only available on web
+ */
 class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
@@ -31,6 +37,7 @@ class _MyFormState extends State<MyForm> {
   var _fileBytes;
   Image _imageWidget;
 
+//gets the image that is added 
   Future<void> getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
     String mimeType = mime(Path.basename(mediaData.fileName));
@@ -46,6 +53,7 @@ class _MyFormState extends State<MyForm> {
     }
   }
 
+// creates a new case object
   CaseItem newCase;
   @override
   void initState() {
@@ -239,6 +247,7 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
+// creates the select date pop up view
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -253,7 +262,7 @@ class _MyFormState extends State<MyForm> {
 
   DateTime selectedDate = DateTime.now();
 
-  /// get firends text-fields
+  /// creates a list of paragraphs
   List<Widget> _getParagraphs() {
     List<Widget> friendsTextFields = [];
     for (int i = 0; i < descriptionList.length; i++) {
@@ -277,6 +286,7 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
+// creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
     for (int i = 0; i < authorList.length; i++) {
