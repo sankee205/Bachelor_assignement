@@ -1,4 +1,6 @@
-import 'dart:html' as html;
+import 'package:digitalt_application/profilePage.dart';
+import 'package:universal_html/prefer_universal/html.dart' as html;
+import 'package:firebase/firebase.dart' as fb;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime_type/mime_type.dart';
@@ -11,6 +13,7 @@ import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
 import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../homePage.dart';
 import 'BaseAppBar.dart';
 import 'BaseAppDrawer.dart';
 
@@ -30,56 +33,89 @@ class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
   final introduction = TextEditingController();
-  final date = TextEditingController();
+  String date;
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 
-  html.File _cloudFile;
-  var _fileBytes;
+  html.File imageFile;
   Image _imageWidget;
+  MediaInfo mediaInfo = MediaInfo();
+  String imageUrl;
 
 //gets the image that is added
   Future<void> getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
+    mediaInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        _cloudFile = mediaFile;
-        _fileBytes = mediaData.data;
         _imageWidget = Image.memory(mediaData.data);
       });
     }
   }
 
+  Future<Uri> uploadFile() async {
+    try {
+      String mimeType = mime(Path.basename(mediaInfo.fileName));
+      var metaData = fb.UploadMetadata(contentType: mimeType);
+      fb.StorageReference storageReference =
+          fb.storage().ref('images').child(mediaInfo.fileName);
+
+      fb.UploadTaskSnapshot uploadTaskSnapshot =
+          await storageReference.put(mediaInfo.data, metaData).future;
+      Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
+      imageUrl = imageUri.toString();
+      return imageUri;
+    } catch (e) {
+      print('File Upload Error: $e');
+      return null;
+    }
+  }
+
 // creates a new case object
-  CaseItem newCase;
   @override
   void initState() {
     super.initState();
-    newCase = CaseItem(
-        image: 'assets/images/artikkel_1.jpg',
-        title: title.text,
-        author: authorList,
-        publishedDate: date.text,
-        introduction: introduction.text,
-        description: descriptionList);
   }
 
-  void addCaseItem() {
-    print(newCase);
-    CollectionReference collectionReference =
-        FirebaseFirestore.instance.collection('CaseItems');
-    collectionReference.add(newCase.toMap());
+  bool addCaseItem() {
+    if (mediaInfo != null) {
+      uploadFile();
+      CaseItem newCase = CaseItem(
+          image: imageUrl,
+          title: title.text,
+          author: authorList,
+          publishedDate: date,
+          introduction: introduction.text,
+          description: descriptionList);
+
+      print(newCase);
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection('CaseItems');
+      collectionReference.add(newCase.toMap());
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void uploadImageFile() async {
+    print('uploadImageFile');
+    var imageName = imageFile.name;
+    fb.StorageReference storageRef = fb.storage().ref('images/$imageName');
+    fb.UploadTaskSnapshot uploadTaskSnapshot =
+        await storageRef.put(imageFile).future;
+
+    //Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
   }
 
   @override
   void dispose() {
     title.dispose();
     introduction.dispose();
-    date.dispose();
     super.dispose();
   }
 
@@ -100,7 +136,7 @@ class _MyFormState extends State<MyForm> {
         child: Center(
           child: Container(
             color: Colors.white,
-            width: 600,
+            width: 800,
             child: Form(
               key: _formKey,
               child: Padding(
@@ -229,15 +265,15 @@ class _MyFormState extends State<MyForm> {
                     Center(
                       child: FlatButton(
                         onPressed: () {
-                          addCaseItem();
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            if (addCaseItem()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            }
                           }
-                          print(newCase.title);
-                          print(newCase.introduction);
-                          print(newCase.author);
-                          print(newCase.publishedDate);
-                          print(newCase.description);
                         },
                         child: Text('Submit'),
                         color: Colors.green,
@@ -263,6 +299,7 @@ class _MyFormState extends State<MyForm> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        date = selectedDate.toString();
       });
   }
 
