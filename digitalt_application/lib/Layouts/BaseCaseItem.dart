@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
-
 /*
  * This is the case item class. it is suposed to reflect a 
  * newspaper case, including title, image and description
@@ -15,10 +14,10 @@ import 'dart:convert';
 class CaseItem {
   final String image;
   final String title;
-  final List<String> author;
+  final List author;
   final String publishedDate;
   final String introduction;
-  final List<String> description;
+  final List description;
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,9 +25,8 @@ class CaseItem {
       'title': title,
       'author': jsonEncode(author),
       'publishedDate': publishedDate,
-      'introduction' : introduction,
+      'introduction': introduction,
       'description': jsonEncode(description),
-
     };
   }
 

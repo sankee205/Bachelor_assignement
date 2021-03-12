@@ -27,11 +27,10 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   DatabaseService db = DatabaseService();
-  DateTime dateTime;
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
   final introduction = TextEditingController();
-  String date;
+  String date = DateTime.now().toString();
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 

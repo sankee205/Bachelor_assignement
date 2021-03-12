@@ -15,10 +15,10 @@ class CasePageTest extends StatelessWidget {
   //caseItem to be layed out in the casepage
   final String image;
   final String title;
-  final List<String> author;
+  final List author;
   final String publishedDate;
   final String introduction;
-  final List<String> description;
+  final List description;
 
   CasePageTest(
       {Key key,
