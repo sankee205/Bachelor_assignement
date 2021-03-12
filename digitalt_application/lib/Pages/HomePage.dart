@@ -1,11 +1,12 @@
-import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCarouselSlider.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
-import 'package:digitalt_application/Permanent%20services/ExampleCases.dart';
-import 'package:digitalt_application/casePage.dart';
+import 'package:digitalt_application/Layouts/BaseAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
+import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
+import 'package:digitalt_application/Layouts/ExampleCases.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:digitalt_application/Pages/SingleCasePage.dart';
+import 'package:digitalt_application/Pages/casePageTest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -25,8 +26,6 @@ import 'package:digitalt_application/Services/auth.dart';
 class HomePage extends StatefulWidget {
   ExampleCases exampleCases = new ExampleCases();
 
-  
-
   @override
   HomePageState createState() => HomePageState();
 }
@@ -35,7 +34,27 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   //example list for the grid layout
 
-final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
+  final DatabaseService db = DatabaseService();
+  List itemsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataBaseList();
+  }
+
+  fetchDataBaseList() async {
+    dynamic resultant = await db.getCaseItems();
+
+    if (resultant == null) {
+      print('unable to get data');
+    } else {
+      setState(() {
+        itemsList = resultant;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +133,7 @@ final AuthService _auth = AuthService();
                               height: 5,
                             ),
                             Column(
-                              children: widget.exampleCases.sisteNyttList
-                                  .map((caseObject) {
+                              children: itemsList.map((caseObject) {
                                 return Builder(builder: (
                                   BuildContext context,
                                 ) {
@@ -125,9 +143,22 @@ final AuthService _auth = AuthService();
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => CasePage(
-                                                      caseItem: caseObject,
-                                                    )));
+                                                builder: (context) =>
+                                                    CasePageTest(
+                                                        image:
+                                                            caseObject['image'],
+                                                        title:
+                                                            caseObject['title'],
+                                                        author: caseObject[
+                                                            'author'],
+                                                        publishedDate:
+                                                            caseObject[
+                                                                'publishedDate'],
+                                                        introduction:
+                                                            caseObject[
+                                                                'introduction'],
+                                                        description: caseObject[
+                                                            'description'])));
                                       },
                                       child: Container(
                                         height: 40,
@@ -147,7 +178,7 @@ final AuthService _auth = AuthService();
                                         margin: EdgeInsets.fromLTRB(5, 3, 5, 3),
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          caseObject.title,
+                                          caseObject['title'],
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,

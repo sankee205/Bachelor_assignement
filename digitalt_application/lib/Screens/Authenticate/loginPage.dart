@@ -72,10 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
-                    validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                    onChanged: (val) {
-                      setState(() => email = val);
-                    }),
+                  validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                  onChanged: (val) {
+                    setState(() => email = val);
+                  },
+                  style: TextStyle(color: Colors.white),
+                ),
                 SizedBox(height: 30),
                 TextFormField(
                     obscureText: true,
@@ -84,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         : null,
                     onChanged: (val) {
                       setState(() => password = val);
-                    }),
+                    },
+                    style: TextStyle(color: Colors.white)),
                 MaterialButton(
                   elevation: 0,
                   minWidth: double.maxFinite,

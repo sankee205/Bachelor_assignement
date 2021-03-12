@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseBox.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
+import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
+
 import 'package:flutter/material.dart';
 
-import '../casePage.dart';
+import '../Pages/SingleCasePage.dart';
+import 'BaseCaseBox.dart';
 
 /**
  * this is the carouselslider. is will show the top X cases in the home page

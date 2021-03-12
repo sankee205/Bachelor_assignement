@@ -1,9 +1,9 @@
-import 'package:digitalt_application/profilePage.dart';
+import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../homePage.dart';
-import '../infoPage.dart';
+import '../Pages/HomePage.dart';
+import '../Pages/InfoPage.dart';
 
 /**
  * this is a Base App Drawer. It wil be used in all the pages.

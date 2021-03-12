@@ -1,8 +1,7 @@
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/material.dart';
-
-import 'Permanent services/BaseAppBar.dart';
-import 'Permanent services/BaseAppDrawer.dart';
 
 /**
  * this is the infopage. it consists of information about digi-talt.no and

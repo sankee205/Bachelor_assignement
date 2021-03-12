@@ -1,21 +1,18 @@
-import 'package:digitalt_application/profilePage.dart';
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseTextFields.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:universal_html/prefer_universal/html.dart' as html;
-import 'package:firebase/firebase.dart' as fb;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart' as Path;
+
+import 'package:mime_type/mime_type.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
 
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
-import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../homePage.dart';
-import 'BaseAppBar.dart';
-import 'BaseAppDrawer.dart';
+import 'HomePage.dart';
+import '../Layouts/BaseAppBar.dart';
+import '../Layouts/BaseAppDrawer.dart';
 
 /**
  * this is the add case form. it is used by the admin to add cases
@@ -29,6 +26,7 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  DatabaseService db = DatabaseService();
   DateTime dateTime;
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
@@ -40,7 +38,26 @@ class _MyFormState extends State<MyForm> {
   html.File imageFile;
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
-  String imageUrl;
+  bool addCaseItem() {
+    bool success = true;
+    db.uploadFile(mediaInfo).then((value) {
+      String imageUri = value.toString();
+      if (imageUri != null) {
+        var result = db.updateCaseData(imageUri, title.text, authorList, date,
+            introduction.text, descriptionList);
+        if (result != null) {
+          success = true;
+        } else {
+          print('failed to upload case item');
+          success = false;
+        }
+      } else {
+        print('imageUri is null');
+        success = false;
+      }
+    });
+    return success;
+  }
 
 //gets the image that is added
   Future<void> getImage() async {
@@ -55,61 +72,6 @@ class _MyFormState extends State<MyForm> {
         _imageWidget = Image.memory(mediaData.data);
       });
     }
-  }
-
-  Future<Uri> uploadFile() async {
-    try {
-      String mimeType = mime(Path.basename(mediaInfo.fileName));
-      var metaData = fb.UploadMetadata(contentType: mimeType);
-      fb.StorageReference storageReference =
-          fb.storage().ref('images').child(mediaInfo.fileName);
-
-      fb.UploadTaskSnapshot uploadTaskSnapshot =
-          await storageReference.put(mediaInfo.data, metaData).future;
-      Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
-      imageUrl = imageUri.toString();
-      return imageUri;
-    } catch (e) {
-      print('File Upload Error: $e');
-      return null;
-    }
-  }
-
-// creates a new case object
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  bool addCaseItem() {
-    if (mediaInfo != null) {
-      uploadFile();
-      CaseItem newCase = CaseItem(
-          image: imageUrl,
-          title: title.text,
-          author: authorList,
-          publishedDate: date,
-          introduction: introduction.text,
-          description: descriptionList);
-
-      print(newCase);
-      CollectionReference collectionReference =
-          FirebaseFirestore.instance.collection('CaseItems');
-      collectionReference.add(newCase.toMap());
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void uploadImageFile() async {
-    print('uploadImageFile');
-    var imageName = imageFile.name;
-    fb.StorageReference storageRef = fb.storage().ref('images/$imageName');
-    fb.UploadTaskSnapshot uploadTaskSnapshot =
-        await storageRef.put(imageFile).future;
-
-    //Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
   }
 
   @override

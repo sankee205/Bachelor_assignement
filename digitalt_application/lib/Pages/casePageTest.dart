@@ -1,9 +1,7 @@
 import 'dart:math';
-
-import 'package:digitalt_application/Permanent%20services/BaseAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseAppDrawer.dart';
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
+import 'package:digitalt_application/Layouts/BaseAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -13,12 +11,24 @@ import 'package:responsive_grid/responsive_grid.dart';
  * this is the case PAge. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
-class CasePage extends StatelessWidget {
-
+class CasePageTest extends StatelessWidget {
   //caseItem to be layed out in the casepage
-  final CaseItem caseItem;
+  final String image;
+  final String title;
+  final List<String> author;
+  final String publishedDate;
+  final String introduction;
+  final List<String> description;
 
-  CasePage({Key key, @required this.caseItem}) : super(key: key);
+  CasePageTest(
+      {Key key,
+      @required this.image,
+      @required this.title,
+      @required this.author,
+      @required this.publishedDate,
+      @required this.introduction,
+      @required this.description})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +54,7 @@ class CasePage extends StatelessWidget {
               width: 800,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(caseItem.image),
+                  image: NetworkImage(image),
                   fit: BoxFit.fitWidth,
                   alignment: FractionalOffset.topCenter,
                 ),
@@ -87,7 +97,7 @@ class CasePage extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
-                                  caseItem.title,
+                                  title,
                                   style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -107,7 +117,7 @@ class CasePage extends StatelessWidget {
                                     child: ResponsiveGridRow(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      children: caseItem.author.map((author) {
+                                      children: author.map((author) {
                                         return ResponsiveGridCol(
                                             xl: 12,
                                             md: 12,
@@ -125,14 +135,14 @@ class CasePage extends StatelessWidget {
                                     width: 20,
                                   ),
                                   Icon(Icons.date_range),
-                                  Text(caseItem.publishedDate)
+                                  Text(publishedDate)
                                 ],
                               ),
 
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
-                                  caseItem.introduction,
+                                  introduction,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20,
@@ -146,7 +156,7 @@ class CasePage extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Column(
-                                  children: caseItem.description.map((item) {
+                                  children: description.map((item) {
                                     return Container(
                                       margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                       alignment: Alignment.centerLeft,
