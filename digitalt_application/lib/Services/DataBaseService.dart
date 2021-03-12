@@ -57,13 +57,17 @@ class DatabaseService {
   Future<Uri> uploadFile(MediaInfo mediaInfo) async {
     try {
       String mimeType = mime(Path.basename(mediaInfo.fileName));
+      print(1);
       var metaData = fb.UploadMetadata(contentType: mimeType);
+      print(2);
       fb.StorageReference storageReference =
           fb.storage().ref('images').child(mediaInfo.fileName);
-
+      print(3);
       fb.UploadTaskSnapshot uploadTaskSnapshot =
           await storageReference.put(mediaInfo.data, metaData).future;
+      print(4);
       Uri imageUri = await uploadTaskSnapshot.ref.getDownloadURL();
+      print(5);
       return imageUri;
     } catch (e) {
       print('File Upload Error: $e');
