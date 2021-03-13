@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 
 import 'package:responsive_grid/responsive_grid.dart';
 
-/**
+/*
  * this is the case PAge. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
@@ -54,7 +54,7 @@ class CasePageTest extends StatelessWidget {
               width: 800,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(image),
+                  image: NetworkImage(image.toString()),
                   fit: BoxFit.fitWidth,
                   alignment: FractionalOffset.topCenter,
                 ),

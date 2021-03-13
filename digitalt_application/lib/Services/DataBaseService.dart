@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:firebase/firebase.dart' as fb;
@@ -73,5 +74,19 @@ class DatabaseService {
       print('File Upload Error: $e');
       return null;
     }
+  }
+
+  Future<Uri> downloadUrl(String fileName) {
+    /*String downloadUrl = await FirebaseStorage.instance
+        .ref()
+        .child('images')
+        .child(fileName)
+        .getDownloadURL();*/
+
+    return fb
+        .storage()
+        .refFromURL('gs://digi-talt.appspot.com/images/artikkel_8.jpg')
+        .child(fileName)
+        .getDownloadURL();
   }
 }
