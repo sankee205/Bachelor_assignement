@@ -35,15 +35,19 @@ dependencies:
   image_picker: ^0.6.7+22
   image_picker_web: any
   mime_type: ^0.3.2
+  universal_html: ^1.2.4
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
 
   # Add the dependencies for any other Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
-  firebase_auth: ^0.20.1
-  cloud_firestore: ^0.16.0+1
-  firebase_core: ^0.7.0
+  firebase_auth: ^0.18.3
+  cloud_firestore: ^0.14.3
+  firebase_core: ^0.5.2
+  firebase_storage: ^4.0.0
+  http: ^0.12.2
+
   google_sign_in: ^4.5.9 
   font_awesome_flutter: ^8.11.0
   google_fonts: ^1.1.2

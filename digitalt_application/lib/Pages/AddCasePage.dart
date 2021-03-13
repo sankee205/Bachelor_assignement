@@ -1,17 +1,18 @@
-import 'dart:html' as html;
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseTextFields.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:universal_html/prefer_universal/html.dart' as html;
+import 'package:path/path.dart' as Path;
 
 import 'package:mime_type/mime_type.dart';
-import 'package:path/path.dart' as Path;
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:flutter/material.dart';
 
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/BaseCaseItem.dart';
-import 'package:digitalt_application/Permanent%20services/BaseTextFields.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'BaseAppBar.dart';
-import 'BaseAppDrawer.dart';
+import 'HomePage.dart';
+import '../Layouts/BaseAppBar.dart';
+import '../Layouts/BaseAppDrawer.dart';
 
 /**
  * this is the add case form. it is used by the admin to add cases
@@ -25,56 +26,57 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
-  DateTime dateTime;
+  DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  TextEditingController title;
-  TextEditingController introduction;
-  TextEditingController date;
+  final title = TextEditingController();
+  final introduction = TextEditingController();
+  String date = DateTime.now().toString();
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 
-  html.File _cloudFile;
-  var _fileBytes;
+  html.File imageFile;
   Image _imageWidget;
+  MediaInfo mediaInfo = MediaInfo();
+  bool addCaseItem() {
+    bool success = true;
+    db.uploadFile(mediaInfo).then((value) {
+      String imageUri = value.toString();
+      if (imageUri != null) {
+        var result = db.updateCaseData(imageUri, title.text, authorList, date,
+            introduction.text, descriptionList);
+        if (result != null) {
+          success = true;
+        } else {
+          print('failed to upload case item');
+          success = false;
+        }
+      } else {
+        print('imageUri is null');
+        success = false;
+      }
+    });
+    return success;
+  }
 
-//gets the image that is added 
+//gets the image that is added
   Future<void> getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
+    mediaInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        _cloudFile = mediaFile;
-        _fileBytes = mediaData.data;
         _imageWidget = Image.memory(mediaData.data);
       });
     }
-  }
-
-// creates a new case object
-  CaseItem newCase;
-  @override
-  void initState() {
-    super.initState();
-    title = TextEditingController();
-    introduction = TextEditingController();
-    date = TextEditingController();
-    newCase = CaseItem(
-        image: 'assets/images/artikkel_1.jpg',
-        title: title.text,
-        author: authorList,
-        publishedDate: date.text,
-        introduction: introduction.text,
-        description: descriptionList);
   }
 
   @override
   void dispose() {
     title.dispose();
     introduction.dispose();
-    date.dispose();
     super.dispose();
   }
 
@@ -95,7 +97,7 @@ class _MyFormState extends State<MyForm> {
         child: Center(
           child: Container(
             color: Colors.white,
-            width: 600,
+            width: 800,
             child: Form(
               key: _formKey,
               child: Padding(
@@ -226,12 +228,13 @@ class _MyFormState extends State<MyForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            if (addCaseItem()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            }
                           }
-                          print(newCase.title);
-                          print(newCase.introduction);
-                          print(newCase.author);
-                          print(newCase.publishedDate);
-                          print(newCase.description);
                         },
                         child: Text('Submit'),
                         color: Colors.green,
@@ -257,6 +260,7 @@ class _MyFormState extends State<MyForm> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
+        date = selectedDate.toString();
       });
   }
 

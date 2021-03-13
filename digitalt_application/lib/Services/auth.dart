@@ -1,6 +1,7 @@
-import 'package:digitalt_application/Services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digitalt_application/models/user.dart';
+
+import 'DataBaseService.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

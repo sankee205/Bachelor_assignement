@@ -1,6 +1,6 @@
 import 'package:digitalt_application/models/user.dart';
 import 'package:digitalt_application/screens/authenticate/authenticate.dart';
-import 'package:digitalt_application/homePage.dart';
+import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

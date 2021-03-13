@@ -1,9 +1,10 @@
-import 'package:digitalt_application/Permanent%20services/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Permanent%20services/MyForm.dart';
+import 'package:digitalt_application/Layouts/BaseAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
+import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'Permanent services/BaseAppBar.dart';
-import 'Permanent services/BaseAppDrawer.dart';
+import 'AddCasePage.dart';
 
 /**
  * this is the profile page. 
