@@ -68,7 +68,7 @@ class _MyFormState extends State<MyForm> {
 
     if (mediaFile != null) {
       setState(() {
-        _imageWidget = Image.memory(mediaData.data);
+        _imageWidget = Image.memory(mediaData.data, fit: BoxFit.contain,);
       });
     }
   }

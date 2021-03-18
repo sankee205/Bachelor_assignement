@@ -76,17 +76,8 @@ class DatabaseService {
     }
   }
 
-  Future<Uri> downloadUrl(String fileName) {
-    /*String downloadUrl = await FirebaseStorage.instance
-        .ref()
-        .child('images')
-        .child(fileName)
-        .getDownloadURL();*/
-
-    return fb
-        .storage()
-        .refFromURL('gs://digi-talt.appspot.com/images/artikkel_8.jpg')
-        .child(fileName)
-        .getDownloadURL();
+  Future<String> downloadUrl(String fileName) async{
+    return FirebaseStorage.instance.ref('images').child(fileName).getDownloadURL();
   }
+
 }

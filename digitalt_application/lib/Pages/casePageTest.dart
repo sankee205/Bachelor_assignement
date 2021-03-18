@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -12,6 +13,7 @@ import 'package:responsive_grid/responsive_grid.dart';
  * for the caseitem to be read.
  */
 class CasePageTest extends StatelessWidget {
+  final DatabaseService db = DatabaseService();
   //caseItem to be layed out in the casepage
   final String image;
   final String title;
@@ -104,6 +106,7 @@ class CasePageTest extends StatelessWidget {
                                   ),
                                 ),
                               ),
+
                               SizedBox(
                                 height: 20,
                               ),
@@ -167,7 +170,7 @@ class CasePageTest extends StatelessWidget {
                                     );
                                   }).toList(),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
