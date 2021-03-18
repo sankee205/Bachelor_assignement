@@ -46,117 +46,118 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         backgroundColor: primaryColor,
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Logg inn her for å se alt av innhold hos DIGI-TALT',
-                  textAlign: TextAlign.center,
-                  style:
-                      GoogleFonts.openSans(color: Colors.white, fontSize: 28),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT',
-                  textAlign: TextAlign.center,
-                  style:
-                      GoogleFonts.openSans(color: Colors.white, fontSize: 14),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                  onChanged: (val) {
-                    setState(() => email = val);
-                  },
-                  style: TextStyle(color: Colors.white),
-                ),
-                SizedBox(height: 30),
-                TextFormField(
-                    obscureText: true,
-                    validator: (val) => val.length < 6
-                        ? 'Enter a password 6+ characters long'
-                        : null,
+        body: Center(
+          child: Container(
+            width: 800,
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Logg inn her for å se alt av innhold hos DIGI-TALT',
+                    textAlign: TextAlign.center,
+                    style:
+                    GoogleFonts.openSans(color: Colors.white, fontSize: 28),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT',
+                    textAlign: TextAlign.center,
+                    style:
+                    GoogleFonts.openSans(color: Colors.white, fontSize: 14),
+                  ),
+
+                  TextFormField(
+                    validator: (val) => val.isEmpty ? 'Enter an email' : null,
                     onChanged: (val) {
-                      setState(() => password = val);
+                      setState(() => email = val);
                     },
-                    style: TextStyle(color: Colors.white)),
-                MaterialButton(
-                  elevation: 0,
-                  minWidth: double.maxFinite,
-                  height: 50,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      dynamic result = await _auth.signInWithEmailAndPassword(
-                          email, password);
-                      if (result == null) {
-                        setState(() =>
-                            error = 'Could not log in with those credentials!');
-                      }
-                    }
-                  },
-                  color: logoGreen,
-                  child: Text('Logg inn',
-                      style: TextStyle(color: Colors.white, fontSize: 16)),
-                  textColor: Colors.white,
-                ),
-                SizedBox(height: 20),
-                MaterialButton(
-                  elevation: 0,
-                  minWidth: double.maxFinite,
-                  height: 50,
-                  onPressed: () {
-                    //Here goes the logic for Google SignIn discussed in the next section
-                  },
-                  color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(FontAwesomeIcons.google),
-                      SizedBox(width: 10),
-                      Text('Sign-in using Google',
-                          style: TextStyle(color: Colors.white, fontSize: 16)),
-                    ],
+                    style: TextStyle(color: Colors.white),
                   ),
-                  textColor: Colors.white,
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                  child: TextButton(
-                    child: Text('sign in anon'),
+                  SizedBox(height: 20),
+                  TextFormField(
+                      obscureText: true,
+                      validator: (val) => val.length < 6
+                          ? 'Enter a password 6+ characters long'
+                          : null,
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
+                      style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 20,),
+                  MaterialButton(
+                    elevation: 0,
+                    minWidth: double.maxFinite,
+                    height: 50,
                     onPressed: () async {
-                      dynamic result = await _auth.signInAnon();
-                      if (result == null) {
-                        print('error signing in');
-                      } else {
-                        print('signed in');
-                        print(result);
+                      if (_formKey.currentState.validate()) {
+                        dynamic result = await _auth.signInWithEmailAndPassword(
+                            email, password);
+                        if (result == null) {
+                          setState(() =>
+                          error = 'Could not log in with those credentials!');
+                        }
                       }
                     },
+                    color: logoGreen,
+                    child: Text('Logg inn',
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
+                    textColor: Colors.white,
                   ),
-                ),
-                SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
-                ),
-                SizedBox(height: 100),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: _buildFooterLogo(),
-                )
-              ],
+                  SizedBox(height: 20),
+                  MaterialButton(
+                    elevation: 0,
+                    minWidth: double.maxFinite,
+                    height: 50,
+                    onPressed: () {
+                      //Here goes the logic for Google SignIn discussed in the next section
+                    },
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(FontAwesomeIcons.google),
+                        SizedBox(width: 10),
+                        Text('Sign-in using Google',
+                            style: TextStyle(color: Colors.white, fontSize: 16)),
+                      ],
+                    ),
+                    textColor: Colors.white,
+                  ),
+                  Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
+                    child: TextButton(
+                      child: Text('sign in anon'),
+                      onPressed: () async {
+                        dynamic result = await _auth.signInAnon();
+                        if (result == null) {
+                          print('error signing in');
+                        } else {
+                          print('signed in');
+                          print(result);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 12.0),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _buildFooterLogo(),
+                  )
+                ],
+              ),
             ),
           ),
-        ));
+        ),
+    );
   }
 
   _buildFooterLogo() {
