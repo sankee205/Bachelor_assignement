@@ -1,3 +1,4 @@
+
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
@@ -34,7 +35,6 @@ class _MyFormState extends State<MyForm> {
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 
-  html.File imageFile;
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
   bool addCaseItem() {
@@ -69,6 +69,20 @@ class _MyFormState extends State<MyForm> {
     if (mediaFile != null) {
       setState(() {
         _imageWidget = Image.memory(mediaData.data, fit: BoxFit.contain,);
+      });
+    }
+  }
+
+  Future<void> getFile() async{
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    mediaInfo = mediaData;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+    new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
+      setState(() {
+        print(mediaData.data);
       });
     }
   }
@@ -215,9 +229,20 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Text(
+                      'Upload File',
+                      style:
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                    ),
+                    FloatingActionButton(
+                      onPressed: getFile,
+                      tooltip: 'Pick Image',
+                      child: Icon(Icons.file_upload),
+                    ),
+
+                    Text(
                       'Description',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     ..._getParagraphs(),
                     SizedBox(
