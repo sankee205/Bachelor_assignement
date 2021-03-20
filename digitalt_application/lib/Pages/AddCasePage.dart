@@ -1,7 +1,11 @@
 
+
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -37,6 +41,8 @@ class _MyFormState extends State<MyForm> {
 
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
+  EasyRichText richText;
+
   bool addCaseItem() {
     bool success = true;
     db.uploadFile(mediaInfo).then((value) {
@@ -74,17 +80,23 @@ class _MyFormState extends State<MyForm> {
   }
 
   Future<void> getFile() async{
-    var mediaData = await ImagePickerWeb.getImageInfo;
-    mediaInfo = mediaData;
-    String mimeType = mime(Path.basename(mediaData.fileName));
-    html.File mediaFile =
-    new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+    var picked = await FilePicker.platform.pickFiles();
 
-    if (mediaFile != null) {
+    //Load the existing PDF document.
+    final PdfDocument document =
+    PdfDocument(inputBytes: picked.files.single.bytes);
+    //Get the text from the pdf
+    String text = PdfTextExtractor(document).extractText();
+
+
+
+    if (picked != null) {
       setState(() {
-        print(mediaData.data);
+        descriptionList = text.split('##');
+        richText = EasyRichText(text);
       });
     }
+
   }
 
   @override
@@ -136,7 +148,7 @@ class _MyFormState extends State<MyForm> {
                     ),
                     FloatingActionButton(
                       onPressed: getImage,
-                      tooltip: 'Pick Image',
+                      heroTag: 'PickImage',
                       child: Icon(Icons.add_a_photo),
                     ),
 
@@ -234,9 +246,14 @@ class _MyFormState extends State<MyForm> {
                       TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     FloatingActionButton(
+                      heroTag: 'filebutton',
                       onPressed: getFile,
-                      tooltip: 'Pick Image',
                       child: Icon(Icons.file_upload),
+                    ),
+                    Container(
+                      child: richText == null
+                          ? Text('No file selected.')
+                          : richText,
                     ),
 
                     Text(
@@ -337,6 +354,44 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
+  Widget showAlertDialog(BuildContext context, List<String> list, int index) {
+
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed:  () {
+        list.removeAt(index);
+        setState(() {});
+        Navigator.of(context).pop();
+
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Er du sikker på at du vil fjerne avsnittet?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   /// add / remove button
   Widget _addRemoveButton(bool add, int index, List<String> list) {
     return InkWell(
@@ -345,8 +400,7 @@ class _MyFormState extends State<MyForm> {
           // add new text-fields at the top of all friends textfields
           list.insert(list.length, null);
         } else
-          list.removeAt(index);
-        setState(() {});
+          showAlertDialog(context, list, index);
       },
       child: Container(
         width: 30,
