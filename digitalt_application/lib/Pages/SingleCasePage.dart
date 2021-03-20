@@ -13,7 +13,7 @@ import 'package:responsive_grid/responsive_grid.dart';
  * this is the case PAge. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
-class CasePageTest extends StatelessWidget {
+class CasePage extends StatelessWidget {
   final DatabaseService db = DatabaseService();
   //caseItem to be layed out in the casepage
   final String image;
@@ -23,7 +23,7 @@ class CasePageTest extends StatelessWidget {
   final String introduction;
   final String text;
 
-  CasePageTest(
+  CasePage(
       {Key key,
       @required this.image,
       @required this.title,
@@ -79,7 +79,6 @@ class CasePageTest extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     //back button
-
                     Padding(
                       padding: EdgeInsets.fromLTRB(
                           0.0,
@@ -157,9 +156,13 @@ class CasePageTest extends StatelessWidget {
                               ),
                               //this is the description of the case. the main text
                               Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: EasyRichText(text),
+                                margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black,fontSize: 20.0,
+                                    height: 1),),
                               ),
+                              SizedBox(
+                                height: 50,
+                              )
                             ],
                           ),
                         ),

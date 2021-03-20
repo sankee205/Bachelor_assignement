@@ -87,7 +87,7 @@ class _MyFormState extends State<MyForm> {
     final PdfDocument document =
     PdfDocument(inputBytes: picked.files.single.bytes);
     //Get the text from the pdf
-    String text = PdfTextExtractor(document).extractText();
+    String text = PdfTextExtractor(document).extractText().trimRight();
 
 
 
@@ -95,6 +95,7 @@ class _MyFormState extends State<MyForm> {
       setState(() {
         //descriptionList = text.trim().split('');
         richText = text;
+        print(richText);
       });
     }
 
@@ -254,7 +255,7 @@ class _MyFormState extends State<MyForm> {
                     Container(
                       child: richText == null
                           ? Text('No file selected.')
-                          : EasyRichText(richText),
+                          : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
                     ),
 
                     Text(
@@ -400,6 +401,9 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           // add new text-fields at the top of all friends textfields
           list.insert(list.length, null);
+          setState(() {
+
+          });
         } else
           showAlertDialog(context, list, index);
       },

@@ -35,7 +35,7 @@ class DatabaseService {
       'author': author,
       'publishedDate': publishedDate,
       'introduction': introduction,
-      'description': text,
+      'text': text,
     });
   }
   Future updateCaseByFolder(String folder,
@@ -51,7 +51,7 @@ class DatabaseService {
       'author': author,
       'publishedDate': publishedDate,
       'introduction': introduction,
-      'description': text,
+      'text': text,
     });
   }
 

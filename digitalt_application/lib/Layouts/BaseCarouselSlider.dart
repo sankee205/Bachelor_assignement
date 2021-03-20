@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/Pages/casePageTest.dart';
+import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:flutter/material.dart';
 
 import 'BaseCaseBox.dart';
@@ -41,7 +41,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CasePageTest(
+                        builder: (context) => CasePage(
                             image:
                             caseObject['image'],
                             title:

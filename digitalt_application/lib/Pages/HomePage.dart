@@ -4,7 +4,7 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:digitalt_application/Pages/casePageTest.dart';
+import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -161,7 +161,7 @@ class HomePageState extends State<HomePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CasePageTest(
+                                                    CasePage(
                                                         image:
                                                             caseObject['image'],
                                                         title:
@@ -225,7 +225,7 @@ class HomePageState extends State<HomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>  CasePageTest(
+                                        builder: (context) =>  CasePage(
                                             image:
                                             caseObject['image'],
                                             title:

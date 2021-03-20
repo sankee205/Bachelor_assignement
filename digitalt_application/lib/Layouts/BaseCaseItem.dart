@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
 /*
- * This is the case item class. it is suposed to reflect a 
+ * This is the case item class. it is supposed to reflect a
  * newspaper case, including title, image and description
  * 
  * @Sander Keedklang
@@ -26,7 +26,7 @@ class CaseItem {
       'author': jsonEncode(author),
       'publishedDate': publishedDate,
       'introduction': introduction,
-      'description': text,
+      'text': text,
     };
   }
 
