@@ -30,6 +30,7 @@ class MyForm extends StatefulWidget {
   _MyFormState createState() => _MyFormState();
 }
 
+
 class _MyFormState extends State<MyForm> {
   DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
@@ -41,7 +42,7 @@ class _MyFormState extends State<MyForm> {
 
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
-  EasyRichText richText;
+  String richText;
 
   bool addCaseItem() {
     bool success = true;
@@ -49,7 +50,7 @@ class _MyFormState extends State<MyForm> {
       String imageUri = value.toString();
       if (imageUri != null) {
         var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, descriptionList);
+            introduction.text, richText);
         if (result != null) {
           success = true;
         } else {
@@ -92,8 +93,8 @@ class _MyFormState extends State<MyForm> {
 
     if (picked != null) {
       setState(() {
-        descriptionList = text.split('##');
-        richText = EasyRichText(text);
+        //descriptionList = text.trim().split('');
+        richText = text;
       });
     }
 
@@ -253,7 +254,7 @@ class _MyFormState extends State<MyForm> {
                     Container(
                       child: richText == null
                           ? Text('No file selected.')
-                          : richText,
+                          : EasyRichText(richText),
                     ),
 
                     Text(

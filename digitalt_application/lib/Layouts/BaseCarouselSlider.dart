@@ -1,9 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
-
+import 'package:digitalt_application/Pages/casePageTest.dart';
 import 'package:flutter/material.dart';
 
-import '../Pages/SingleCasePage.dart';
 import 'BaseCaseBox.dart';
 
 /**
@@ -11,7 +9,7 @@ import 'BaseCaseBox.dart';
  */
 class BaseCarouselSlider extends StatefulWidget {
   //list of cass it gets from the database
-  final List<CaseItem> caseList;
+  final List caseList;
 
   const BaseCarouselSlider(this.caseList);
 
@@ -33,7 +31,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
           autoPlayInterval: Duration(seconds: 10),
           viewportFraction: 0.8,
           initialPage: 0),
-      items: widget.caseList.map((caseitem) {
+      items: widget.caseList.map((caseObject) {
         return Builder(builder: (
           BuildContext context,
         ) {
@@ -43,11 +41,24 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CasePage(
-                              caseItem: caseitem,
+                        builder: (context) => CasePageTest(
+                            image:
+                            caseObject['image'],
+                            title:
+                            caseObject['title'],
+                            author: caseObject[
+                            'author'],
+                            publishedDate:
+                            caseObject[
+                            'publishedDate'],
+                            introduction:
+                            caseObject[
+                            'introduction'],
+                            text: caseObject[
+                            'text']
                             )));
               },
-              child: BaseCaseBox(caseitem));
+              child: BaseCaseBox(image: caseObject['image'],title: caseObject['title']));
         });
       }).toList(),
     );

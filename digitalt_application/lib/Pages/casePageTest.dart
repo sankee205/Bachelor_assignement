@@ -3,6 +3,7 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -20,7 +21,7 @@ class CasePageTest extends StatelessWidget {
   final List author;
   final String publishedDate;
   final String introduction;
-  final List description;
+  final String text;
 
   CasePageTest(
       {Key key,
@@ -29,7 +30,7 @@ class CasePageTest extends StatelessWidget {
       @required this.author,
       @required this.publishedDate,
       @required this.introduction,
-      @required this.description})
+      @required this.text})
       : super(key: key);
 
   @override
@@ -44,6 +45,18 @@ class CasePageTest extends StatelessWidget {
       bottomNavigationBar: BaseBottomAppBar(),
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
+
+      floatingActionButton: FloatingActionButton(
+
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       //here starts the body
       body: Center(
         child: Container(
@@ -56,7 +69,7 @@ class CasePageTest extends StatelessWidget {
               width: 800,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(image.toString()),
+                  image: NetworkImage(image),
                   fit: BoxFit.fitWidth,
                   alignment: FractionalOffset.topCenter,
                 ),
@@ -66,19 +79,6 @@ class CasePageTest extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     //back button
-                    Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
 
                     Padding(
                       padding: EdgeInsets.fromLTRB(
@@ -158,18 +158,7 @@ class CasePageTest extends StatelessWidget {
                               //this is the description of the case. the main text
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: Column(
-                                  children: description.map((item) {
-                                    return Container(
-                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
+                                child: EasyRichText(text),
                               ),
                             ],
                           ),
@@ -179,7 +168,8 @@ class CasePageTest extends StatelessWidget {
                   ],
                 ),
               ),
-            )),
+            ),
+        ),
       ),
     );
   }

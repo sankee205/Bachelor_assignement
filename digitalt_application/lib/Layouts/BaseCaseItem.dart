@@ -17,7 +17,7 @@ class CaseItem {
   final List author;
   final String publishedDate;
   final String introduction;
-  final List description;
+  final String text;
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,7 +26,7 @@ class CaseItem {
       'author': jsonEncode(author),
       'publishedDate': publishedDate,
       'introduction': introduction,
-      'description': jsonEncode(description),
+      'description': text,
     };
   }
 
@@ -36,12 +36,12 @@ class CaseItem {
       @required this.author,
       @required this.publishedDate,
       @required this.introduction,
-      @required this.description}) {
+      @required this.text}) {
     assert(image != null);
     assert(title != null);
     assert(author != null);
     assert(publishedDate != null);
     assert(introduction != null);
-    assert(description != null);
+    assert(text != null);
   }
 }

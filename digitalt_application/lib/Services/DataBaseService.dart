@@ -12,8 +12,7 @@ class DatabaseService {
   // collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users'); //What to collect
-  final CollectionReference caseCollection =
-      FirebaseFirestore.instance.collection('CaseItems');
+
 
   Future updateUserData(String name, String email, String phonenumber) async {
     return await userCollection.doc(uid).set({
@@ -29,21 +28,37 @@ class DatabaseService {
       List<String> author,
       String publishedDate,
       String introduction,
-      List<String> description) async {
-    return await caseCollection.doc(uid).set({
+      String text) async {
+    return await FirebaseFirestore.instance.collection('AllCases').doc(uid).set({
       'image': image,
       'title': title,
       'author': author,
       'publishedDate': publishedDate,
       'introduction': introduction,
-      'description': description,
+      'description': text,
+    });
+  }
+  Future updateCaseByFolder(String folder,
+      String image,
+      String title,
+      List<String> author,
+      String publishedDate,
+      String introduction,
+      String text) async {
+    return await FirebaseFirestore.instance.collection(folder).doc(uid).set({
+      'image': image,
+      'title': title,
+      'author': author,
+      'publishedDate': publishedDate,
+      'introduction': introduction,
+      'description': text,
     });
   }
 
-  Future getCaseItems() async {
+  Future getCaseItems(String folder) async {
     List itemsList = [];
     try {
-      await caseCollection.get().then((querySnapshot) {
+      await FirebaseFirestore.instance.collection(folder).get().then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           itemsList.add(element);
         });
