@@ -3,10 +3,8 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
-import 'package:digitalt_application/Layouts/ExampleCases.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
-import 'package:digitalt_application/Pages/casePageTest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -24,8 +22,6 @@ import 'package:digitalt_application/Services/auth.dart';
 
 //creates a stateful widget
 class HomePage extends StatefulWidget {
-  ExampleCases exampleCases = new ExampleCases();
-
   @override
   HomePageState createState() => HomePageState();
 }
@@ -36,22 +32,43 @@ class HomePageState extends State<HomePage> {
 
   final AuthService _auth = AuthService();
   final DatabaseService db = DatabaseService();
-  List itemsList = [];
+  List newCases = [];
+  List allCases =[];
+  List popularCases = [];
 
   @override
   void initState() {
     super.initState();
-    fetchDataBaseList();
+    //db.updateCaseData('image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
+    //db.updateCaseByFolder('PopularCases','image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
+    //db.updateCaseByFolder('NewCases','image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
+    fetchDataBaseList('PopularCases');
+    fetchDataBaseList('AllCases');
+    fetchDataBaseList('NewCases');
   }
 
-  fetchDataBaseList() async {
-    dynamic resultant = await db.getCaseItems();
+  fetchDataBaseList(String folder) async {
+    dynamic resultant = await db.getCaseItems(folder);
 
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        itemsList = resultant;
+        switch(folder) {
+          case 'PopularCases': {
+            popularCases = resultant;
+          }
+          break;
+
+          case 'NewCases': {
+            newCases = resultant;
+          }
+          break;
+          case 'AllCases': {
+            allCases = resultant;
+          }
+          break;
+        }
       });
     }
   }
@@ -99,7 +116,7 @@ class HomePageState extends State<HomePage> {
                               children: <Widget>[
                                 //should we add a play and stop button?
                                 BaseCarouselSlider(
-                                    widget.exampleCases.popularCases)
+                                    allCases)
                               ],
                             ),
                           ),
@@ -133,7 +150,7 @@ class HomePageState extends State<HomePage> {
                               height: 5,
                             ),
                             Column(
-                              children: itemsList.map((caseObject) {
+                              children: allCases.map((caseObject) {
                                 return Builder(builder: (
                                   BuildContext context,
                                 ) {
@@ -144,7 +161,7 @@ class HomePageState extends State<HomePage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    CasePageTest(
+                                                    CasePage(
                                                         image:
                                                             caseObject['image'],
                                                         title:
@@ -157,8 +174,8 @@ class HomePageState extends State<HomePage> {
                                                         introduction:
                                                             caseObject[
                                                                 'introduction'],
-                                                        description: caseObject[
-                                                            'description'])));
+                                                        text: caseObject[
+                                                            'text'])));
                                       },
                                       child: Container(
                                         height: 40,
@@ -195,7 +212,7 @@ class HomePageState extends State<HomePage> {
               ),
               ResponsiveGridRow(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: widget.exampleCases.caseList.map((e) {
+                children: allCases.map((caseObject) {
                   return ResponsiveGridCol(
                       lg: 4,
                       md: 6,
@@ -208,11 +225,23 @@ class HomePageState extends State<HomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => CasePage(
-                                              caseItem: e,
-                                            )));
+                                        builder: (context) =>  CasePage(
+                                            image:
+                                            caseObject['image'],
+                                            title:
+                                            caseObject['title'],
+                                            author: caseObject[
+                                            'author'],
+                                            publishedDate:
+                                            caseObject[
+                                            'publishedDate'],
+                                            introduction:
+                                            caseObject[
+                                            'introduction'],
+                                            text: caseObject[
+                                            'text'])));
                               },
-                              child: BaseCaseBox(e))));
+                              child: BaseCaseBox(image: caseObject['image'], title: caseObject['title']))));
                 }).toList(),
               ),
             ],

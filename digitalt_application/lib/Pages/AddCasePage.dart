@@ -1,6 +1,11 @@
+
+
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -25,6 +30,7 @@ class MyForm extends StatefulWidget {
   _MyFormState createState() => _MyFormState();
 }
 
+
 class _MyFormState extends State<MyForm> {
   DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
@@ -34,16 +40,17 @@ class _MyFormState extends State<MyForm> {
   static List<String> descriptionList = [null];
   static List<String> authorList = [null];
 
-  html.File imageFile;
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
+  String richText;
+
   bool addCaseItem() {
     bool success = true;
     db.uploadFile(mediaInfo).then((value) {
       String imageUri = value.toString();
       if (imageUri != null) {
         var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, descriptionList);
+            introduction.text, richText);
         if (result != null) {
           success = true;
         } else {
@@ -71,6 +78,27 @@ class _MyFormState extends State<MyForm> {
         _imageWidget = Image.memory(mediaData.data, fit: BoxFit.contain,);
       });
     }
+  }
+
+  Future<void> getFile() async{
+    var picked = await FilePicker.platform.pickFiles();
+
+    //Load the existing PDF document.
+    final PdfDocument document =
+    PdfDocument(inputBytes: picked.files.single.bytes);
+    //Get the text from the pdf
+    String text = PdfTextExtractor(document).extractText().trimRight();
+
+
+
+    if (picked != null) {
+      setState(() {
+        //descriptionList = text.trim().split('');
+        richText = text;
+        print(richText);
+      });
+    }
+
   }
 
   @override
@@ -122,7 +150,7 @@ class _MyFormState extends State<MyForm> {
                     ),
                     FloatingActionButton(
                       onPressed: getImage,
-                      tooltip: 'Pick Image',
+                      heroTag: 'PickImage',
                       child: Icon(Icons.add_a_photo),
                     ),
 
@@ -215,9 +243,25 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Text(
+                      'Upload File',
+                      style:
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                    ),
+                    FloatingActionButton(
+                      heroTag: 'filebutton',
+                      onPressed: getFile,
+                      child: Icon(Icons.file_upload),
+                    ),
+                    Container(
+                      child: richText == null
+                          ? Text('No file selected.')
+                          : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
+                    ),
+
+                    Text(
                       'Description',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     ..._getParagraphs(),
                     SizedBox(
@@ -312,6 +356,44 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
+  Widget showAlertDialog(BuildContext context, List<String> list, int index) {
+
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed:  () {
+        list.removeAt(index);
+        setState(() {});
+        Navigator.of(context).pop();
+
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Er du sikker på at du vil fjerne avsnittet?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   /// add / remove button
   Widget _addRemoveButton(bool add, int index, List<String> list) {
     return InkWell(
@@ -319,9 +401,11 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           // add new text-fields at the top of all friends textfields
           list.insert(list.length, null);
+          setState(() {
+
+          });
         } else
-          list.removeAt(index);
-        setState(() {});
+          showAlertDialog(context, list, index);
       },
       child: Container(
         width: 30,

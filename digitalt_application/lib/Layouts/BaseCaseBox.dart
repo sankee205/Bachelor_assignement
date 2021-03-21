@@ -7,8 +7,10 @@ import 'BaseCaseItem.dart';
  */
 class BaseCaseBox extends StatefulWidget {
   //takes in the object caseITem and builds the box from image and title
-  final CaseItem caseItem;
-  const BaseCaseBox(this.caseItem);
+  final String image;
+  final String title;
+
+  const BaseCaseBox({Key key, @required this.image, @required this.title}) : super(key: key);
 
   @override
   _BaseCaseBoxState createState() => _BaseCaseBoxState();
@@ -31,7 +33,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
           //here comes the Text of the CaseBox
           child: ListTile(
             title: Text(
-              widget.caseItem.title,
+              widget.title,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -44,7 +46,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(0),
               image: DecorationImage(
-                  image: AssetImage(widget.caseItem.image), fit: BoxFit.cover),
+                  image: NetworkImage(widget.image), fit: BoxFit.cover),
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey.withOpacity(0.5),

@@ -2,21 +2,36 @@ import 'dart:math';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:responsive_grid/responsive_grid.dart';
 
-/**
+/*
  * this is the case PAge. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
 class CasePage extends StatelessWidget {
+  final DatabaseService db = DatabaseService();
   //caseItem to be layed out in the casepage
-  final CaseItem caseItem;
+  final String image;
+  final String title;
+  final List author;
+  final String publishedDate;
+  final String introduction;
+  final String text;
 
-  CasePage({Key key, @required this.caseItem}) : super(key: key);
+  CasePage(
+      {Key key,
+      @required this.image,
+      @required this.title,
+      @required this.author,
+      @required this.publishedDate,
+      @required this.introduction,
+      @required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +45,18 @@ class CasePage extends StatelessWidget {
       bottomNavigationBar: BaseBottomAppBar(),
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
+
+      floatingActionButton: FloatingActionButton(
+
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       //here starts the body
       body: Center(
         child: Container(
@@ -42,7 +69,7 @@ class CasePage extends StatelessWidget {
               width: 800,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(caseItem.image),
+                  image: NetworkImage(image),
                   fit: BoxFit.fitWidth,
                   alignment: FractionalOffset.topCenter,
                 ),
@@ -52,20 +79,6 @@ class CasePage extends StatelessWidget {
                 child: Stack(
                   children: <Widget>[
                     //back button
-                    Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-
                     Padding(
                       padding: EdgeInsets.fromLTRB(
                           0.0,
@@ -85,13 +98,14 @@ class CasePage extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
-                                  caseItem.title,
+                                  title,
                                   style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
+
                               SizedBox(
                                 height: 20,
                               ),
@@ -105,7 +119,7 @@ class CasePage extends StatelessWidget {
                                     child: ResponsiveGridRow(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
-                                      children: caseItem.author.map((author) {
+                                      children: author.map((author) {
                                         return ResponsiveGridCol(
                                             xl: 12,
                                             md: 12,
@@ -123,14 +137,14 @@ class CasePage extends StatelessWidget {
                                     width: 20,
                                   ),
                                   Icon(Icons.date_range),
-                                  Text(caseItem.publishedDate)
+                                  Text(publishedDate)
                                 ],
                               ),
 
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                 child: Text(
-                                  caseItem.introduction,
+                                  introduction,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 20,
@@ -142,19 +156,12 @@ class CasePage extends StatelessWidget {
                               ),
                               //this is the description of the case. the main text
                               Container(
-                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child: Column(
-                                  children: caseItem.description.map((item) {
-                                    return Container(
-                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
+                                margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black,fontSize: 20.0,
+                                    height: 1),),
+                              ),
+                              SizedBox(
+                                height: 50,
                               )
                             ],
                           ),
@@ -164,7 +171,8 @@ class CasePage extends StatelessWidget {
                   ],
                 ),
               ),
-            )),
+            ),
+        ),
       ),
     );
   }
