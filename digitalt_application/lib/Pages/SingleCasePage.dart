@@ -78,7 +78,6 @@ class CasePage extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 child: Stack(
                   children: <Widget>[
-                    //back button
                     Padding(
                       padding: EdgeInsets.fromLTRB(
                           0.0,

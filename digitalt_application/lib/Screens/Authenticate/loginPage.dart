@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Pages/VippsLoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20,),
                   MaterialButton(
                     elevation: 0,
-                    minWidth: double.maxFinite,
+                    minWidth: 210,
                     height: 50,
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
@@ -108,25 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     textColor: Colors.white,
                   ),
                   SizedBox(height: 20),
-                  MaterialButton(
-                    elevation: 0,
-                    minWidth: double.maxFinite,
-                    height: 50,
-                    onPressed: () {
-                      //Here goes the logic for Google SignIn discussed in the next section
-                    },
-                    color: Colors.blue,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(FontAwesomeIcons.google),
-                        SizedBox(width: 10),
-                        Text('Sign-in using Google',
-                            style: TextStyle(color: Colors.white, fontSize: 16)),
-                      ],
-                    ),
-                    textColor: Colors.white,
-                  ),
+
+                  FlatButton(
+                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => VippsLoginPage()));},
+                      child: Image.asset('vipps/login_image.png',width: 200,)),
                   Padding(
                     padding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 50.0),
