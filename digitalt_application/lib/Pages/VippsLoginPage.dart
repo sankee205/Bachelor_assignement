@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,7 +69,9 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                                       )
                                   )
                               ),
-                              onPressed: () => null
+                              onPressed: (){
+                                //VippsApi().getAccessToken();
+                              }
                           ),
                         )
                       ]
@@ -82,4 +87,5 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
       )
     );
   }
+
 }
