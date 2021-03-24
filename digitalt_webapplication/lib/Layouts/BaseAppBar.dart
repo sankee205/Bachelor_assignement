@@ -20,7 +20,6 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: title,
-      //backgroundColor: backgroundColor,
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.all(30.0),

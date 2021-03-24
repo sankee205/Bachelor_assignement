@@ -13,9 +13,9 @@ class ThemeNotifier with ChangeNotifier {
     accentColor: Colors.red,
     accentIconTheme: IconThemeData(color: Colors.black),
     dividerColor: Colors.black,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.black, iconTheme: IconThemeData(color: Colors.red)),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(unselectedItemColor: Colors.redAccent),
-    buttonColor: Colors.red
+    appBarTheme: AppBarTheme(backgroundColor: Colors.black.withOpacity(0.6), iconTheme: IconThemeData(color: Colors.red)),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Colors.black.withOpacity(0.4),unselectedItemColor: Colors.white, selectedItemColor: Colors.red),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.red),
 
     //canvasColor: Colors.amberAccent
   );
@@ -23,13 +23,12 @@ class ThemeNotifier with ChangeNotifier {
   final lightTheme = ThemeData(
     primaryColor: Colors.white,
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.white,
-    backgroundColor: Colors.green
-   
+    scaffoldBackgroundColor: Colors.grey.shade200,
+
     accentIconTheme: IconThemeData(color: Colors.white),
-    dividerColor: Colors.white54,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.red),
-    buttonColor: Colors.blue,
+    appBarTheme: AppBarTheme(backgroundColor: Colors.red, iconTheme: IconThemeData(color: Colors.white), ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(selectedItemColor: Colors.red,unselectedItemColor: Colors.grey),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.blue),
 
 
   );
