@@ -93,9 +93,8 @@ class _MyFormState extends State<MyForm> {
 
     if (picked != null) {
       setState(() {
-        //descriptionList = text.trim().split('');
-        richText = text;
-        print(richText);
+        descriptionList = text.trim().split('/n');
+        //richText = text;
       });
     }
 
