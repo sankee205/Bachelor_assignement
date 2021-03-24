@@ -38,7 +38,7 @@ class CasePage extends StatelessWidget {
     return Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),

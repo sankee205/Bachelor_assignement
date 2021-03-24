@@ -6,6 +6,7 @@ import 'StorageManager.dart';
 import 'package:flutter/material.dart';
 
 class ThemeNotifier with ChangeNotifier {
+  bool state = false;
   final darkTheme = ThemeData(
     primaryColor: Colors.black,
     brightness: Brightness.dark,
@@ -51,14 +52,20 @@ class ThemeNotifier with ChangeNotifier {
   }
 
   void setDarkMode() async {
+    state = true;
     _themeData = darkTheme;
     StorageManager.saveData('themeMode', 'dark');
     notifyListeners();
   }
 
   void setLightMode() async {
+    state = false;
     _themeData = lightTheme;
     StorageManager.saveData('themeMode', 'light');
     notifyListeners();
+  }
+
+  bool getState(){
+    return state;
   }
 }

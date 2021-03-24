@@ -112,7 +112,7 @@ class _MyFormState extends State<MyForm> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),

@@ -148,7 +148,7 @@ class _InfoPageState extends State<InfoPage> {
         length: 2,
         child: Scaffold(
             appBar: BaseAppBar(
-              title: Text('DIGI-TALT'),
+              title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
               appBar: AppBar(),
               widgets: <Widget>[Icon(Icons.more_vert)],
             ),

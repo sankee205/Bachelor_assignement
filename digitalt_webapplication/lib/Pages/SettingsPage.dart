@@ -15,6 +15,7 @@ class SettingsPage extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
+
 class _SettingsState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class _SettingsState extends State<SettingsPage> {
         builder: (context, theme, child) =>Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
@@ -36,28 +37,34 @@ class _SettingsState extends State<SettingsPage> {
           child: Container(
               child: Center(
                 child: Container(
+                  height: MediaQuery.of(context).size.height,
                     width: 600,
-                    child: Row(
-                      children: [
-                        Container(
-                          child: FlatButton(
-                            onPressed: () => {
-                              print('Set Light Theme'),
-                              theme.setLightMode(),
-                            },
-                            child: Text('Set Light Theme'),
-                          ),
-                        ),
-                        Container(
-                          child: FlatButton(
-                            onPressed: () => {
-                              print('Set Dark theme'),
-                              theme.setDarkMode(),
-                            },
-                            child: Text('Set Dark theme'),
-                          ),
-                        ),
-                      ],
+                    child:Material(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text('Mørkt modus'),
+                              SizedBox(height: 10.0,),
+                              Switch(
+                                activeColor: Colors.green,
+                                value: theme.getState(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if(value == true){
+                                      theme.setDarkMode();
+                                    }
+                                    else{
+                                      theme.setLightMode();
+                                    }
+                                  });
+                                },
+                              ),],
+                          )
+
+
+                        ],
+                      ),
                     )),
               ))),
     ));
