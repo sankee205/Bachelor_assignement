@@ -25,7 +25,7 @@ class ThemeNotifier with ChangeNotifier {
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
     backgroundColor: Colors.green
-    accentColor: Colors.black,
+   
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,
     appBarTheme: AppBarTheme(backgroundColor: Colors.red),
