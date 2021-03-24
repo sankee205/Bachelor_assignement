@@ -20,8 +20,11 @@ class CasePage extends StatelessWidget {
   final String title;
   final List author;
   final String publishedDate;
+  final String lastEdited;
   final String introduction;
   final List text;
+
+  Text _lastEditedText;
 
   CasePage(
       {Key key,
@@ -30,11 +33,16 @@ class CasePage extends StatelessWidget {
       @required this.author,
       @required this.publishedDate,
       @required this.introduction,
-      @required this.text})
+      @required this.text,
+        this.lastEdited
+      })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if(lastEdited !=null){
+      _lastEditedText = Text('Sist edret: '+lastEdited);
+    }
     return Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
@@ -137,6 +145,7 @@ class CasePage extends StatelessWidget {
                                   ),
                                   Icon(Icons.date_range),
                                   Text(publishedDate)
+
                                 ],
                               ),
 
@@ -171,8 +180,16 @@ class CasePage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: _lastEditedText == null
+                                    ? Text('Denne artikkelen har aldri blitt endret')
+                                    : _lastEditedText,
+                              ),
+                              SizedBox(
                                 height: 50,
-                              )
+                              ),
                             ],
                           ),
                         ),

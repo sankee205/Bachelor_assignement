@@ -55,7 +55,8 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                             caseObject[
                             'introduction'],
                             text: caseObject[
-                            'text']
+                            'text'],
+                          lastEdited: caseObject['lastEdited'],
                             )));
               },
               child: BaseCaseBox(image: caseObject['image'],title: caseObject['title']));

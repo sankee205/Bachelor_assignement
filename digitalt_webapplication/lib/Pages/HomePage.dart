@@ -151,25 +151,29 @@ class HomePageState extends State<HomePage> {
                                     //makes the onclick available
                                     return GestureDetector(
                                         onTap: () {
+                                          print(caseObject['id']);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CasePage(
-                                                          image:
-                                                          caseObject['image'],
-                                                          title:
-                                                          caseObject['title'],
-                                                          author: caseObject[
-                                                          'author'],
-                                                          publishedDate:
-                                                          caseObject[
-                                                          'publishedDate'],
-                                                          introduction:
-                                                          caseObject[
-                                                          'introduction'],
-                                                          text: caseObject[
-                                                          'text'])));
+                                                  builder: (context) {
+                                                    return CasePage(
+                                                        image:
+                                                        caseObject['image'],
+                                                        title:
+                                                        caseObject['title'],
+                                                        author: caseObject[
+                                                        'author'],
+                                                        publishedDate:
+                                                        caseObject[
+                                                        'publishedDate'],
+                                                        introduction:
+                                                        caseObject[
+                                                        'introduction'],
+                                                        text: caseObject[
+                                                        'text'],
+                                                        lastEdited: caseObject['lastEdited']);
+
+                                                  },),);
                                         },
                                         child: Container(
                                             //height: 40,
@@ -227,7 +231,8 @@ class HomePageState extends State<HomePage> {
                                               caseObject[
                                               'introduction'],
                                               text: caseObject[
-                                              'text'])));
+                                              'text'],
+                                          lastEdited: caseObject['lastEdited'],)));
                                 },
                                 child: BaseCaseBox(image: caseObject['image'], title: caseObject['title']))));
                   }).toList(),

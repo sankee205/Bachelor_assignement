@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
@@ -19,47 +22,88 @@ import '../Layouts/BaseAppDrawer.dart';
 
 /**
  * this is the add case form. it is used by the admin to add cases
- * to the database and the app. 
- * 
+ * to the database and the app.
+ *
  * this page is only available on web
  */
-class MyForm extends StatefulWidget {
+class UpdateCasePage extends StatefulWidget {
+  final String caseTitle;
+
+  const UpdateCasePage({Key key, this.caseTitle}) : super(key: key);
   @override
-  _MyFormState createState() => _MyFormState();
+  _UpdateCasePageState createState() => _UpdateCasePageState();
 }
 
 
-class _MyFormState extends State<MyForm> {
+
+
+class _UpdateCasePageState extends State<UpdateCasePage> {
   DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
+  String id;
+  String imageUrl;
   final title = TextEditingController();
   final introduction = TextEditingController();
   String date = DateTime.now().toString();
-  static List authorList = [null];
-  final textController = TextEditingController();
+  static List descriptionList = [];
+  static List authorList = [];
 
   Image _imageWidget;
-  MediaInfo mediaInfo = MediaInfo();
+  MediaInfo mediaInfo;
   String richText;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCaseItem();
+  }
+
+  Future fetchCaseItem()async{
+    List resultList = await db.getSingleCaseItem(widget.caseTitle);
+    var result = resultList[0];
+    print(result);
+    setState(() {
+      imageUrl = result['image'];
+      _imageWidget = Image.network(result['image']);
+      id = result['id'];
+      title.text = result['title'];
+      introduction.text = result['introduction'];
+      descriptionList = result['text'];
+      authorList = result['author'];
+    });
+
+  }
 
   bool addCaseItem() {
     bool success = true;
-    db.uploadFile(mediaInfo).then((value) {
-      String imageUri = value.toString();
-      if (imageUri != null) {
-        var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, textController.text.split('/p'));
-        if (result != null) {
-          success = true;
-        } else {
-          print('failed to upload case item');
-          success = false;
-        }
+    if(mediaInfo == null){
+      var result = db.updateCaseItemData(id,imageUrl, title.text, authorList, date,
+          introduction.text, descriptionList);
+      if (result != null) {
+        success = true;
       } else {
-        print('imageUri is null');
+        print('failed to upload case item');
         success = false;
       }
-    });
+    }
+    else{
+      db.uploadFile(mediaInfo).then((value) {
+        String imageUri = value.toString();
+        if (imageUri != null) {
+          var result = db.updateCaseItemData(id,imageUri, title.text, authorList, date,
+              introduction.text, descriptionList);
+          if (result != null) {
+            success = true;
+          } else {
+            print('failed to upload case item');
+            success = false;
+          }
+        } else {
+          print('imageUri is null');
+          success = false;
+        }
+      });
+    }
     return success;
   }
 
@@ -69,7 +113,7 @@ class _MyFormState extends State<MyForm> {
     mediaInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
-        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+    new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
@@ -78,7 +122,7 @@ class _MyFormState extends State<MyForm> {
     }
   }
 
- /** Future<void> getFile() async{
+  /**Future<void> getFile() async{
     var picked = await FilePicker.platform.pickFiles();
 
     //Load the existing PDF document.
@@ -154,7 +198,7 @@ class _MyFormState extends State<MyForm> {
                     Text(
                       'Title',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     SizedBox(
                       height: 5,
@@ -165,7 +209,7 @@ class _MyFormState extends State<MyForm> {
                       child: TextFormField(
                         controller: title,
                         decoration:
-                            InputDecoration(hintText: 'Enter your Title'),
+                        InputDecoration(hintText: 'Enter your Title'),
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
                           return null;
@@ -178,7 +222,7 @@ class _MyFormState extends State<MyForm> {
                     Text(
                       'Introduction',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     SizedBox(
                       height: 5,
@@ -202,7 +246,7 @@ class _MyFormState extends State<MyForm> {
                     Text(
                       'Author',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     ..._getAuthors(),
                     SizedBox(
@@ -215,7 +259,7 @@ class _MyFormState extends State<MyForm> {
                     Text(
                       'Date',
                       style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     SizedBox(
                       height: 5,
@@ -232,7 +276,7 @@ class _MyFormState extends State<MyForm> {
                         Padding(
                           padding: const EdgeInsets.only(right: 32.0),
                           child:
-                              Text("${selectedDate.toLocal()}".split(' ')[0]),
+                          Text("${selectedDate.toLocal()}".split(' ')[0]),
                         ),
                       ],
                     ),
@@ -260,12 +304,7 @@ class _MyFormState extends State<MyForm> {
                       style:
                       TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
-            TextField(
-              controller: textController,
-              decoration: InputDecoration(hintText: 'Skriv inn din artikkel her...'),
-              minLines: 1,
-              maxLines: 200,
-            ),
+                    ..._getParagraphs(),
                     SizedBox(
                       height: 40,
                     ),
@@ -274,13 +313,18 @@ class _MyFormState extends State<MyForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                           showAlertPublishDialog(context);
+                            if (addCaseItem()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
+                            }
                           }
                         },
                         child: Text('Submit'),
                         color: Colors.green,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -307,6 +351,30 @@ class _MyFormState extends State<MyForm> {
 
   DateTime selectedDate = DateTime.now();
 
+  /// creates a list of paragraphs
+  List<Widget> _getParagraphs() {
+    List<Widget> friendsTextFields = [];
+    for (int i = 0; i < descriptionList.length; i++) {
+      friendsTextFields.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Row(
+          children: [
+            Expanded(
+                child:
+                BaseTextFields(descriptionList, i, 5, 'Enter a paragraph')),
+            SizedBox(
+              width: 16,
+            ),
+            // we need add button at last friends row
+            _addRemoveButton(
+                i == descriptionList.length - 1, i, descriptionList),
+          ],
+        ),
+      ));
+    }
+    return friendsTextFields;
+  }
+
 // creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
@@ -328,6 +396,7 @@ class _MyFormState extends State<MyForm> {
     }
     return friendsTextFields;
   }
+
   Widget showAlertDialog(BuildContext context, List list, int index) {
 
     // set up the buttons
@@ -341,48 +410,6 @@ class _MyFormState extends State<MyForm> {
       child: Text("Ja"),
       onPressed:  () {
         list.removeAt(index);
-        setState(() {});
-        Navigator.of(context).pop();
-
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Publisering av artikkel"),
-      content: Text("Er du sikker på at du vil publisere denne artikkelen?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  Widget showAlertPublishDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Nei"),
-      onPressed:  () {
-        Navigator.of(context).pop();
-      },
-    );
-    Widget continueButton = FlatButton(
-      child: Text("Ja"),
-      onPressed:  () {
-        if (addCaseItem()) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage()));
-        }
         setState(() {});
         Navigator.of(context).pop();
 

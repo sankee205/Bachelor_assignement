@@ -22,6 +22,23 @@ class DatabaseService {
     });
   }
 
+  Future updateCaseItemData(String id,
+      String image,
+      String title,
+      List author,
+      String publishedDate,
+      String introduction,
+      List text) async {
+    return await FirebaseFirestore.instance.collection('AllCases').doc(id).update({
+      'image': image,
+      'title': title,
+      'author': author,
+      'lastEdited': publishedDate,
+      'introduction': introduction,
+      'text': text,
+    });
+  }
+
   Future updateCaseData(
       String image,
       String title,
@@ -34,10 +51,38 @@ class DatabaseService {
       'title': title,
       'author': author,
       'publishedDate': publishedDate,
+      'lastEdited': null,
       'introduction': introduction,
       'text': text,
     });
   }
+
+  Future updateInfoPageContent(String textPhoto, String contactPhoto, String email, String tlf, List text, String author, String date) async{
+    return await FirebaseFirestore.instance.collection('InfoPageContent').doc(uid).set({
+      'textPhoto': textPhoto,
+      'contactPhoto': contactPhoto,
+      'email': email,
+      'tlf': tlf,
+      'author': author
+    });
+  }
+
+  Future getInfoPageContent()async{
+    return FirebaseFirestore.instance.collection('InfoPageContent').doc(uid).get();
+  }
+
+  Future getSingleCaseItem(String title)async{
+    List resultList = [];
+    await FirebaseFirestore.instance.collection('AllCases').where('title', isEqualTo: title).get().then((value) => {
+      value.docs.forEach((element) {
+        resultList.add(element);
+      })
+    });
+    return resultList;
+  }
+
+
+
   Future updateCaseByFolder(String folder,
       String image,
       String title,
@@ -60,6 +105,8 @@ class DatabaseService {
     try {
       await FirebaseFirestore.instance.collection(folder).get().then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
+          //print(element.id);
+          //element.reference.update({'id':element.id});
           itemsList.add(element);
         });
       });

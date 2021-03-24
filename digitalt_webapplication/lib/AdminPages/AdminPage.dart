@@ -1,9 +1,11 @@
+import 'package:digitalt_application/AdminPages/UpdateCasePage.dart';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_grid/responsive_grid.dart';
+import 'package:digitalt_application/AdminPages/AddCasePage.dart';
 
-import 'AddCasePage.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -35,115 +37,119 @@ class _AdminPageState extends State<AdminPage> {
                 child: Column(children: [
                   SizedBox(height: 10,),
                   Text('Admin Console', style: TextStyle(fontSize: 20),),
-                  SizedBox(height: 10,),
-
-                  Row(
-                    children: [
-                      Text('Legg til artikkel'),
-                      Align(
-                        alignment: Alignment.centerRight,
-                          child: RawMaterialButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyForm()));
-                        },
-                        elevation: 2.0,
-                        fillColor: Colors.grey,
-                        child: Icon(
-                          Icons.add,
-                          size: 20.0,
+                  ResponsiveGridRow(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ResponsiveGridCol(
+                          lg: 12,
+                          md: 12,
+                          xs: 12,
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  MyForm()));
+                              },
+                              child:Container(
+                                color: Colors.grey,
+                                margin: EdgeInsets.all(5),
+                                height: 120,
+                                child: Column(
+                                children: [
+                                  Icon(Icons.article, size: 50,),
+                                  Text('Legg til ny artikkel')
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                        padding: EdgeInsets.all(15.0),
-                        shape: CircleBorder(),
-                      ),)
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Text('Endre Artikkel'),
-                      TextFormField(
-                        controller: editArticle,
-                        decoration: InputDecoration(
-                            hintText: 'Navn på artikkel'),
-                        validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
-                          return null;
-                        },
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: RawMaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyForm()));
-                          },
-                          elevation: 2.0,
-                          fillColor: Colors.grey,
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                          ),
-                          padding: EdgeInsets.all(15.0),
-                          shape: CircleBorder(),
-                        ),),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Text('Endre text i informasjons siden'),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: RawMaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyForm()));
-                          },
-                          elevation: 2.0,
-                          fillColor: Colors.grey,
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                          ),
-                          padding: EdgeInsets.all(15.0),
-                          shape: CircleBorder(),
-                        ),),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      Text('Endre kontaktinformasjon i informasjonssiden'),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: RawMaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyForm()));
-                          },
-                          elevation: 2.0,
-                          fillColor: Colors.grey,
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                          ),
-                          padding: EdgeInsets.all(15.0),
-                          shape: CircleBorder(),
-                        ),),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
+                        ResponsiveGridCol(
+                          lg: 12,
+                          md: 12,
+                          xs: 12,
+                          child:GestureDetector(
+                              onTap: () {
+                                if(editArticle.text!= null && editArticle.text.length > 5){
+                                  print('edit article: '+ editArticle.text);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>  UpdateCasePage(caseTitle: editArticle.text)));
+                                }
 
-                ],
+                              },
+                              child:Container(
+                                color: Colors.grey,
+                                margin: EdgeInsets.all(5),
+                                height: 120,
+                                child: Column(
+                                children: [
+                                  Icon(Icons.article, size: 50,),
+                                  Text('Rediger artikkel'),
+                                  SizedBox(
+                                    width: 250,
+                                    child: TextField(
+                                      controller: editArticle,
+                                      decoration:
+                                      InputDecoration(hintText: 'Tittel til artikkel', hintStyle: TextStyle(fontSize: 15)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        ResponsiveGridCol(
+                          lg: 12,
+                          md: 12,
+                          xs: 12,
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  MyForm()));
+                              },
+                              child:Container(
+                                color: Colors.grey,
+                                margin: EdgeInsets.all(5),
+                                height: 120,
+                                child: Column(
+                                children: [
+                                  Icon(Icons.info, size: 50,),
+                                  Text('Rediger Informasjonsside Tekst')
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        ResponsiveGridCol(
+                          lg: 12,
+                          md: 12,
+                          xs: 12,
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  MyForm()));
+                              },
+                              child:Container(
+                                color: Colors.grey,
+                                margin: EdgeInsets.all(5),
+                                height: 120,
+                                child: Column(
+                                children: [
+                                  Icon(Icons.contact_phone_sharp, size: 50,),
+                                  Text('Rediger KontaktInformasjon')
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                  ])
+                  ]
                 ),
               ),
             )
