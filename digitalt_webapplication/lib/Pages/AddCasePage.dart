@@ -37,8 +37,8 @@ class _MyFormState extends State<MyForm> {
   final title = TextEditingController();
   final introduction = TextEditingController();
   String date = DateTime.now().toString();
-  static List<String> descriptionList = [null];
-  static List<String> authorList = [null];
+  static List descriptionList = [null];
+  static List authorList = [null];
 
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
@@ -50,7 +50,7 @@ class _MyFormState extends State<MyForm> {
       String imageUri = value.toString();
       if (imageUri != null) {
         var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, richText);
+            introduction.text, descriptionList);
         if (result != null) {
           success = true;
         } else {

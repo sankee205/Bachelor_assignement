@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Pages/AdminPage.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,6 +66,14 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.admin_panel_settings),
+            title: Text('Admin'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminPage()));
             },
           ),
         ],

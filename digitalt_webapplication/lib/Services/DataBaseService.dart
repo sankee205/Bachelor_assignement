@@ -25,10 +25,10 @@ class DatabaseService {
   Future updateCaseData(
       String image,
       String title,
-      List<String> author,
+      List author,
       String publishedDate,
       String introduction,
-      String text) async {
+      List text) async {
     return await FirebaseFirestore.instance.collection('AllCases').doc(uid).set({
       'image': image,
       'title': title,
@@ -41,10 +41,10 @@ class DatabaseService {
   Future updateCaseByFolder(String folder,
       String image,
       String title,
-      List<String> author,
+      List author,
       String publishedDate,
       String introduction,
-      String text) async {
+      List text) async {
     return await FirebaseFirestore.instance.collection(folder).doc(uid).set({
       'image': image,
       'title': title,

@@ -17,7 +17,7 @@ class CaseItem {
   final List author;
   final String publishedDate;
   final String introduction;
-  final String text;
+  final List text;
 
   Map<String, dynamic> toMap() {
     return {

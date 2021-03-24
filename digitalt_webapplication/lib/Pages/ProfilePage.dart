@@ -39,23 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white,
                     child: Row(
                       children: [
-                        /**Text('Add Article'),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyForm()));
-                          },
-                          elevation: 2.0,
-                          fillColor: Colors.white,
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                          ),
-                          padding: EdgeInsets.all(15.0),
-                          shape: CircleBorder(),
-                        ),*/
+
                       ],
                     )),
               ))),

@@ -21,7 +21,7 @@ class CasePage extends StatelessWidget {
   final List author;
   final String publishedDate;
   final String introduction;
-  final String text;
+  final List text;
 
   CasePage(
       {Key key,
@@ -153,10 +153,21 @@ class CasePage extends StatelessWidget {
                                 height: 20,
                               ),
                               //this is the description of the case. the main text
+                              //this is the description of the case. the main text
                               Container(
-                                margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black, fontSize: 20.0,
-                                    height: 1),),
+                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: Column(
+                                  children: text.map((item) {
+                                    return Container(
+                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               ),
                               SizedBox(
                                 height: 50,
