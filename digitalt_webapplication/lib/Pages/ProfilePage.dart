@@ -4,7 +4,7 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'AddCasePage.dart';
+import '../AdminPages/AddCasePage.dart';
 
 /**
  * this is the profile page. 
@@ -32,11 +32,9 @@ class _ProfilePageState extends State<ProfilePage> {
       //here comes the body of the home page
       body: SingleChildScrollView(
           child: Container(
-              color: Colors.grey.shade300,
               child: Center(
                 child: Container(
                     width: 600,
-                    color: Colors.white,
                     child: Row(
                       children: [
 

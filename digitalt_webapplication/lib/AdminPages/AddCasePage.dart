@@ -1,5 +1,3 @@
-
-
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
@@ -15,7 +13,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import 'HomePage.dart';
+import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
@@ -355,7 +353,7 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
-  Widget showAlertDialog(BuildContext context, List<String> list, int index) {
+  Widget showAlertDialog(BuildContext context, List list, int index) {
 
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -376,8 +374,8 @@ class _MyFormState extends State<MyForm> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
-      content: Text("Er du sikker på at du vil fjerne avsnittet?"),
+      title: Text("Slett"),
+      content: Text("Er du sikker på at du vil slette?"),
       actions: [
         cancelButton,
         continueButton,
@@ -394,7 +392,7 @@ class _MyFormState extends State<MyForm> {
   }
 
   /// add / remove button
-  Widget _addRemoveButton(bool add, int index, List<String> list) {
+  Widget _addRemoveButton(bool add, int index, List list) {
     return InkWell(
       onTap: () {
         if (add) {

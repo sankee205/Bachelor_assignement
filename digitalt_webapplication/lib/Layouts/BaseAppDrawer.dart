@@ -1,4 +1,4 @@
-import 'package:digitalt_application/Pages/AdminPage.dart';
+import 'file:///C:/Users/Viktor%20Gravdal/Documents/Keed/Bachelor_assignement/digitalt_webapplication/lib/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:flutter/cupertino.dart';

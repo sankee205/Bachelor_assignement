@@ -156,6 +156,7 @@ class CasePage extends StatelessWidget {
                               //this is the description of the case. the main text
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                width: 600,
                                 child: Column(
                                   children: text.map((item) {
                                     return Container(

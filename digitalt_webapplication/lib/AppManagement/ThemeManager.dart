@@ -1,12 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
-
 import 'StorageManager.dart';
 import 'package:flutter/material.dart';
 
 class ThemeNotifier with ChangeNotifier {
-  bool state = false;
+  bool state;
   final darkTheme = ThemeData(
     primaryColor: Colors.black,
     brightness: Brightness.dark,
@@ -42,9 +40,11 @@ class ThemeNotifier with ChangeNotifier {
       print('value read from storage: ' + value.toString());
       var themeMode = value ?? 'light';
       if (themeMode == 'light') {
+        state = false;
         _themeData = lightTheme;
       } else {
         print('setting dark theme');
+        state = true;
         _themeData = darkTheme;
       }
       notifyListeners();
