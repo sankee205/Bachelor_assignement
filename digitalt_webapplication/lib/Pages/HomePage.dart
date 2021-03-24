@@ -93,7 +93,6 @@ class HomePageState extends State<HomePage> {
           child: Center(
         child: Container(
           width: 800,
-          color: Colors.grey.shade300,
           child: Column(
             children: [
               ResponsiveGridRow(
@@ -102,7 +101,6 @@ class HomePageState extends State<HomePage> {
                     lg: 8,
                     xs: 12,
                     child: Container(
-                      color: Colors.white,
                       child: Column(
                         children: [
                           SizedBox(
@@ -110,7 +108,6 @@ class HomePageState extends State<HomePage> {
                           ),
                           Container(
                             padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(color: Colors.white),
                             height: 320,
                             child: ListView(
                               children: <Widget>[
@@ -130,9 +127,7 @@ class HomePageState extends State<HomePage> {
                     child: Container(
                       height: 325,
                       width: 400,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
+
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -140,7 +135,6 @@ class HomePageState extends State<HomePage> {
                               child: Text(
                                 'Siste Nytt',
                                 style: TextStyle(
-                                  color: Colors.black,
                                   fontSize: 25,
                                   decoration: TextDecoration.underline,
                                 ),
@@ -181,23 +175,21 @@ class HomePageState extends State<HomePage> {
                                         height: 40,
                                         width: 500,
                                         decoration: BoxDecoration(
-                                            color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(5),
-                                            boxShadow: [
+                                            /**boxShadow: [
                                               BoxShadow(
                                                   color: Colors.grey
                                                       .withOpacity(0.2),
                                                   blurRadius: 7,
                                                   offset: Offset(0, 3),
                                                   spreadRadius: 5)
-                                            ]),
+                                            ]*/),
                                         margin: EdgeInsets.fromLTRB(5, 3, 5, 3),
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           caseObject['title'],
                                           style: TextStyle(
-                                              color: Colors.black,
                                               fontSize: 15,
                                               fontStyle: FontStyle.normal),
                                         ),

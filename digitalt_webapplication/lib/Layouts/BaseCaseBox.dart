@@ -25,7 +25,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
           decoration:
               BoxDecoration(borderRadius: BorderRadius.circular(0), boxShadow: [
             BoxShadow(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.grey.withOpacity(0.8),
                 blurRadius: 0,
                 offset: Offset(0, 3),
                 spreadRadius: 5)
@@ -36,7 +36,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
               widget.title,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  //color: Colors.black,
                   fontSize: 15),
             ),
           ),
@@ -47,13 +47,13 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
               borderRadius: BorderRadius.circular(0),
               image: DecorationImage(
                   image: NetworkImage(widget.image), fit: BoxFit.cover),
-              boxShadow: [
+              /**boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    //color: Colors.grey.withOpacity(0.5),
                     blurRadius: 7,
                     offset: Offset(0, 3),
                     spreadRadius: 5)
-              ]),
+              ]*/),
         ));
   }
 }

@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.white,
                     child: Row(
                       children: [
-                        Text('Add Article'),
+                        /**Text('Add Article'),
                         RawMaterialButton(
                           onPressed: () {
                             Navigator.push(
@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           padding: EdgeInsets.all(15.0),
                           shape: CircleBorder(),
-                        ),
+                        ),*/
                       ],
                     )),
               ))),

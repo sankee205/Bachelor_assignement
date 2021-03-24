@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AppManagement/ThemeManager.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:digitalt_application/screens/authenticate/authenticate.dart';
 import 'package:digitalt_application/Pages/HomePage.dart';

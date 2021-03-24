@@ -145,7 +145,6 @@ class CasePage extends StatelessWidget {
                                 child: Text(
                                   introduction,
                                   style: TextStyle(
-                                      color: Colors.black,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -156,7 +155,7 @@ class CasePage extends StatelessWidget {
                               //this is the description of the case. the main text
                               Container(
                                 margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black,fontSize: 20.0,
+                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black, fontSize: 20.0,
                                     height: 1),),
                               ),
                               SizedBox(
