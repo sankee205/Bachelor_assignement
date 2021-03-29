@@ -1,5 +1,3 @@
-
-
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
@@ -15,7 +13,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import 'HomePage.dart';
+import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
@@ -37,8 +35,8 @@ class _MyFormState extends State<MyForm> {
   final title = TextEditingController();
   final introduction = TextEditingController();
   String date = DateTime.now().toString();
-  static List<String> descriptionList = [null];
-  static List<String> authorList = [null];
+  static List authorList = [null];
+  final textController = TextEditingController();
 
   Image _imageWidget;
   MediaInfo mediaInfo = MediaInfo();
@@ -50,7 +48,7 @@ class _MyFormState extends State<MyForm> {
       String imageUri = value.toString();
       if (imageUri != null) {
         var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, richText);
+            introduction.text, textController.text.split('/p'));
         if (result != null) {
           success = true;
         } else {
@@ -80,7 +78,7 @@ class _MyFormState extends State<MyForm> {
     }
   }
 
-  Future<void> getFile() async{
+ /** Future<void> getFile() async{
     var picked = await FilePicker.platform.pickFiles();
 
     //Load the existing PDF document.
@@ -98,7 +96,7 @@ class _MyFormState extends State<MyForm> {
       });
     }
 
-  }
+  }*/
 
   @override
   void dispose() {
@@ -112,7 +110,7 @@ class _MyFormState extends State<MyForm> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
@@ -241,7 +239,7 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
-                    Text(
+                   /** Text(
                       'Upload File',
                       style:
                       TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
@@ -255,14 +253,19 @@ class _MyFormState extends State<MyForm> {
                       child: richText == null
                           ? Text('No file selected.')
                           : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
-                    ),
+                    ),*/
 
                     Text(
                       'Description',
                       style:
                       TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
-                    ..._getParagraphs(),
+            TextField(
+              controller: textController,
+              decoration: InputDecoration(hintText: 'Skriv inn din artikkel her...'),
+              minLines: 1,
+              maxLines: 200,
+            ),
                     SizedBox(
                       height: 40,
                     ),
@@ -271,18 +274,13 @@ class _MyFormState extends State<MyForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            if (addCaseItem()) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
-                            }
+                           showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
                         color: Colors.green,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -309,30 +307,6 @@ class _MyFormState extends State<MyForm> {
 
   DateTime selectedDate = DateTime.now();
 
-  /// creates a list of paragraphs
-  List<Widget> _getParagraphs() {
-    List<Widget> friendsTextFields = [];
-    for (int i = 0; i < descriptionList.length; i++) {
-      friendsTextFields.add(Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        child: Row(
-          children: [
-            Expanded(
-                child:
-                    BaseTextFields(descriptionList, i, 5, 'Enter a paragraph')),
-            SizedBox(
-              width: 16,
-            ),
-            // we need add button at last friends row
-            _addRemoveButton(
-                i == descriptionList.length - 1, i, descriptionList),
-          ],
-        ),
-      ));
-    }
-    return friendsTextFields;
-  }
-
 // creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
@@ -354,8 +328,7 @@ class _MyFormState extends State<MyForm> {
     }
     return friendsTextFields;
   }
-
-  Widget showAlertDialog(BuildContext context, List<String> list, int index) {
+  Widget showAlertDialog(BuildContext context, List list, int index) {
 
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -376,8 +349,50 @@ class _MyFormState extends State<MyForm> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
-      content: Text("Er du sikker på at du vil fjerne avsnittet?"),
+      title: Text("Publisering av artikkel"),
+      content: Text("Er du sikker på at du vil publisere denne artikkelen?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Widget showAlertPublishDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed:  () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed:  () {
+        if (addCaseItem()) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage()));
+        }
+        setState(() {});
+        Navigator.of(context).pop();
+
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Slett"),
+      content: Text("Er du sikker på at du vil slette?"),
       actions: [
         cancelButton,
         continueButton,
@@ -394,7 +409,7 @@ class _MyFormState extends State<MyForm> {
   }
 
   /// add / remove button
-  Widget _addRemoveButton(bool add, int index, List<String> list) {
+  Widget _addRemoveButton(bool add, int index, List list) {
     return InkWell(
       onTap: () {
         if (add) {

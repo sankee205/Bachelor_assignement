@@ -1,4 +1,6 @@
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
+import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +29,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
               color: Colors.red,
             ),
             child: Text(
-              'Drawer Header',
+              'DIGI-TALT',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -61,6 +63,18 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.admin_panel_settings),
+            title: Text('Admin'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminPage()));
+            },
           ),
         ],
       ),

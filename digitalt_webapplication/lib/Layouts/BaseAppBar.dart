@@ -1,4 +1,3 @@
-import 'package:digitalt_application/Services/auth.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
  * in all the different pages in the app/web app
  */
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color backgroundColor = Colors.red;
+ // final Color backgroundColor = Colors.red;
   final Text title;
   final AppBar appBar;
   final List<Widget> widgets;
@@ -20,7 +19,6 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: title,
-      backgroundColor: backgroundColor,
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.all(30.0),

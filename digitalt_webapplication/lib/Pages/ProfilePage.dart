@@ -4,7 +4,7 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'AddCasePage.dart';
+import '../AdminPages/AddCasePage.dart';
 
 /**
  * this is the profile page. 
@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
@@ -32,30 +32,12 @@ class _ProfilePageState extends State<ProfilePage> {
       //here comes the body of the home page
       body: SingleChildScrollView(
           child: Container(
-              color: Colors.grey.shade300,
               child: Center(
                 child: Container(
                     width: 600,
-                    color: Colors.white,
                     child: Row(
                       children: [
-                        Text('Add Article'),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MyForm()));
-                          },
-                          elevation: 2.0,
-                          fillColor: Colors.white,
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                          ),
-                          padding: EdgeInsets.all(15.0),
-                          shape: CircleBorder(),
-                        ),
+
                       ],
                     )),
               ))),

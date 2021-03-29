@@ -20,8 +20,11 @@ class CasePage extends StatelessWidget {
   final String title;
   final List author;
   final String publishedDate;
+  final String lastEdited;
   final String introduction;
-  final String text;
+  final List text;
+
+  Text _lastEditedText;
 
   CasePage(
       {Key key,
@@ -30,15 +33,20 @@ class CasePage extends StatelessWidget {
       @required this.author,
       @required this.publishedDate,
       @required this.introduction,
-      @required this.text})
+      @required this.text,
+        this.lastEdited
+      })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if(lastEdited !=null){
+      _lastEditedText = Text('Sist edret: '+lastEdited);
+    }
     return Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT'),
+        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
@@ -137,6 +145,7 @@ class CasePage extends StatelessWidget {
                                   ),
                                   Icon(Icons.date_range),
                                   Text(publishedDate)
+
                                 ],
                               ),
 
@@ -145,7 +154,6 @@ class CasePage extends StatelessWidget {
                                 child: Text(
                                   introduction,
                                   style: TextStyle(
-                                      color: Colors.black,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -154,14 +162,34 @@ class CasePage extends StatelessWidget {
                                 height: 20,
                               ),
                               //this is the description of the case. the main text
+                              //this is the description of the case. the main text
                               Container(
-                                margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                                child: EasyRichText(text, defaultStyle: TextStyle(color: Colors.black,fontSize: 20.0,
-                                    height: 1),),
+                                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                width: 600,
+                                child: Column(
+                                  children: text.map((item) {
+                                    return Container(
+                                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: _lastEditedText == null
+                                    ? Text('Denne artikkelen har aldri blitt endret')
+                                    : _lastEditedText,
                               ),
                               SizedBox(
                                 height: 50,
-                              )
+                              ),
                             ],
                           ),
                         ),
