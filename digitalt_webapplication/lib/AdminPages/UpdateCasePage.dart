@@ -309,6 +309,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     SizedBox(
                       height: 40,
                     ),
+
                     Center(
                       child: FlatButton(
                         onPressed: () {

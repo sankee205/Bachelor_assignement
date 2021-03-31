@@ -39,6 +39,11 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   static List textList = [];
   static List authorList = [];
 
+  Text saveImageText = Text(
+    'Save new images',
+    style: TextStyle(fontSize: 15),
+  );
+
   Image contactPhoto;
   Image textPhoto;
   Image backgroundPhoto;
@@ -74,8 +79,9 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   }
 
   bool addCaseItem() {
+    print(contactUrl);
+    print(textUrl);
     bool success = true;
-
     var result = db.updateInfoPageContent(textUrl, contactUrl, email.text,
         tlf.text, textList, authorList, date, backgroundUrl);
     if (result != null) {
@@ -84,29 +90,10 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
       print('failed to upload case item');
       success = false;
     }
-
     return success;
   }
 
-//gets the image that is added
-  Future<void> getContactImage() async {
-    var mediaData = await ImagePickerWeb.getImageInfo;
-    contactPhotoInfo = mediaData;
-    String mimeType = mime(Path.basename(mediaData.fileName));
-    html.File mediaFile =
-        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
-
-    if (mediaFile != null) {
-      setState(() {
-        contactPhoto = Image.memory(
-          mediaData.data,
-          fit: BoxFit.fitWidth,
-        );
-      });
-    }
-  }
-
-  Future photoState() async {
+  Future savePhotoState() async {
     if (contactPhotoInfo != null) {
       String imageUri;
       await db.uploadFile(contactPhotoInfo).then((value) {
@@ -132,6 +119,41 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
       });
       setState(() {
         backgroundUrl = imageUri;
+      });
+    }
+    if (contactPhotoInfo != null ||
+        backgroundPhotoInfo != null ||
+        textPhotoInfo != null) {
+      setState(() {
+        saveImageText = Text(
+          'Uploaded succesfully',
+          style: TextStyle(color: Colors.green, fontSize: 15),
+        );
+      });
+    } else {
+      setState(() {
+        saveImageText = Text(
+          'No new Images, old will be kept',
+          style: TextStyle(color: Colors.red, fontSize: 15),
+        );
+      });
+    }
+  }
+
+//gets the image that is added
+  Future<void> getContactImage() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    contactPhotoInfo = mediaData;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
+      setState(() {
+        contactPhoto = Image.memory(
+          mediaData.data,
+          fit: BoxFit.fitWidth,
+        );
       });
     }
   }
@@ -286,6 +308,26 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       height: 20,
                     ),
 
+                    Row(
+                      children: [
+                        FlatButton(
+                          onPressed: () {
+                            savePhotoState();
+                          },
+                          child: Icon(Icons.save),
+                          color: Colors.green,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        saveImageText,
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+
                     Text(
                       'Email',
                       style:
@@ -380,6 +422,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     ..._getParagraphs(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Center(
+                      child: Text(
+                        'Remember to save new images, before submitting',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+
                     SizedBox(
                       height: 40,
                     ),
