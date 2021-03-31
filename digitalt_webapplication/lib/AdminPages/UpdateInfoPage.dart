@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
+import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
+
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -16,7 +12,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
@@ -26,27 +21,36 @@ import '../Layouts/BaseAppDrawer.dart';
  *
  * this page is only available on web
  */
-class UpdateCasePage extends StatefulWidget {
-  final String caseTitle;
-
-  const UpdateCasePage({Key key, this.caseTitle}) : super(key: key);
+class UpdateInfoPage extends StatefulWidget {
   @override
-  _UpdateCasePageState createState() => _UpdateCasePageState();
+  _UpdateInfoPageState createState() => _UpdateInfoPageState();
 }
 
-class _UpdateCasePageState extends State<UpdateCasePage> {
+class _UpdateInfoPageState extends State<UpdateInfoPage> {
   DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  String id;
-  String imageUrl;
-  final title = TextEditingController();
-  final introduction = TextEditingController();
-  String date = DateTime.now().toString();
-  static List descriptionList = [];
+  String contactUrl;
+  String textUrl;
+  String backgroundUrl;
+  final email = TextEditingController();
+  final tlf = TextEditingController();
+
+  String date;
+  static List textList = [];
   static List authorList = [];
 
-  Image _imageWidget;
-  MediaInfo mediaInfo;
+  Text saveImageText = Text(
+    'Save new images',
+    style: TextStyle(fontSize: 15),
+  );
+
+  Image contactPhoto;
+  Image textPhoto;
+  Image backgroundPhoto;
+
+  MediaInfo contactPhotoInfo;
+  MediaInfo textPhotoInfo;
+  MediaInfo backgroundPhotoInfo;
   String richText;
 
   @override
@@ -56,94 +60,142 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   }
 
   Future fetchCaseItem() async {
-    List resultList = await db.getSingleCaseItem(widget.caseTitle);
+    List resultList = await db.getInfoPageContent();
     var result = resultList[0];
     print(result);
     setState(() {
-      imageUrl = result['image'];
-      _imageWidget = Image.network(result['image']);
-      id = result['id'];
-      title.text = result['title'];
-      introduction.text = result['introduction'];
-      descriptionList = result['text'];
+      textList = result['text'];
       authorList = result['author'];
+      contactUrl = result['contactPhoto'];
+      contactPhoto = Image.network(contactUrl);
+      date = result['date'];
+      email.text = result['email'];
+      textUrl = result['textPhoto'];
+      textPhoto = Image.network(textUrl);
+      tlf.text = result['tlf'];
+      backgroundUrl = result['backgroundPhoto'];
+      backgroundPhoto = Image.network(backgroundUrl);
     });
   }
 
   bool addCaseItem() {
+    print(contactUrl);
+    print(textUrl);
     bool success = true;
-    if (mediaInfo == null) {
-      var result = db.updateCaseItemData(id, imageUrl, title.text, authorList,
-          date, introduction.text, descriptionList);
-      if (result != null) {
-        success = true;
-      } else {
-        print('failed to upload case item');
-        success = false;
-      }
+    var result = db.updateInfoPageContent(textUrl, contactUrl, email.text,
+        tlf.text, textList, authorList, date, backgroundUrl);
+    if (result != null) {
+      success = true;
     } else {
-      db.uploadFile(mediaInfo).then((value) {
-        String imageUri = value.toString();
-        if (imageUri != null) {
-          var result = db.updateCaseItemData(id, imageUri, title.text,
-              authorList, date, introduction.text, descriptionList);
-          if (result != null) {
-            success = true;
-          } else {
-            print('failed to upload case item');
-            success = false;
-          }
-        } else {
-          print('imageUri is null');
-          success = false;
-        }
-      });
+      print('failed to upload case item');
+      success = false;
     }
     return success;
   }
 
+  Future savePhotoState() async {
+    if (contactPhotoInfo != null) {
+      String imageUri;
+      await db.uploadFile(contactPhotoInfo).then((value) {
+        imageUri = value.toString();
+      });
+      setState(() {
+        contactUrl = imageUri;
+      });
+    }
+    if (textPhotoInfo != null) {
+      String imageUri;
+      await db.uploadFile(textPhotoInfo).then((value) {
+        imageUri = value.toString();
+      });
+      setState(() {
+        textUrl = imageUri;
+      });
+    }
+    if (backgroundPhotoInfo != null) {
+      String imageUri;
+      await db.uploadFile(backgroundPhotoInfo).then((value) {
+        imageUri = value.toString();
+      });
+      setState(() {
+        backgroundUrl = imageUri;
+      });
+    }
+    if (contactPhotoInfo != null ||
+        backgroundPhotoInfo != null ||
+        textPhotoInfo != null) {
+      setState(() {
+        saveImageText = Text(
+          'Uploaded succesfully',
+          style: TextStyle(color: Colors.green, fontSize: 15),
+        );
+      });
+    } else {
+      setState(() {
+        saveImageText = Text(
+          'No new Images, old will be kept',
+          style: TextStyle(color: Colors.red, fontSize: 15),
+        );
+      });
+    }
+  }
+
 //gets the image that is added
-  Future<void> getImage() async {
+  Future<void> getContactImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    mediaInfo = mediaData;
+    contactPhotoInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        _imageWidget = Image.memory(
+        contactPhoto = Image.memory(
           mediaData.data,
-          fit: BoxFit.contain,
+          fit: BoxFit.fitWidth,
         );
       });
     }
   }
 
-  /*Future<void> getFile() async{
-    var picked = await FilePicker.platform.pickFiles();
+  Future<void> getTextImage() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    textPhotoInfo = mediaData;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
-    //Load the existing PDF document.
-    final PdfDocument document =
-    PdfDocument(inputBytes: picked.files.single.bytes);
-    //Get the text from the pdf
-    String text = PdfTextExtractor(document).extractText().trimRight();
-
-
-
-    if (picked != null) {
+    if (mediaFile != null) {
       setState(() {
-        descriptionList = text.trim().split('/n');
-        //richText = text;
+        textPhoto = Image.memory(
+          mediaData.data,
+          fit: BoxFit.fitWidth,
+        );
       });
     }
+  }
 
-  }*/
+  Future<void> getBackgroundImage() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    backgroundPhotoInfo = mediaData;
+    String mimeType = mime(Path.basename(mediaData.fileName));
+    html.File mediaFile =
+        new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
+
+    if (mediaFile != null) {
+      setState(() {
+        backgroundPhoto = Image.memory(
+          mediaData.data,
+          fit: BoxFit.fitWidth,
+        );
+      });
+    }
+  }
 
   @override
   void dispose() {
-    title.dispose();
-    introduction.dispose();
+    email.dispose();
+    tlf.dispose();
     super.dispose();
   }
 
@@ -177,7 +229,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                   children: [
                     Center(
                       child: Text(
-                        'Add Article',
+                        'Edit Info Page',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -185,19 +237,99 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     SizedBox(
                       height: 40,
                     ),
-                    Center(
-                      child: _imageWidget == null
-                          ? Text('No image selected.')
-                          : _imageWidget,
+                    Row(
+                      children: [
+                        Center(
+                          child: contactPhoto == null ? Text('') : contactPhoto,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        FloatingActionButton(
+                          onPressed: getContactImage,
+                          heroTag: 'contactImage',
+                          child: Icon(Icons.add_a_photo),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text('Contact Photo')
+                      ],
                     ),
-                    FloatingActionButton(
-                      onPressed: getImage,
-                      heroTag: 'PickImage',
-                      child: Icon(Icons.add_a_photo),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    Row(
+                      children: [
+                        Center(
+                          child: textPhoto == null ? Text('') : textPhoto,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        FloatingActionButton(
+                          onPressed: getTextImage,
+                          heroTag: 'textImage',
+                          child: Icon(Icons.add_a_photo),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text('Info Photo')
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    Row(
+                      children: [
+                        Center(
+                          child: backgroundPhoto == null
+                              ? Text('')
+                              : backgroundPhoto,
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        FloatingActionButton(
+                          onPressed: getBackgroundImage,
+                          heroTag: 'backgroundImage',
+                          child: Icon(Icons.add_a_photo),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text('Background Photo')
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+
+                    Row(
+                      children: [
+                        FlatButton(
+                          onPressed: () {
+                            savePhotoState();
+                          },
+                          child: Icon(Icons.save),
+                          color: Colors.green,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        saveImageText,
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 20,
                     ),
 
                     Text(
-                      'Title',
+                      'Email',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -208,9 +340,9 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: title,
+                        controller: email,
                         decoration:
-                            InputDecoration(hintText: 'Enter your Title'),
+                            InputDecoration(hintText: 'Enter your Email'),
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
                           return null;
@@ -221,7 +353,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       height: 40,
                     ),
                     Text(
-                      'Introduction',
+                      'TLF',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -232,9 +364,8 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: introduction,
-                        decoration: InputDecoration(
-                            hintText: 'Enter your Introduction'),
+                        controller: tlf,
+                        decoration: InputDecoration(hintText: 'Enter your tlf'),
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
                           return null;
@@ -284,24 +415,9 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     SizedBox(
                       height: 40,
                     ),
-                    /*Text(
-                      'Upload File',
-                      style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'filebutton',
-                      onPressed: getFile,
-                      child: Icon(Icons.file_upload),
-                    ),
-                    Container(
-                      child: richText == null
-                          ? Text('No file selected.')
-                          : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
-                    ),*/
 
                     Text(
-                      'Description',
+                      'Info Text',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -309,7 +425,16 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     SizedBox(
                       height: 40,
                     ),
+                    Center(
+                      child: Text(
+                        'Remember to save new images, before submitting',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
 
+                    SizedBox(
+                      height: 40,
+                    ),
                     Center(
                       child: FlatButton(
                         onPressed: () {
@@ -356,20 +481,18 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   /// creates a list of paragraphs
   List<Widget> _getParagraphs() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < descriptionList.length; i++) {
+    for (int i = 0; i < textList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child:
-                    BaseTextFields(descriptionList, i, 5, 'Enter a paragraph')),
+                child: BaseTextFields(textList, i, 5, 'Enter a paragraph')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(
-                i == descriptionList.length - 1, i, descriptionList),
+            _addRemoveButton(i == textList.length - 1, i, textList),
           ],
         ),
       ));
@@ -377,7 +500,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     return friendsTextFields;
   }
 
-// creates a list of authors
+//creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
     for (int i = 0; i < authorList.length; i++) {
