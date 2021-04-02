@@ -1,9 +1,15 @@
 import 'package:digitalt_application/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalt_application/busyButton.dart';
+import 'package:digitalt_application/expansionList.dart';
+import 'package:digitalt_application/inputField.dart';
+import 'package:digitalt_application/uiHelpers.dart';
+import 'package:stacked/stacked.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
   Register({this.toggleView});
+ 
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -12,6 +18,9 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final fullNameController = TextEditingController();
 
   // text field state
   String email = '';
@@ -33,54 +42,61 @@ class _RegisterState extends State<Register> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-          key: _formKey,
+      body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20.0),
-              TextFormField(
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
-                onChanged: (val) {
-                  setState(() => email = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextFormField(
-                obscureText: true,
-                validator: (val) => val.length < 6
-                    ? 'Enter a password 6+ characters long'
-                    : null,
-                onChanged: (val) {
-                  setState(() => password = val);
-                },
-              ),
-              SizedBox(height: 20.0),
-              TextButton(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      dynamic result = await _auth.registerWithEmailAndPassword(
-                          email, password);
-
-                      if (result == null) {
-                        setState(() => error = 'please supply a valid email');
-                      }
-                    }
-                  }),
-              SizedBox(height: 12.0),
               Text(
-                error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
+                'Sign Up',
+                style: TextStyle(
+                  fontSize: 38,
+                ),
+              ),
+              verticalSpaceLarge,
+              InputField(
+                placeholder: 'Full Name',
+                controller: fullNameController,
+              ),
+              verticalSpaceSmall,
+              InputField(
+                placeholder: 'Email',
+                controller: emailController,
+              ),
+              verticalSpaceSmall,
+              InputField(
+                placeholder: 'Password',
+                password: true,
+                controller: passwordController,
+                additionalNote: 'Password has to be a minimum of 6 characters.',
+              ),
+              verticalSpaceSmall,
+              ExpansionList<String>(
+                  items: ['Admin', 'User'],
+                  title: model.selectedRole,
+                  onItemSelected: model.setSelectedRole),
+              verticalSpaceMedium,
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  BusyButton(
+                    title: 'Sign Up',
+                    busy: model.busy,
+                    onPressed: () {
+                      model.signUp(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          fullName: fullNameController.text);
+                    },
+                  )
+                ],
               )
             ],
           ),
         ),
-      ),
     );
   }
 }
