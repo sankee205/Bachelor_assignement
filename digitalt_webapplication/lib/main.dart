@@ -13,28 +13,52 @@ import 'AppManagement/ThemeManager.dart';
  * @Sander Keedklang 
  * @Mathias Gjærde Forberg
  */
+
+import 'startUpView.dart';
+import 'package:flutter/material.dart';
+import 'navigationService.dart';
+import 'dialogService.dart';
+import 'dialogManager.dart';
+import 'router.dart';
+import 'locator.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  setupLocator();
+
   // calls the class HomePage to run
   runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => new ThemeNotifier(),
     child: MyApp(),
   ));
+  // Register all the models and services before the app starts
 }
 
-//creates a stateful widget and returns the Homepage
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<BaseUser>.value(
-        value: AuthService().user,
-        initialData: null,
-        child: Consumer<ThemeNotifier>(
-            builder: (context, theme, _) => MaterialApp(
-          theme: theme.getTheme(),
-          home: Wrapper(),
-          debugShowCheckedModeBanner: false,
-        )));
+    return MaterialApp(
+      title: 'DIGI-TALT',
+      builder: (context, child) => Navigator(
+        key: locator<DialogService>().dialogNavigationKey,
+        onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => DialogManager(child: child)),
+      ),
+      navigatorKey: locator<NavigationService>().navigationKey,
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 9, 202, 172),
+        backgroundColor: Color.fromARGB(255, 26, 27, 30),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'Open Sans',
+            ),
+      ),
+      home: StartUpView(),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: generateRoute,
+    );
   }
 }
+
+

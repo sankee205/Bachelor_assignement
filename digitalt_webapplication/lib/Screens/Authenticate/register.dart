@@ -29,53 +29,54 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.brown[100],
-      appBar: AppBar(
-        backgroundColor: Colors.brown[400],
-        elevation: 0.0,
-        title: Text('Sign up to Digi-talt'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Log in'),
-            onPressed: () => widget.toggleView(),
+    var model;
+        return Scaffold(
+          backgroundColor: Colors.brown[100],
+          appBar: AppBar(
+            backgroundColor: Colors.brown[400],
+            elevation: 0.0,
+            title: Text('Sign up to Digi-talt'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Log in'),
+                onPressed: () => widget.toggleView(),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 38,
-                ),
-              ),
-              verticalSpaceLarge,
-              InputField(
-                placeholder: 'Full Name',
-                controller: fullNameController,
-              ),
-              verticalSpaceSmall,
-              InputField(
-                placeholder: 'Email',
-                controller: emailController,
-              ),
-              verticalSpaceSmall,
-              InputField(
-                placeholder: 'Password',
-                password: true,
-                controller: passwordController,
-                additionalNote: 'Password has to be a minimum of 6 characters.',
-              ),
-              verticalSpaceSmall,
-              ExpansionList<String>(
-                  items: ['Admin', 'User'],
-                  title: model.selectedRole,
+          body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 38,
+                    ),
+                  ),
+                  verticalSpaceLarge,
+                  InputField(
+                    placeholder: 'Full Name',
+                    controller: fullNameController,
+                  ),
+                  verticalSpaceSmall,
+                  InputField(
+                    placeholder: 'Email',
+                    controller: emailController,
+                  ),
+                  verticalSpaceSmall,
+                  InputField(
+                    placeholder: 'Password',
+                    password: true,
+                    controller: passwordController,
+                    additionalNote: 'Password has to be a minimum of 6 characters.',
+                  ),
+                  verticalSpaceSmall,
+                  ExpansionList<String>(
+                      items: ['Admin', 'User'],
+                      title: model.selectedRole,
                   onItemSelected: model.setSelectedRole),
               verticalSpaceMedium,
               Row(
