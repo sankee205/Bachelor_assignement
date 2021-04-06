@@ -10,6 +10,8 @@ class SignUpView extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final fullNameController = TextEditingController();
+  final Function toggleView;
+  SignUpView({this.toggleView});
 
   @override
   Widget build(BuildContext context) {

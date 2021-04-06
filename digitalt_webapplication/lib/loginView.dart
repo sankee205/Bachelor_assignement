@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/uiHelpers.dart';
 import 'package:digitalt_application/busyButton.dart';
@@ -10,6 +11,9 @@ import 'package:digitalt_application/loginViewModel.dart';
 import 'package:digitalt_application/Pages/VippsLoginPage.dart';
 
 class LoginView extends StatefulWidget {
+  final Function toggleView;
+  LoginView({this.toggleView});
+
   @override
   _LoginViewState createState() => _LoginViewState();
 }
@@ -84,6 +88,13 @@ class _LoginViewState extends State<LoginView> {
                               if (result == null) {
                                 setState(() => error =
                                     'Could not log in with those credentials!');
+                              } else {
+                                print('signed in');
+                                print(result);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()));
                               }
                             }
                           },

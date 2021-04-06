@@ -1,3 +1,4 @@
+import 'package:digitalt_application/startUpView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/wrapper.dart';
@@ -14,7 +15,6 @@ import 'AppManagement/ThemeManager.dart';
  * @Mathias Gjærde Forberg
  */
 
-import 'startUpView.dart';
 import 'package:flutter/material.dart';
 import 'navigationService.dart';
 import 'dialogService.dart';
@@ -60,5 +60,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
