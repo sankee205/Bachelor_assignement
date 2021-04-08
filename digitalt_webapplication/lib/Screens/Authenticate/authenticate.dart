@@ -1,7 +1,7 @@
-import 'package:digitalt_application/Screens/Authenticate/loginPage.dart';
+import 'package:digitalt_application/loginView.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/Screens/Authenticate/loginPage.dart';
-import 'package:digitalt_application/Screens/Authenticate/register.dart';
+import 'package:digitalt_application/signUpView.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -17,9 +17,9 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignIn) {
-      return LoginScreen(toggleView: toggleView);
+      return LoginView(toggleView: toggleView);
     } else {
-      return Register(toggleView: toggleView);
+      return SignUpView(toggleView: toggleView);
     }
   }
 }

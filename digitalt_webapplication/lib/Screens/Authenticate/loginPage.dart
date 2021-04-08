@@ -35,17 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            TextButton(
-                child: Text('Registrer deg'),
-                onPressed: () {
-                  widget.toggleView();
-                })
-          ],
-        ),
+        
         backgroundColor: primaryColor,
         body: Center(
           child: Container(

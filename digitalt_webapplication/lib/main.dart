@@ -1,6 +1,8 @@
+import 'package:digitalt_application/startUpView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/wrapper.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
@@ -13,28 +15,47 @@ import 'AppManagement/ThemeManager.dart';
  * @Sander Keedklang 
  * @Mathias Gjærde Forberg
  */
+
+import 'package:flutter/material.dart';
+import 'navigationService.dart';
+import 'Services/dialogService.dart';
+import 'dialogManager.dart';
+import 'router.dart';
+import 'locator.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  setupLocator();
+
   // calls the class HomePage to run
   runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => new ThemeNotifier(),
     child: MyApp(),
   ));
+  // Register all the models and services before the app starts
 }
 
-//creates a stateful widget and returns the Homepage
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<BaseUser>.value(
-        value: AuthService().user,
-        initialData: null,
-        child: Consumer<ThemeNotifier>(
-            builder: (context, theme, _) => MaterialApp(
+    return Container(
+      child: Consumer<ThemeNotifier>(
+        builder: (context, theme, widget) => MaterialApp(
+          title: 'DIGI-TALT',
+          builder: (context, child) => Navigator(
+            key: locator<DialogService>().dialogNavigationKey,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (context) => DialogManager(child: child)),
+          ),
+          navigatorKey: locator<NavigationService>().navigationKey,
           theme: theme.getTheme(),
-          home: Wrapper(),
+          home: StartUpView(),
           debugShowCheckedModeBanner: false,
-        )));
+          onGenerateRoute: generateRoute,
+        ),
+      ),
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:digitalt_application/Services/VippsApi.dart';
+import 'package:digitalt_application/loginView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,7 +49,7 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                           width: 150,
                           child: TextField(
                             controller: number,
-                            decoration: new InputDecoration(labelText: "TelefonNummer"),
+                            decoration: new InputDecoration(labelText: "Telefonnummer"),
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly
@@ -79,7 +80,7 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                 ),
               ),
               TextButton(
-                  onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));},
+                  onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => LoginView()));},
                   child: Text('Avbryt', style: TextStyle(color: Colors.grey),))
             ],
           )
