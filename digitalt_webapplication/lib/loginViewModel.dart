@@ -1,11 +1,11 @@
 import 'routeNames.dart';
 import 'locator.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'dialogService.dart';
+import 'Services/dialogService.dart';
 import 'navigationService.dart';
 import 'package:flutter/foundation.dart';
 
-import 'baseModel.dart';
+import 'models/baseModel.dart';
 
 class LoginViewModel extends BaseModel {
   final AuthService _authenticationService =

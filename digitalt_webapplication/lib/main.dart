@@ -2,6 +2,7 @@ import 'package:digitalt_application/startUpView.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/wrapper.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
@@ -17,7 +18,7 @@ import 'AppManagement/ThemeManager.dart';
 
 import 'package:flutter/material.dart';
 import 'navigationService.dart';
-import 'dialogService.dart';
+import 'Services/dialogService.dart';
 import 'dialogManager.dart';
 import 'router.dart';
 import 'locator.dart';
@@ -39,24 +40,22 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DIGI-TALT',
-      builder: (context, child) => Navigator(
-        key: locator<DialogService>().dialogNavigationKey,
-        onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => DialogManager(child: child)),
+    return Container(
+      child: Consumer<ThemeNotifier>(
+        builder: (context, theme, widget) => MaterialApp(
+          title: 'DIGI-TALT',
+          builder: (context, child) => Navigator(
+            key: locator<DialogService>().dialogNavigationKey,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (context) => DialogManager(child: child)),
+          ),
+          navigatorKey: locator<NavigationService>().navigationKey,
+          theme: theme.getTheme(),
+          home: StartUpView(),
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: generateRoute,
+        ),
       ),
-      navigatorKey: locator<NavigationService>().navigationKey,
-      theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 9, 202, 172),
-        backgroundColor: Color.fromARGB(255, 26, 27, 30),
-        textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: 'Open Sans',
-            ),
-      ),
-      home: StartUpView(),
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: generateRoute,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:digitalt_application/firestoreService.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/locator.dart';
 
 import 'DataBaseService.dart';
@@ -53,6 +53,7 @@ class AuthService {
     @required String email,
     @required String password,
     @required String fullName,
+    @required String phonenumber,
     @required String role,
   }) async {
     try {
@@ -67,6 +68,7 @@ class AuthService {
         uid: authResult.user.uid,
         email: email,
         fullName: fullName,
+        phonenumber: phonenumber,
         userRole: role,
       );
 
@@ -99,8 +101,6 @@ class AuthService {
       _currentUser = await _firestoreService.getUser(user.uid);
     }
   }
-
-  
 
   Future loginWithEmail({
     @required String email,

@@ -1,15 +1,13 @@
 import 'package:digitalt_application/routeNames.dart';
 import 'package:digitalt_application/locator.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/dialogService.dart';
+import 'package:digitalt_application/Services/dialogService.dart';
 import 'package:digitalt_application/navigationService.dart';
 import 'package:flutter/foundation.dart';
-
-import 'baseModel.dart';
+import 'package:digitalt_application/models/baseModel.dart';
 
 class SignUpViewModel extends BaseModel {
-  final AuthService _authenticationService =
-      locator<AuthService>();
+  final AuthService _authenticationService = locator<AuthService>();
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
@@ -25,6 +23,7 @@ class SignUpViewModel extends BaseModel {
     @required String email,
     @required String password,
     @required String fullName,
+    @required String phonenumber,
   }) async {
     setBusy(true);
 
@@ -32,6 +31,7 @@ class SignUpViewModel extends BaseModel {
         email: email,
         password: password,
         fullName: fullName,
+        phonenumber: phonenumber,
         role: _selectedRole);
 
     setBusy(false);

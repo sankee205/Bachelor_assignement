@@ -1,15 +1,18 @@
+import 'package:digitalt_application/loginView.dart';
+
 import 'uiHelpers.dart';
 import 'busyButton.dart';
 import 'expansionList.dart';
 import 'inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'signupViewModel.dart';
+import 'package:digitalt_application/signupViewModel.dart';
 
 class SignUpView extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final fullNameController = TextEditingController();
+  final phonenumberController = TextEditingController();
   final Function toggleView;
   SignUpView({this.toggleView});
 
@@ -18,6 +21,19 @@ class SignUpView extends StatelessWidget {
     return ViewModelBuilder<SignUpViewModel>.reactive(
       viewModelBuilder: () => SignUpViewModel(),
       builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            MaterialButton(
+                child: Text('Logg inn'),
+                onPressed: () {
+                  Navigator.pop(context,
+                      MaterialPageRoute(builder: (context) => LoginView()));
+                }),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50.0),
           child: Column(
@@ -26,27 +42,32 @@ class SignUpView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Sign Up',
+                'Registrer deg',
                 style: TextStyle(
                   fontSize: 38,
                 ),
               ),
               verticalSpaceLarge,
               InputField(
-                placeholder: 'Full Name',
+                placeholder: 'Fullt navn',
                 controller: fullNameController,
               ),
               verticalSpaceSmall,
               InputField(
-                placeholder: 'Email',
+                placeholder: 'E-post',
                 controller: emailController,
               ),
               verticalSpaceSmall,
               InputField(
-                placeholder: 'Password',
+                placeholder: 'Telefonnummer',
+                controller: phonenumberController,
+              ),
+              verticalSpaceSmall,
+              InputField(
+                placeholder: 'Passord',
                 password: true,
                 controller: passwordController,
-                additionalNote: 'Password has to be a minimum of 6 characters.',
+                additionalNote: 'Passordet må minst inneholde 6 karakterer.',
               ),
               verticalSpaceSmall,
               ExpansionList<String>(
@@ -59,12 +80,13 @@ class SignUpView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   BusyButton(
-                    title: 'Sign Up',
+                    title: 'Registrer deg',
                     busy: model.busy,
                     onPressed: () {
                       model.signUp(
                           email: emailController.text,
                           password: passwordController.text,
+                          phonenumber: phonenumberController.text,
                           fullName: fullNameController.text);
                     },
                   )

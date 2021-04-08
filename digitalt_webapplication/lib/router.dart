@@ -1,7 +1,6 @@
 import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/loginView.dart';
 import 'package:digitalt_application/signUpView.dart';
-import 'homeView.dart';
 import 'package:digitalt_application/routeNames.dart';
 import 'package:flutter/material.dart';
 

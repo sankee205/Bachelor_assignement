@@ -1,5 +1,5 @@
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/baseModel.dart';
+import 'package:digitalt_application/models/baseModel.dart';
 import 'package:digitalt_application/locator.dart';
 import 'package:digitalt_application/navigationService.dart';
 import 'package:digitalt_application/routeNames.dart';

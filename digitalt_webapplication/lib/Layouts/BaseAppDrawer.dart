@@ -1,8 +1,11 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalt_application/Services/auth.dart';
 
 import '../Pages/HomePage.dart';
 import '../Pages/InfoPage.dart';
@@ -16,6 +19,8 @@ class BaseAppDrawer extends StatefulWidget {
   @override
   _BaseAppDrawerState createState() => _BaseAppDrawerState();
 }
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
   @override
@@ -74,6 +79,17 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Logg ut'),
+            onTap: () async {
+              try {
+                await _auth.signOut();
+              } catch (e) {
+                print(e);
+              }
             },
           ),
         ],

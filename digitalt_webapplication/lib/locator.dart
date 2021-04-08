@@ -1,8 +1,8 @@
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/firestoreService.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:get_it/get_it.dart';
 import 'package:digitalt_application/navigationService.dart';
-import 'package:digitalt_application/dialogService.dart';
+import 'package:digitalt_application/Services/dialogService.dart';
 
 GetIt locator = GetIt.instance;
 
