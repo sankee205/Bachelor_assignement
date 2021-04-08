@@ -1,5 +1,6 @@
 import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
+import 'package:digitalt_application/signUpView.dart';
 import 'package:digitalt_application/uiHelpers.dart';
 import 'package:digitalt_application/busyButton.dart';
 import 'package:digitalt_application/inputField.dart';
@@ -37,6 +38,20 @@ class _LoginViewState extends State<LoginView> {
         viewModelBuilder: () => LoginViewModel(),
         builder: (context, model, child) => Scaffold(
               backgroundColor: Colors.white,
+              appBar: AppBar(
+                backgroundColor: Colors.red,
+                automaticallyImplyLeading: false,
+                actions: <Widget>[
+                  MaterialButton(
+                      child: Text('Registrer deg'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpView()));
+                      }),
+                ],
+              ),
               body: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: Form(
@@ -59,13 +74,14 @@ class _LoginViewState extends State<LoginView> {
                           style: GoogleFonts.openSans(
                               color: Colors.black, fontSize: 14),
                         ),
+                        verticalSpaceSmall,
                         TextFormField(
                           validator: (val) =>
                               val.isEmpty ? 'Enter an email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.white),
                         ),
                         SizedBox(height: 20),
                         TextFormField(
@@ -76,7 +92,8 @@ class _LoginViewState extends State<LoginView> {
                             onChanged: (val) {
                               setState(() => password = val);
                             },
-                            style: TextStyle(color: Colors.black)),
+                            style: TextStyle(color: Colors.white)),
+                        verticalSpaceMedium,
                         MaterialButton(
                           elevation: 0,
                           minWidth: 210,
@@ -116,27 +133,25 @@ class _LoginViewState extends State<LoginView> {
                               'vipps/login_image.png',
                               width: 200,
                             )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 50.0),
-                          child: TextButton(
-                            child: Text('sign in anon'),
-                            onPressed: () async {
-                              dynamic result = await _auth.signInAnon();
-                              if (result == null) {
-                                print('error signing in');
-                              } else {
-                                print('signed in');
-                                print(result);
-                              }
-                            },
-                          ),
+                        verticalSpaceSmall,
+                        MaterialButton(
+                          child: Text('Logg inn som gjest'),
+                          onPressed: () async {
+                            dynamic result = await _auth.signInAnon();
+                            if (result == null) {
+                              print('error signing in');
+                            } else {
+                              print('signed in');
+                              print(result);
+                            }
+                          },
                         ),
-                        SizedBox(height: 12.0),
+                        verticalSpaceSmall,
                         Text(
                           error,
                           style: TextStyle(color: Colors.red, fontSize: 14.0),
                         ),
+                        verticalSpaceMedium,
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: _buildFooterLogo(),
