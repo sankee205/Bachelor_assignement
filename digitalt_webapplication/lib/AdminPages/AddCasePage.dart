@@ -1,9 +1,8 @@
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:intl/intl.dart';
+
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -28,13 +27,11 @@ class MyForm extends StatefulWidget {
   _MyFormState createState() => _MyFormState();
 }
 
-
 class _MyFormState extends State<MyForm> {
   DatabaseService db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   final title = TextEditingController();
   final introduction = TextEditingController();
-  String date = DateTime.now().toString();
   static List authorList = [null];
   final textController = TextEditingController();
 
@@ -43,6 +40,7 @@ class _MyFormState extends State<MyForm> {
   String richText;
 
   bool addCaseItem() {
+    String date = getDate();
     bool success = true;
     db.uploadFile(mediaInfo).then((value) {
       String imageUri = value.toString();
@@ -73,30 +71,13 @@ class _MyFormState extends State<MyForm> {
 
     if (mediaFile != null) {
       setState(() {
-        _imageWidget = Image.memory(mediaData.data, fit: BoxFit.contain,);
+        _imageWidget = Image.memory(
+          mediaData.data,
+          fit: BoxFit.contain,
+        );
       });
     }
   }
-
- /** Future<void> getFile() async{
-    var picked = await FilePicker.platform.pickFiles();
-
-    //Load the existing PDF document.
-    final PdfDocument document =
-    PdfDocument(inputBytes: picked.files.single.bytes);
-    //Get the text from the pdf
-    String text = PdfTextExtractor(document).extractText().trimRight();
-
-
-
-    if (picked != null) {
-      setState(() {
-        descriptionList = text.trim().split('/n');
-        //richText = text;
-      });
-    }
-
-  }*/
 
   @override
   void dispose() {
@@ -110,7 +91,10 @@ class _MyFormState extends State<MyForm> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
-        title: Text('DIGI-TALT', style: TextStyle(color: Colors.white),),
+        title: Text(
+          'DIGI-TALT',
+          style: TextStyle(color: Colors.white),
+        ),
         appBar: AppBar(),
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
@@ -212,60 +196,25 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
-                    Text(
-                      'Date',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
                     Row(
-                      children: [
-                        RaisedButton(
-                          onPressed: () => _selectDate(context),
-                          child: Text('Select date'),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 32.0),
-                          child:
-                              Text("${selectedDate.toLocal()}".split(' ')[0]),
-                        ),
-                      ],
+                      children: [Text("Date: "), Text(getDate())],
                     ),
                     SizedBox(
                       height: 40,
                     ),
-                   /** Text(
-                      'Upload File',
-                      style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'filebutton',
-                      onPressed: getFile,
-                      child: Icon(Icons.file_upload),
-                    ),
-                    Container(
-                      child: richText == null
-                          ? Text('No file selected.')
-                          : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
-                    ),*/
 
                     Text(
                       'Description',
                       style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
-            TextField(
-              controller: textController,
-              decoration: InputDecoration(hintText: 'Skriv inn din artikkel her...'),
-              minLines: 1,
-              maxLines: 200,
-            ),
+                    TextField(
+                      controller: textController,
+                      decoration: InputDecoration(
+                          hintText: 'Skriv inn din artikkel her...'),
+                      minLines: 1,
+                      maxLines: 200,
+                    ),
                     SizedBox(
                       height: 40,
                     ),
@@ -274,7 +223,7 @@ class _MyFormState extends State<MyForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                           showAlertPublishDialog(context);
+                            showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
@@ -291,21 +240,12 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
-// creates the select date pop up view
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        date = selectedDate.toString();
-      });
+  String getDate() {
+    DateTime selectedDate = DateTime.now();
+    final DateFormat formatter = DateFormat('dd-MM-yyyy H:m');
+    final String formatted = formatter.format(selectedDate);
+    return formatted;
   }
-
-  DateTime selectedDate = DateTime.now();
 
 // creates a list of authors
   List<Widget> _getAuthors() {
@@ -328,22 +268,21 @@ class _MyFormState extends State<MyForm> {
     }
     return friendsTextFields;
   }
-  Widget showAlertDialog(BuildContext context, List list, int index) {
 
+  Widget showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
-      onPressed:  () {
+      onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = FlatButton(
       child: Text("Ja"),
-      onPressed:  () {
+      onPressed: () {
         list.removeAt(index);
         setState(() {});
         Navigator.of(context).pop();
-
       },
     );
 
@@ -370,22 +309,19 @@ class _MyFormState extends State<MyForm> {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
-      onPressed:  () {
+      onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = FlatButton(
       child: Text("Ja"),
-      onPressed:  () {
+      onPressed: () {
         if (addCaseItem()) {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => HomePage()));
         }
         setState(() {});
         Navigator.of(context).pop();
-
       },
     );
 
@@ -415,9 +351,7 @@ class _MyFormState extends State<MyForm> {
         if (add) {
           // add new text-fields at the top of all friends textfields
           list.insert(list.length, null);
-          setState(() {
-
-          });
+          setState(() {});
         } else
           showAlertDialog(context, list, index);
       },
