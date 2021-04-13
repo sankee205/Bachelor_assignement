@@ -212,6 +212,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
       bottomNavigationBar: BaseBottomAppBar(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),

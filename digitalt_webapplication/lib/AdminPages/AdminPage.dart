@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AdminPages/UpdateNewLists.dart';
 import 'package:digitalt_application/AdminPages/UpdateCasePage.dart';
 import 'package:digitalt_application/AdminPages/UpdateInfoPage.dart';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
@@ -6,6 +7,8 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:digitalt_application/AdminPages/AddCasePage.dart';
+
+import 'UpdatePopularLists.dart';
 
 class AdminPage extends StatefulWidget {
   @override
@@ -143,7 +146,62 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                         ),
                       ),
-                    ])
+                      ResponsiveGridCol(
+                        lg: 12,
+                        md: 12,
+                        xs: 12,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateNewLists()));
+                          },
+                          child: Container(
+                            color: Colors.grey,
+                            margin: EdgeInsets.all(5),
+                            height: 120,
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.contact_phone_sharp,
+                                  size: 50,
+                                ),
+                                Text('Rediger artikler i siste nytt')
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 12,
+                        md: 12,
+                        xs: 12,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdatePopularLists()));
+                          },
+                          child: Container(
+                            color: Colors.grey,
+                            margin: EdgeInsets.all(5),
+                            height: 120,
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.contact_phone_sharp,
+                                  size: 50,
+                                ),
+                                Text('Rediger artikler i populære saker')
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
               ]),
             ),
           )),

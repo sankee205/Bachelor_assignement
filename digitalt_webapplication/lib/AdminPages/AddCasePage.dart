@@ -39,20 +39,33 @@ class _MyFormState extends State<MyForm> {
   MediaInfo mediaInfo = MediaInfo();
   String richText;
 
+  bool addToNewCase = false;
+  bool addToPopularCase = false;
+
   bool addCaseItem() {
     String date = getDate();
     bool success = true;
     db.uploadFile(mediaInfo).then((value) {
       String imageUri = value.toString();
       if (imageUri != null) {
-        var result = db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, textController.text.split('/p'));
-        if (result != null) {
-          success = true;
-        } else {
-          print('failed to upload case item');
-          success = false;
+        if (addToNewCase == true) {
+          db.updateCaseByFolder('NewCases', imageUri, title.text, authorList,
+              date, introduction.text, textController.text.split('/p'));
         }
+        if (addToPopularCase == true) {
+          db.updateCaseByFolder(
+              'PopularCases',
+              imageUri,
+              title.text,
+              authorList,
+              date,
+              introduction.text,
+              textController.text.split('/p'));
+        }
+        db.updateCaseData(imageUri, title.text, authorList, date,
+            introduction.text, textController.text.split('/p'));
+
+        success = true;
       } else {
         print('imageUri is null');
         success = false;
@@ -73,7 +86,7 @@ class _MyFormState extends State<MyForm> {
       setState(() {
         _imageWidget = Image.memory(
           mediaData.data,
-          fit: BoxFit.contain,
+          fit: BoxFit.fitWidth,
         );
       });
     }
@@ -218,6 +231,46 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
+                    Row(
+                      children: [
+                        Text('Legg til i siste nytt? '),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Checkbox(
+                          value: addToNewCase,
+                          checkColor: Colors.green,
+                          onChanged: (bool value) {
+                            setState(() {
+                              addToNewCase = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        Text('Legg til i populære saker? '),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Checkbox(
+                          value: addToPopularCase,
+                          checkColor: Colors.green,
+                          onChanged: (bool value) {
+                            setState(() {
+                              addToPopularCase = value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
                     Center(
                       child: FlatButton(
                         onPressed: () {
@@ -274,7 +327,7 @@ class _MyFormState extends State<MyForm> {
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop;
       },
     );
     Widget continueButton = FlatButton(
@@ -288,8 +341,8 @@ class _MyFormState extends State<MyForm> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Publisering av artikkel"),
-      content: Text("Er du sikker på at du vil publisere denne artikkelen?"),
+      title: Text("Slett"),
+      content: Text("Er du sikker på at du vil slette?"),
       actions: [
         cancelButton,
         continueButton,
@@ -316,19 +369,18 @@ class _MyFormState extends State<MyForm> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
+        Navigator.of(context).pop();
         if (addCaseItem()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => HomePage()));
         }
-        setState(() {});
-        Navigator.of(context).pop();
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Slett"),
-      content: Text("Er du sikker på at du vil slette?"),
+      title: Text("Publisering av artikkel"),
+      content: Text("Er du sikker på at du vil publisere denne artikkelen?"),
       actions: [
         cancelButton,
         continueButton,

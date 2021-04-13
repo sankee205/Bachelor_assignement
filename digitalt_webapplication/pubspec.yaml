@@ -49,6 +49,7 @@ dependencies:
   firebase_core: ^1.0.1
   firebase_storage: ^8.0.0
   http: ^0.13.0
+  boardview: ^0.2.0
 
   google_sign_in: ^5.0.0
   font_awesome_flutter: ^8.11.0

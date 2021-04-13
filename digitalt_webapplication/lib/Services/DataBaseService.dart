@@ -112,6 +112,7 @@ class DatabaseService {
       'publishedDate': publishedDate,
       'introduction': introduction,
       'text': text,
+      'lastEdited': null
     });
   }
 

@@ -83,7 +83,7 @@ class HomePageState extends State<HomePage> {
       //this is the appbar for the home page
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),
@@ -119,7 +119,7 @@ class HomePageState extends State<HomePage> {
                                 child: ListView(
                                   children: <Widget>[
                                     //should we add a play and stop button?
-                                    BaseCarouselSlider(allCases)
+                                    BaseCarouselSlider(popularCases)
                                   ],
                                 ),
                               ),
@@ -148,14 +148,13 @@ class HomePageState extends State<HomePage> {
                                   height: 5,
                                 ),
                                 Column(
-                                  children: allCases.map((caseObject) {
+                                  children: newCases.map((caseObject) {
                                     return Builder(builder: (
                                       BuildContext context,
                                     ) {
                                       //makes the onclick available
                                       return GestureDetector(
                                           onTap: () {
-                                            print(caseObject['id']);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
