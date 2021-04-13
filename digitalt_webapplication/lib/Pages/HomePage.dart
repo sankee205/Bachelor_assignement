@@ -191,7 +191,8 @@ class HomePageState extends State<HomePage> {
                                               margin: EdgeInsets.fromLTRB(
                                                   5, 3, 5, 3),
                                               alignment: Alignment.topLeft,
-                                              child: Center(
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   caseObject['title'],
                                                   style: TextStyle(
