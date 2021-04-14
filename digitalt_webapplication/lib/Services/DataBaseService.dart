@@ -116,6 +116,13 @@ class DatabaseService {
     });
   }
 
+  Future updateFolder(String folder, Map<String, dynamic> newCases) async {
+    return await FirebaseFirestore.instance
+        .collection(folder)
+        .doc(uid)
+        .set(newCases);
+  }
+
   Future getCaseItems(String folder) async {
     List itemsList = [];
     try {

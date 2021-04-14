@@ -10,26 +10,20 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
-class UpdateNewLists extends StatefulWidget {
+/*class UpdateNewLists extends StatefulWidget {
   @override
   _UpdateNewListsState createState() => _UpdateNewListsState();
 }
 
 class _UpdateNewListsState extends State<UpdateNewLists> {
-  List _listData = [];
-  List<BoardList> _lists = List<BoardList>();
+  List<BoardList> _lists = [];
 
   //Can be used to animate to different sections of the BoardView
   BoardViewController boardViewController = new BoardViewController();
 
   final DatabaseService db = DatabaseService();
-  List newCases;
   List allCases;
-  List popularCases;
-
-  List titleNewCases = [];
-  List titleAllCases = [];
-  List titlePopularCases = [];
+  List newCases;
 
   @override
   void initState() {
@@ -45,7 +39,7 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
     } else {
       setState(() {
         switch (folder) {
-          case 'NewCases':
+          case 'newCases':
             {
               newCases = resultant;
             }
@@ -61,16 +55,29 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
   }
 
   createListData() {
+    _lists.clear();
     if (newCases != null) {
       BoardList newBoards = _createBoardList(newCases, 'Siste Nytt');
       _lists.add(newBoards);
     }
     if (allCases != null) {
-      BoardList allBoards = _createBoardList(allCases, 'Alle artikler');
+      BoardList allBoards = _createBoardList(allCases, 'Alle Artikler');
       _lists.add(allBoards);
     }
+  }
 
-    _listData = allCases;
+  updatePopularCaseList() {
+    BoardList boardList;
+    _lists.where((element) {
+      if (element.title == 'Siste Nytt') {
+        boardList = element;
+      }
+      return true;
+    });
+    for (int i = 0; i < boardList.items.length; i++) {
+      BoardItem bi = boardList.items[i];
+      print(bi.title);
+    }
   }
 
   @override
@@ -89,7 +96,6 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
-
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.arrow_back,
@@ -100,10 +106,47 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
           Navigator.pop(context);
         },
       ),
-
-      body: BoardView(
-        lists: _lists,
-        boardViewController: boardViewController,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Rediger Sakene i Den Populære Listen',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 560,
+              height: 560,
+              color: Colors.lightBlueAccent,
+              child: Center(
+                child: BoardView(
+                  lists: _lists,
+                  boardViewController: boardViewController,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: FlatButton(
+                onPressed: () {
+                  updatePopularCaseList();
+                },
+                child: Text('Submit'),
+                color: Colors.green,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -115,14 +158,10 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
     }
 
     return BoardList(
+      title: title,
       onStartDragList: (int listIndex) {},
       onTapList: (int listIndex) async {},
-      onDropList: (int listIndex, int oldListIndex) {
-        //Update our local list data
-        var list = _listData[oldListIndex];
-        _listData.removeAt(oldListIndex);
-        _listData.insert(listIndex, list);
-      },
+      onDropList: (int listIndex, int oldListIndex) {},
       headerBackgroundColor: Color.fromARGB(255, 235, 236, 240),
       backgroundColor: Color.fromARGB(255, 235, 236, 240),
       header: [
@@ -134,21 +173,17 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
                   style: TextStyle(fontSize: 20),
                 ))),
       ],
-      items: list.isEmpty ? [] : items,
+      items: items,
     );
   }
 
   Widget buildBoardItem(dynamic itemObject) {
     return BoardItem(
+        title: itemObject['title'],
         onStartDragItem:
             (int listIndex, int itemIndex, BoardItemState state) {},
         onDropItem: (int listIndex, int itemIndex, int oldListIndex,
-            int oldItemIndex, BoardItemState state) {
-          //Used to update our local item data
-          var item = _listData[oldListIndex].items[oldItemIndex];
-          _listData[oldListIndex].items.removeAt(oldItemIndex);
-          _listData[listIndex].items.insert(itemIndex, item);
-        },
+            int oldItemIndex, BoardItemState state) {},
         onTapItem:
             (int listIndex, int itemIndex, BoardItemState state) async {},
         item: Card(
@@ -158,4 +193,4 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
           ),
         ));
   }
-}
+}*/

@@ -1,6 +1,12 @@
+import 'dart:collection';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/Layouts/BoardItemObject.dart';
+import 'package:digitalt_application/Layouts/BoardListObject.dart';
+import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 
 import 'package:boardview/board_item.dart';
@@ -16,9 +22,11 @@ class UpdatePopularLists extends StatefulWidget {
 }
 
 class _UpdatePopularListsState extends State<UpdatePopularLists> {
-  List _listData = [];
   List<BoardList> _lists = [];
+  BoardListObject popularBoardList;
+  BoardListObject allBoardList;
 
+  List<BoardListObject> _listData = [];
   //Can be used to animate to different sections of the BoardView
   BoardViewController boardViewController = new BoardViewController();
 
@@ -56,18 +64,72 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
   }
 
   createListData() {
-    if (popularCases != null) {
-      BoardList newBoards = _createBoardList(popularCases, 'Populære saker');
-      _lists.add(newBoards);
+    for (int i = 0; i < _listData.length; i++) {
+      _lists.add(_createBoardList(_listData[i]) as BoardList);
     }
-    if (allCases != null) {
-      BoardList allBoards = _createBoardList(allCases, 'Alle artikler');
-      _lists.add(allBoards);
+  }
+
+  fromMapToBoardList() {
+    BoardListObject popBoard = BoardListObject(title: "Populære Saker");
+    BoardListObject allBoard = BoardListObject(title: "Alle saker");
+
+    if (popularCases != null && allCases != null) {
+      for (int i = 0; i < popularCases.length; i++) {
+        var caseObject = popularCases[i];
+        popBoard.items.add(BoardItemObject(title: caseObject['title']));
+      }
+      for (int i = 0; i < allCases.length; i++) {
+        var caseObject = allCases[i];
+        allBoard.items.add(BoardItemObject(title: caseObject['title']));
+      }
+      setState(() {
+        allBoardList = allBoard;
+        popularBoardList = popBoard;
+        _listData.add(popularBoardList);
+        _listData.add(allBoardList);
+      });
     }
+  }
+
+  Future<bool> updatePopularCaseList() {
+    List<BoardItemObject> theList = _listData[0].items;
+    List<String> newPopularCaseList = [];
+    for (int i = 0; i < theList.length; i++) {
+      BoardItemObject objectITem = theList[i];
+      newPopularCaseList.add(objectITem.title);
+    }
+    for (int l = 0; l < theList.length; l++) {
+      print(theList[l].title);
+    }
+    return createNewPopularCaseList(newPopularCaseList);
+  }
+
+  Future<bool> createNewPopularCaseList(List<String> newList) async {
+    Map<String, dynamic> listToFirebase = HashMap();
+    for (int i = 0; i < newList.length; i++) {
+      for (int j = 0; j < allCases.length; j++) {
+        QueryDocumentSnapshot object = allCases[j];
+        if (newList[i].toString() == object['title']) {
+          listToFirebase[object['title']] = object.data();
+        }
+      }
+    }
+    for (int k = 0; k < listToFirebase.length; k++) {
+      print(listToFirebase[k].toString());
+      print('......................................');
+    }
+    /*var result = await db.updateFolder('PopularCases', listToFirebase);
+    if (result != null) {
+      return true;
+    } else {
+      return false;
+    }*/
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
+    fromMapToBoardList();
     createListData();
     return Scaffold(
       appBar: BaseAppBar(
@@ -92,35 +154,61 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
           Navigator.pop(context);
         },
       ),
-      body: Center(
-        child: Container(
-            width: 560,
-            color: Colors.lightBlueAccent,
-            child: Center(
-              child: BoardView(
-                lists: _lists,
-                boardViewController: boardViewController,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Rediger Sakene i Den Populære Listen',
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: 560,
+              height: 560,
+              color: Colors.lightBlueAccent,
+              child: Center(
+                child: BoardView(
+                  lists: _lists,
+                  boardViewController: boardViewController,
+                ),
               ),
-            )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: FlatButton(
+                onPressed: () {
+                  showAlertPublishDialog(context);
+                },
+                child: Text('Submit'),
+                color: Colors.green,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _createBoardList(List list, String title) {
+  Widget _createBoardList(BoardListObject list) {
     List<BoardItem> items = [];
-    for (int i = 0; i < list.length; i++) {
-      items.insert(i, buildBoardItem(list[i]) as BoardItem);
+    for (int i = 0; i < list.items.length; i++) {
+      items.insert(i, buildBoardItem(list.items[i]) as BoardItem);
     }
 
     return BoardList(
       onStartDragList: (int listIndex) {},
       onTapList: (int listIndex) async {},
-      onDropList: (int listIndex, int oldListIndex) {
-        //Update our local list data
-        var list = _listData[oldListIndex];
-        _listData.removeAt(oldListIndex);
-        _listData.insert(listIndex, list);
-      },
+      onDropList: (int listIndex, int oldListIndex) {},
       headerBackgroundColor: Color.fromARGB(255, 235, 236, 240),
       backgroundColor: Color.fromARGB(255, 235, 236, 240),
       header: [
@@ -128,7 +216,7 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
             child: Padding(
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  title,
+                  list.title,
                   style: TextStyle(fontSize: 20),
                 ))),
       ],
@@ -136,13 +224,12 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
     );
   }
 
-  Widget buildBoardItem(dynamic itemObject) {
+  Widget buildBoardItem(BoardItemObject itemObject) {
     return BoardItem(
         onStartDragItem:
             (int listIndex, int itemIndex, BoardItemState state) {},
         onDropItem: (int listIndex, int itemIndex, int oldListIndex,
             int oldItemIndex, BoardItemState state) {
-          //Used to update our local item data
           var item = _listData[oldListIndex].items[oldItemIndex];
           _listData[oldListIndex].items.removeAt(oldItemIndex);
           _listData[listIndex].items.insert(itemIndex, item);
@@ -152,8 +239,46 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
         item: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(itemObject['title']),
+            child: Text(itemObject.title),
           ),
         ));
+  }
+
+  Widget showAlertPublishDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed: () {
+        if (updatePopularCaseList() == true) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        }
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Publisering av artikkel"),
+      content: Text("Er du sikker på at du vil publisere denne artikkelen?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
