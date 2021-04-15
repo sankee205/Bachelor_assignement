@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
@@ -28,8 +29,23 @@ import '../Layouts/BaseAppDrawer.dart';
  */
 class UpdateCasePage extends StatefulWidget {
   final String caseTitle;
+  final String caseImageUrl;
+  final String caseIntroduction;
+  final String caseId;
+  final List caseText;
+  final List caseAuthorList;
+  final String caseDate;
 
-  const UpdateCasePage({Key key, this.caseTitle}) : super(key: key);
+  const UpdateCasePage(
+      {Key key,
+      @required this.caseTitle,
+      @required this.caseIntroduction,
+      @required this.caseText,
+      @required this.caseDate,
+      @required this.caseAuthorList,
+      @required this.caseImageUrl,
+      @required this.caseId})
+      : super(key: key);
   @override
   _UpdateCasePageState createState() => _UpdateCasePageState();
 }
@@ -41,7 +57,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   String imageUrl;
   final title = TextEditingController();
   final introduction = TextEditingController();
-  String date = DateTime.now().toString();
+  String date;
   static List descriptionList = [];
   static List authorList = [];
 
@@ -52,24 +68,24 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   @override
   void initState() {
     super.initState();
-    fetchCaseItem();
+    setCaseItem();
   }
 
-  Future fetchCaseItem() async {
-    List resultList = await db.getSingleCaseItem(widget.caseTitle);
-    var result = resultList[0];
-    print(result);
+  ///this method will set the caseitems in page from input fields to the widget
+  Future setCaseItem() async {
     setState(() {
-      imageUrl = result['image'];
-      _imageWidget = Image.network(result['image']);
-      id = result['id'];
-      title.text = result['title'];
-      introduction.text = result['introduction'];
-      descriptionList = result['text'];
-      authorList = result['author'];
+      imageUrl = widget.caseImageUrl;
+      _imageWidget = Image.network(widget.caseImageUrl);
+      id = widget.caseId;
+      date = widget.caseDate;
+      title.text = widget.caseTitle;
+      introduction.text = widget.caseIntroduction;
+      descriptionList = widget.caseText;
+      authorList = widget.caseAuthorList;
     });
   }
 
+  ///this methods will update the case in firebase
   bool addCaseItem() {
     bool success = true;
     if (mediaInfo == null) {
@@ -120,26 +136,6 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     }
   }
 
-  /*Future<void> getFile() async{
-    var picked = await FilePicker.platform.pickFiles();
-
-    //Load the existing PDF document.
-    final PdfDocument document =
-    PdfDocument(inputBytes: picked.files.single.bytes);
-    //Get the text from the pdf
-    String text = PdfTextExtractor(document).extractText().trimRight();
-
-
-
-    if (picked != null) {
-      setState(() {
-        descriptionList = text.trim().split('/n');
-        //richText = text;
-      });
-    }
-
-  }*/
-
   @override
   void dispose() {
     title.dispose();
@@ -160,6 +156,17 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
       bottomNavigationBar: BaseBottomAppBar(),
+
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
@@ -257,48 +264,23 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     SizedBox(
                       height: 40,
                     ),
-                    Text(
-                      'Date',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
                     Row(
                       children: [
-                        RaisedButton(
-                          onPressed: () => _selectDate(context),
-                          child: Text('Select date'),
+                        Text(
+                          'Date',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
                         ),
                         SizedBox(
                           width: 10,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 32.0),
-                          child:
-                              Text("${selectedDate.toLocal()}".split(' ')[0]),
-                        ),
+                        Text(date),
                       ],
                     ),
+
                     SizedBox(
                       height: 40,
                     ),
-                    /*Text(
-                      'Upload File',
-                      style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    FloatingActionButton(
-                      heroTag: 'filebutton',
-                      onPressed: getFile,
-                      child: Icon(Icons.file_upload),
-                    ),
-                    Container(
-                      child: richText == null
-                          ? Text('No file selected.')
-                          : EasyRichText(richText, textWidthBasis: TextWidthBasis.parent,),
-                    ),*/
 
                     Text(
                       'Description',
@@ -315,18 +297,13 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            if (addCaseItem()) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomePage()));
-                            }
+                            showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
                         color: Colors.green,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -377,6 +354,45 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     return friendsTextFields;
   }
 
+  ///creates an alertdialog before pushing changes to firebase
+  Widget showAlertPublishDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        if (addCaseItem()) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Publisere endring av artikkel"),
+      content: Text("Er du sikker på at du vil publisere denne endringen?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 // creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
@@ -399,6 +415,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     return friendsTextFields;
   }
 
+  /// creates a alert dialog
   Widget showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(

@@ -112,7 +112,48 @@ class DatabaseService {
       'publishedDate': publishedDate,
       'introduction': introduction,
       'text': text,
+      'lastEdited': null
     });
+  }
+
+  Future updateCaseFolder(
+      String folder,
+      String image,
+      String title,
+      List author,
+      String publishedDate,
+      String introduction,
+      List text,
+      String lastEdited) async {
+    return await FirebaseFirestore.instance.collection(folder).doc(uid).set({
+      'image': image,
+      'title': title,
+      'author': author,
+      'publishedDate': publishedDate,
+      'introduction': introduction,
+      'text': text,
+      'lastEdited': lastEdited
+    });
+  }
+
+  Future updateFolder(String folder, List<Map<String, dynamic>> newList) async {
+    await FirebaseFirestore.instance.collection(folder).get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+    for (int i = 0; i < newList.length; i++) {
+      Map<String, dynamic> item = newList[i];
+      updateCaseFolder(
+          folder,
+          item['image'],
+          item['title'],
+          item['author'],
+          item['publishedDate'],
+          item['introduction'],
+          item['text'],
+          item['lastEdited']);
+    }
   }
 
   Future getCaseItems(String folder) async {
@@ -124,7 +165,9 @@ class DatabaseService {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           //print(element.id);
-          //element.reference.update({'id':element.id});
+          if (!element.data().containsKey('id')) {
+            element.reference.update({'id': element.id});
+          }
           itemsList.add(element);
         });
       });

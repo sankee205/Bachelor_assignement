@@ -29,9 +29,6 @@ class CaseItem {
       'text': text,
     };
   }
-  dynamic fromMap(Map<String, dynamic> caseItem) {
-    return CaseItem(image: caseItem['image'], title: caseItem['title'], author: caseItem['author'], publishedDate: caseItem['publishedDate'], introduction: caseItem['introduction'], text: caseItem['text']);
-  }
 
   CaseItem(
       {@required this.image,

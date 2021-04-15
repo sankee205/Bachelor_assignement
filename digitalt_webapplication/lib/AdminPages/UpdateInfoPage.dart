@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Pages/HomePage.dart';
@@ -212,6 +213,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
       bottomNavigationBar: BaseBottomAppBar(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
@@ -444,7 +455,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+                                      builder: (context) => AdminPage()));
                             }
                           }
                         },
