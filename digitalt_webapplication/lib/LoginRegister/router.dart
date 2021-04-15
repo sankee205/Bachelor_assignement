@@ -1,7 +1,7 @@
+import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/LoginRegister/Views/signUpView.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/HomePage.dart';
-import 'package:digitalt_application/loginView.dart';
-import 'package:digitalt_application/signUpView.dart';
-import 'package:digitalt_application/routeNames.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {

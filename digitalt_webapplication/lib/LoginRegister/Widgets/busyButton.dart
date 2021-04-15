@@ -1,4 +1,4 @@
-import 'package:digitalt_application/sharedStyles.dart';
+import 'package:digitalt_application/LoginRegister/sharedStyles.dart';
 import 'package:flutter/material.dart';
 
 /// A button that shows a busy indicator in place of title

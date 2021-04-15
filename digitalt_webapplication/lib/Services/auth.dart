@@ -1,10 +1,8 @@
+import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
-import 'package:digitalt_application/locator.dart';
-
-import 'DataBaseService.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -28,6 +26,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User user = result.user;
+      await _populateCurrentUser(result.user);
       return user;
     } catch (e) {
       print(e.toString());
@@ -41,6 +40,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+      await _populateCurrentUser(result.user);
       return user;
     } catch (e) {
       print(e.toString());
@@ -62,7 +62,6 @@ class AuthService {
         password: password,
       );
 
-      // create a new document for the user with the uid
       // create a new user profile on firestore
       _currentUser = BaseUser(
         uid: authResult.user.uid,
@@ -80,16 +79,6 @@ class AuthService {
     }
   }
 
-  // sign out
-  Future signOut() async {
-    try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   Future<bool> isUserLoggedIn() async {
     var user = _auth.currentUser;
     await _populateCurrentUser(user);
@@ -102,19 +91,12 @@ class AuthService {
     }
   }
 
-  Future loginWithEmail({
-    @required String email,
-    @required String password,
-  }) async {
+  Future signOut() async {
     try {
-      var authResult = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      await _populateCurrentUser(authResult.user);
-      return authResult.user != null;
+      return await _auth.signOut();
     } catch (e) {
-      return e.message;
+      print(e.toString());
+      return null;
     }
   }
 }

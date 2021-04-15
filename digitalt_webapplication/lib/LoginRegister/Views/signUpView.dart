@@ -1,12 +1,12 @@
-import 'package:digitalt_application/loginView.dart';
+import 'package:digitalt_application/LoginRegister/Model/signUpViewModel.dart';
+import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 
-import 'uiHelpers.dart';
-import 'busyButton.dart';
-import 'expansionList.dart';
-import 'inputField.dart';
+import '../uiHelpers.dart';
+import '../Widgets/busyButton.dart';
+import '../Widgets/expansionList.dart';
+import '../Widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:digitalt_application/signupViewModel.dart';
 
 class SignUpView extends StatelessWidget {
   final emailController = TextEditingController();

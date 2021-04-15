@@ -1,7 +1,7 @@
+import 'package:digitalt_application/LoginRegister/Model/dialogModels.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:flutter/material.dart';
-import 'locator.dart';
-import 'dialogModels.dart';
-import 'Services/dialogService.dart';
+import '../Services/dialogService.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget child;

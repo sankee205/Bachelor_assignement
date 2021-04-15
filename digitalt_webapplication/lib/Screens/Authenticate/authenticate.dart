@@ -1,7 +1,6 @@
-import 'package:digitalt_application/loginView.dart';
+import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/LoginRegister/Views/signUpView.dart';
 import 'package:flutter/material.dart';
-import 'package:digitalt_application/Screens/Authenticate/loginPage.dart';
-import 'package:digitalt_application/signUpView.dart';
 
 class Authenticate extends StatefulWidget {
   @override
