@@ -24,7 +24,6 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   BoardListObject allBoardList;
 
   List<BoardListObject> _listData = [];
-  //Can be used to animate to different sections of the BoardView
   BoardViewController boardViewController = new BoardViewController();
 
   final DatabaseService db = DatabaseService();
@@ -36,6 +35,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     fetchDataBaseList('AllCases');
   }
 
+  ///this method fetched the allcase list from firebase
   fetchDataBaseList(String folder) async {
     dynamic resultant = await db.getCaseItems(folder);
     if (resultant == null) {
@@ -47,12 +47,14 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     }
   }
 
+  ///this method creates a boardlist from the listdata list
   createListData() {
     for (int i = 0; i < _listData.length; i++) {
       _lists.add(_createBoardList(_listData[i]) as BoardList);
     }
   }
 
+  /// this method maps the firebaselist and adds it to the listdata
   fromMapToBoardList() {
     BoardListObject allBoard = BoardListObject(title: "Alle saker");
 
@@ -68,6 +70,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     }
   }
 
+  ///this method will update the firebase popularcases list
   Future<bool> updatePopularCaseList() {
     List<BoardItemObject> theList = _listData[0].items;
     List<String> newPopularCaseList = [];
@@ -81,6 +84,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     return createNewPopularCaseList(newPopularCaseList);
   }
 
+  ///this method creates a new list to update in firebase and update it
   Future<bool> createNewPopularCaseList(List<String> newList) async {
     List<Map<String, dynamic>> listToFirebase = [];
     for (int i = 0; i < newList.length; i++) {
@@ -141,7 +145,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
               height: 20,
             ),
             Container(
-              width: 560,
+              width: 280,
               height: 560,
               color: Colors.lightBlueAccent,
               child: Center(
@@ -172,6 +176,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     );
   }
 
+  /// this method creates a boardlist
   Widget _createBoardList(BoardListObject list) {
     List<BoardItem> items = [];
     for (int i = 0; i < list.items.length; i++) {
@@ -197,6 +202,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     );
   }
 
+  /// this method creates a boarditem
   Widget buildBoardItem(BoardItemObject itemObject) {
     return BoardItem(
         onStartDragItem:
@@ -217,6 +223,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
         ));
   }
 
+  ///this method creates a alert dialog
   Widget showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(

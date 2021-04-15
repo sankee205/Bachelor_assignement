@@ -113,6 +113,16 @@ class _MyFormState extends State<MyForm> {
         widgets: <Widget>[Icon(Icons.more_vert)],
       ),
       bottomNavigationBar: BaseBottomAppBar(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+          size: 40,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
@@ -296,7 +306,7 @@ class _MyFormState extends State<MyForm> {
 
   String getDate() {
     DateTime selectedDate = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy H:m');
+    final DateFormat formatter = DateFormat('dd-MM-yyyy hh:mm');
     final String formatted = formatter.format(selectedDate);
     return formatted;
   }

@@ -165,7 +165,9 @@ class DatabaseService {
           .then((querySnapshot) {
         querySnapshot.docs.forEach((element) {
           //print(element.id);
-          //element.reference.update({'id':element.id});
+          if (!element.data().containsKey('id')) {
+            element.reference.update({'id': element.id});
+          }
           itemsList.add(element);
         });
       });
