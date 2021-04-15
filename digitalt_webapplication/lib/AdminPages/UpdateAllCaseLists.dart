@@ -78,9 +78,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
       BoardItemObject objectITem = theList[i];
       newPopularCaseList.add(objectITem.title);
     }
-    for (int l = 0; l < theList.length; l++) {
-      print(theList[l].title);
-    }
+
     return createNewPopularCaseList(newPopularCaseList);
   }
 

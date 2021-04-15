@@ -63,7 +63,6 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   Future fetchCaseItem() async {
     List resultList = await db.getInfoPageContent();
     var result = resultList[0];
-    print(result);
     setState(() {
       textList = result['text'];
       authorList = result['author'];
@@ -80,8 +79,6 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   }
 
   bool addCaseItem() {
-    print(contactUrl);
-    print(textUrl);
     bool success = true;
     var result = db.updateInfoPageContent(textUrl, contactUrl, email.text,
         tlf.text, textList, authorList, date, backgroundUrl);
