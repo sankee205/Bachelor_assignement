@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Pages/HomePage.dart';
@@ -454,7 +455,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+                                      builder: (context) => AdminPage()));
                             }
                           }
                         },

@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
@@ -372,7 +373,7 @@ class _MyFormState extends State<MyForm> {
         Navigator.of(context).pop();
         if (addCaseItem()) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
         }
       },
     );

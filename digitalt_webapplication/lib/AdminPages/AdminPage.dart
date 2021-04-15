@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:digitalt_application/AdminPages/AddCasePage.dart';
 
+import 'UpdateAllCaseLists.dart';
 import 'UpdatePopularLists.dart';
 
 class AdminPage extends StatefulWidget {
@@ -155,8 +156,7 @@ class _AdminPageState extends State<AdminPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdatePopularLists()));
+                                    builder: (context) => UpdateNewLists()));
                           },
                           child: Container(
                             color: Colors.grey,
@@ -165,10 +165,10 @@ class _AdminPageState extends State<AdminPage> {
                             child: Column(
                               children: [
                                 Icon(
-                                  Icons.contact_phone_sharp,
+                                  Icons.article,
                                   size: 50,
                                 ),
-                                Text('Rediger artikler i siste nytt')
+                                Text('Rediger artikler i Siste Nytt')
                               ],
                             ),
                           ),
@@ -193,10 +193,38 @@ class _AdminPageState extends State<AdminPage> {
                             child: Column(
                               children: [
                                 Icon(
-                                  Icons.contact_phone_sharp,
+                                  Icons.article,
                                   size: 50,
                                 ),
-                                Text('Rediger artikler i populære saker')
+                                Text('Rediger artikler i Populære Saker')
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 12,
+                        md: 12,
+                        xs: 12,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateAllCaseLists()));
+                          },
+                          child: Container(
+                            color: Colors.grey,
+                            margin: EdgeInsets.all(5),
+                            height: 120,
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.article,
+                                  size: 50,
+                                ),
+                                Text('Rediger rekkefølge på alle artikler')
                               ],
                             ),
                           ),

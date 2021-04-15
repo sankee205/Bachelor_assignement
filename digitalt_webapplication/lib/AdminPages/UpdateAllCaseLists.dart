@@ -14,14 +14,13 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
-class UpdatePopularLists extends StatefulWidget {
+class UpdateAllCaseLists extends StatefulWidget {
   @override
-  _UpdatePopularListsState createState() => _UpdatePopularListsState();
+  _UpdateAllCaseListsState createState() => _UpdateAllCaseListsState();
 }
 
-class _UpdatePopularListsState extends State<UpdatePopularLists> {
+class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   List<BoardList> _lists = [];
-  BoardListObject popularBoardList;
   BoardListObject allBoardList;
 
   List<BoardListObject> _listData = [];
@@ -30,12 +29,10 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
 
   final DatabaseService db = DatabaseService();
   List allCases;
-  List popularCases;
 
   @override
   void initState() {
     super.initState();
-    fetchDataBaseList('PopularCases');
     fetchDataBaseList('AllCases');
   }
 
@@ -45,18 +42,7 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
       print('unable to get data');
     } else {
       setState(() {
-        switch (folder) {
-          case 'PopularCases':
-            {
-              popularCases = resultant;
-            }
-            break;
-          case 'AllCases':
-            {
-              allCases = resultant;
-            }
-            break;
-        }
+        allCases = resultant;
       });
     }
   }
@@ -68,22 +54,15 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
   }
 
   fromMapToBoardList() {
-    BoardListObject popBoard = BoardListObject(title: "Populære Saker");
     BoardListObject allBoard = BoardListObject(title: "Alle saker");
 
-    if (popularCases != null && allCases != null) {
-      for (int i = 0; i < popularCases.length; i++) {
-        var caseObject = popularCases[i];
-        popBoard.items.add(BoardItemObject(title: caseObject['title']));
-      }
+    if (allCases != null) {
       for (int i = 0; i < allCases.length; i++) {
         var caseObject = allCases[i];
         allBoard.items.add(BoardItemObject(title: caseObject['title']));
       }
       setState(() {
         allBoardList = allBoard;
-        popularBoardList = popBoard;
-        _listData.add(popularBoardList);
         _listData.add(allBoardList);
       });
     }
@@ -113,7 +92,7 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
       }
     }
 
-    var result = await db.updateFolder('PopularCases', listToFirebase);
+    var result = await db.updateFolder('AllCases', listToFirebase);
     if (result != null) {
       return true;
     } else {
@@ -155,7 +134,7 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
               height: 20,
             ),
             Text(
-              'Rediger Sakene i Den Populære Listen',
+              'Rediger rekkefølgen på alle artikler',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(

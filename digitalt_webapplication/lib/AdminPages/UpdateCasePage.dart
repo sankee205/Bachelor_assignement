@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
@@ -58,7 +59,6 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   Future fetchCaseItem() async {
     List resultList = await db.getSingleCaseItem(widget.caseTitle);
     var result = resultList[0];
-    print(result);
     setState(() {
       imageUrl = result['image'];
       _imageWidget = Image.network(result['image']);
@@ -119,26 +119,6 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
       });
     }
   }
-
-  /*Future<void> getFile() async{
-    var picked = await FilePicker.platform.pickFiles();
-
-    //Load the existing PDF document.
-    final PdfDocument document =
-    PdfDocument(inputBytes: picked.files.single.bytes);
-    //Get the text from the pdf
-    String text = PdfTextExtractor(document).extractText().trimRight();
-
-
-
-    if (picked != null) {
-      setState(() {
-        descriptionList = text.trim().split('/n');
-        //richText = text;
-      });
-    }
-
-  }*/
 
   @override
   void dispose() {
@@ -330,7 +310,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomePage()));
+                                      builder: (context) => AdminPage()));
                             }
                           }
                         },
