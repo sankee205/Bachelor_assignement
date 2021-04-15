@@ -12,9 +12,15 @@ class ThemeNotifier with ChangeNotifier {
     accentColor: Colors.red,
     accentIconTheme: IconThemeData(color: Colors.black),
     dividerColor: Colors.black,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.black.withOpacity(0.6), iconTheme: IconThemeData(color: Colors.red)),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: Colors.black.withOpacity(0.4),unselectedItemColor: Colors.white, selectedItemColor: Colors.red),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.red),
+    appBarTheme: AppBarTheme(
+        backgroundColor: Colors.black.withOpacity(0.6),
+        iconTheme: IconThemeData(color: Colors.red)),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black.withOpacity(0.4),
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.red),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: Colors.red),
 
     //canvasColor: Colors.amberAccent
   );
@@ -23,13 +29,15 @@ class ThemeNotifier with ChangeNotifier {
     primaryColor: Colors.white,
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.grey.shade200,
-
     accentIconTheme: IconThemeData(color: Colors.white),
-    appBarTheme: AppBarTheme(backgroundColor: Colors.red, iconTheme: IconThemeData(color: Colors.white), ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(selectedItemColor: Colors.red,unselectedItemColor: Colors.grey),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.blue),
-
-
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.red,
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        selectedItemColor: Colors.red, unselectedItemColor: Colors.grey),
+    floatingActionButtonTheme:
+        FloatingActionButtonThemeData(backgroundColor: Colors.blue),
   );
 
   ThemeData _themeData;
@@ -37,13 +45,11 @@ class ThemeNotifier with ChangeNotifier {
 
   ThemeNotifier() {
     StorageManager.readData('themeMode').then((value) {
-      print('value read from storage: ' + value.toString());
       var themeMode = value ?? 'light';
       if (themeMode == 'light') {
         state = false;
         _themeData = lightTheme;
       } else {
-        print('setting dark theme');
         state = true;
         _themeData = darkTheme;
       }
@@ -65,7 +71,7 @@ class ThemeNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  bool getState(){
+  bool getState() {
     return state;
   }
 }

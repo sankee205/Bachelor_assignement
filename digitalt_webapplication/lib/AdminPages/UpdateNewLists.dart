@@ -96,9 +96,6 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
       BoardItemObject objectITem = theList[i];
       newPopularCaseList.add(objectITem.title);
     }
-    for (int l = 0; l < theList.length; l++) {
-      print(theList[l].title);
-    }
     return createNewPopularCaseList(newPopularCaseList);
   }
 
