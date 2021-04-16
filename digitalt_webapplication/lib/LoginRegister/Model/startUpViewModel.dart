@@ -1,8 +1,8 @@
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/baseModel.dart';
-import 'package:digitalt_application/locator.dart';
-import 'package:digitalt_application/navigationService.dart';
-import 'package:digitalt_application/routeNames.dart';
 
 class StartUpViewModel extends BaseModel {
   final AuthService _authenticationService = locator<AuthService>();

@@ -1,12 +1,10 @@
-import 'package:digitalt_application/startUpView.dart';
+import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:digitalt_application/wrapper.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/models/user.dart';
-
 import 'AppManagement/ThemeManager.dart';
 
 /*
@@ -16,12 +14,8 @@ import 'AppManagement/ThemeManager.dart';
  * @Mathias Gjærde Forberg
  */
 
-import 'package:flutter/material.dart';
-import 'navigationService.dart';
 import 'Services/dialogService.dart';
-import 'dialogManager.dart';
-import 'router.dart';
-import 'locator.dart';
+import 'LoginRegister/dialogManager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

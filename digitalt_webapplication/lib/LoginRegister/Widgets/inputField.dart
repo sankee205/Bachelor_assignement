@@ -1,9 +1,8 @@
+import 'package:digitalt_application/LoginRegister/Widgets/noteText.dart';
+import 'package:digitalt_application/LoginRegister/sharedStyles.dart';
+import 'package:digitalt_application/LoginRegister/uiHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:digitalt_application/sharedStyles.dart';
-import 'package:digitalt_application/uiHelpers.dart';
-
-import 'package:digitalt_application/noteText.dart';
 
 class InputField extends StatefulWidget {
   final TextEditingController controller;

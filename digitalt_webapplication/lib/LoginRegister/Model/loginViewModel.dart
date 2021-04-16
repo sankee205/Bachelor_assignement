@@ -1,15 +1,14 @@
-import 'routeNames.dart';
-import 'locator.dart';
+import 'package:digitalt_application/Services/dialogService.dart';
+import 'package:digitalt_application/models/baseModel.dart';
+
+import '../routeNames.dart';
+import '../locator.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'Services/dialogService.dart';
-import 'navigationService.dart';
+import '../navigationService.dart';
 import 'package:flutter/foundation.dart';
 
-import 'models/baseModel.dart';
-
 class LoginViewModel extends BaseModel {
-  final AuthService _authenticationService =
-      locator<AuthService>();
+  final AuthService _authenticationService = locator<AuthService>();
   final DialogService _dialogService = locator<DialogService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
@@ -19,9 +18,9 @@ class LoginViewModel extends BaseModel {
   }) async {
     setBusy(true);
 
-    var result = await _authenticationService.loginWithEmail(
-      email: email,
-      password: password,
+    var result = await _authenticationService.signInWithEmailAndPassword(
+      email,
+      password,
     );
 
     setBusy(false);

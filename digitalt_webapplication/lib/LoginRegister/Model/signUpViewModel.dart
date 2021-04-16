@@ -1,8 +1,8 @@
-import 'package:digitalt_application/routeNames.dart';
-import 'package:digitalt_application/locator.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/Services/dialogService.dart';
-import 'package:digitalt_application/navigationService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:digitalt_application/models/baseModel.dart';
 

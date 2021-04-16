@@ -374,13 +374,13 @@ class _MyFormState extends State<MyForm> {
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
         if (addCaseItem()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AdminPage()));

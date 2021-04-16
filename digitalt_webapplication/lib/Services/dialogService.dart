@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:digitalt_application/LoginRegister/Model/dialogModels.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:digitalt_application/dialogModels.dart';
 
 class DialogService {
   GlobalKey<NavigatorState> _dialogNavigationKey = GlobalKey<NavigatorState>();

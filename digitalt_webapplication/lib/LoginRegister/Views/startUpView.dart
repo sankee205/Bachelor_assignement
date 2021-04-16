@@ -1,4 +1,4 @@
-import 'package:digitalt_application/startUpViewModel.dart';
+import 'package:digitalt_application/LoginRegister/Model/startUpViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 

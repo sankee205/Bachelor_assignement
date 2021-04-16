@@ -360,13 +360,13 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
         if (addCaseItem()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AdminPage()));
@@ -421,7 +421,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
     Widget continueButton = FlatButton(
@@ -429,7 +429,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
       onPressed: () {
         list.removeAt(index);
         setState(() {});
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
 
