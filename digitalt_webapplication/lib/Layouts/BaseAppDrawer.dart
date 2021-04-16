@@ -1,11 +1,11 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digitalt_application/Services/auth.dart';
 
 import '../Pages/HomePage.dart';
 import '../Pages/InfoPage.dart';
@@ -21,8 +21,21 @@ class BaseAppDrawer extends StatefulWidget {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirestoreService firestoreService = FirestoreService();
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
+  String currentUserRole;
+
+  getUserRole() async {
+    User firebaseUser = _auth.currentUser;
+    firestoreService.getUser(firebaseUser.uid).then((value) {
+      setState(() {
+        BaseUser user = value;
+        currentUserRole = user.userRole;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -73,14 +86,16 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          ListTile(
-            leading: Icon(Icons.admin_panel_settings),
-            title: Text('Admin'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AdminPage()));
-            },
-          ),
+          currentUserRole == 'Admin'
+              ? SizedBox()
+              : ListTile(
+                  leading: Icon(Icons.admin_panel_settings),
+                  title: Text('Admin'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AdminPage()));
+                  },
+                ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Logg ut'),
