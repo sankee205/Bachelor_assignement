@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digitalt_application/Services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:path/path.dart' as Path;
+import 'package:http/http.dart' as http;
 
 class DatabaseService {
   final String uid;
@@ -13,11 +18,36 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users'); //What to collect
 
-  Future updateUserData(String name, String email, String phonenumber) async {
-    return await userCollection.doc(uid).set({
+  Future<Null> changePassword(String newPassword) async {
+    User user = AuthService().getFirebaseUser();
+    const String API_KEY = 'AIzaSyAWYdE1NumFN9OR3g2tU4q29TrQGAs5X-A';
+    final Uri changePasswordUrl = Uri.parse(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key=$API_KEY');
+
+    final String idToken =
+        await user.getIdToken(); // where user is FirebaseUser user
+
+    final Map<String, dynamic> payload = {
+      'email': idToken,
+      'password': newPassword,
+      'returnSecureToken': true
+    };
+
+    await http.post(
+      changePasswordUrl,
+      body: json.encode(payload),
+      headers: {'Content-Type': 'application/json'},
+    );
+  }
+
+  Future updateUserData(String id, String name, String email,
+      String phonenumber, String userRole) async {
+    return await userCollection.doc(id).update({
       'name': name,
       'email': email,
       'phonenumber': phonenumber,
+      'uid': id,
+      'userRole': userRole,
     });
   }
 

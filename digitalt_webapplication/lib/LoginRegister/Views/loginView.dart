@@ -79,7 +79,7 @@ class _LoginViewState extends State<LoginView> {
                           onChanged: (val) {
                             setState(() => email = val);
                           },
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                         SizedBox(height: 20),
                         TextFormField(
@@ -90,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
                             onChanged: (val) {
                               setState(() => password = val);
                             },
-                            style: TextStyle(color: Colors.white)),
+                            style: TextStyle(color: Colors.black)),
                         verticalSpaceMedium,
                         MaterialButton(
                           elevation: 0,

@@ -15,7 +15,7 @@ class FirestoreService {
 
   Future getUser(String uid) async {
     try {
-      var userData = await _usersCollectionReference.doc(uid).get();
+      dynamic userData = await _usersCollectionReference.doc(uid).get();
       return BaseUser.fromData(userData.data());
     } catch (e) {
       return e.message;

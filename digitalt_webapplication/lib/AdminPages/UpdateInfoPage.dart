@@ -535,7 +535,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
     Widget continueButton = FlatButton(
@@ -543,7 +543,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
       onPressed: () {
         list.removeAt(index);
         setState(() {});
-        Navigator.of(context).pop();
+        Navigator.of(context, rootNavigator: true).pop();
       },
     );
 
