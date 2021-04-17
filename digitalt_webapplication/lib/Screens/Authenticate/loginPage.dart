@@ -47,14 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Logg inn her for å se alt av innhold hos DIGI-TALT',
+                  'Logg inn her for å se alt av innhold hos DIGI-TALT.NO',
                   textAlign: TextAlign.center,
                   style:
                       GoogleFonts.openSans(color: Colors.white, fontSize: 28),
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT',
+                  'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT.NO',
                   textAlign: TextAlign.center,
                   style:
                       GoogleFonts.openSans(color: Colors.white, fontSize: 14),
@@ -147,7 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('DIGI-TALT',
+        Text('DIGI-TALT.NO',
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
                 color: Colors.white,

@@ -47,7 +47,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
               color: Colors.red,
             ),
             child: Text(
-              'DIGI-TALT',
+              'DIGI-TALT.NO',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,

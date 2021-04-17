@@ -125,7 +125,7 @@ class _UpdateNewListsState extends State<UpdateNewLists> {
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

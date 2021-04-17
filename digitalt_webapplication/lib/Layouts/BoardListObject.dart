@@ -1,5 +1,4 @@
 import 'BoardItemObject.dart';
-import 'package:flutter/material.dart';
 
 class BoardListObject {
   String title;

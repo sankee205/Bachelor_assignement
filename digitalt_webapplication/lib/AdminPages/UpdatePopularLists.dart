@@ -126,7 +126,7 @@ class _UpdatePopularListsState extends State<UpdatePopularLists> {
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

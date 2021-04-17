@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
-        title: Text('Sign up to Digi-talt'),
+        title: Text('Sign up to Digi-talt.NO'),
         actions: <Widget>[
           TextButton(
             child: Text('Log in'),

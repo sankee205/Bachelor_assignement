@@ -58,7 +58,7 @@ class _InfoPageState extends State<InfoPage> {
       child: Scaffold(
         appBar: BaseAppBar(
           title: Text(
-            'DIGI-TALT',
+            'DIGI-TALT.NO',
             style: TextStyle(color: Colors.white),
           ),
           appBar: AppBar(),
