@@ -3,8 +3,12 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
+import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
+import 'package:digitalt_application/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -29,12 +33,16 @@ class HomePage extends StatefulWidget {
 // this class represents a home page with a grid layout
 class HomePageState extends State<HomePage> {
   //example list for the grid layout
-
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirestoreService firestoreService = FirestoreService();
   final AuthService _auth = AuthService();
   final DatabaseService db = DatabaseService();
   List newCases = [];
   List allCases = [];
   List popularCases = [];
+
+  String currentUserRole;
+  List<String> guestList = [];
 
   @override
   void initState() {
@@ -45,6 +53,35 @@ class HomePageState extends State<HomePage> {
     fetchDataBaseList('PopularCases');
     fetchDataBaseList('AllCases');
     fetchDataBaseList('NewCases');
+    getUserRole();
+    getGuestList();
+  }
+
+  getUserRole() async {
+    User firebaseUser = _firebaseAuth.currentUser;
+    firestoreService.getUser(firebaseUser.uid).then((value) {
+      setState(() {
+        BaseUser user = value;
+        currentUserRole = user.userRole;
+      });
+    });
+  }
+
+  getGuestList() async {
+    List<String> firebaseList = [];
+    List resultant = await db.getGuestListContent();
+    if (resultant != null) {
+      for (int i = 0; i < resultant.length; i++) {
+        var object = resultant[i];
+        firebaseList.add(object['Title'].toString());
+      }
+      setState(() {
+        guestList = firebaseList;
+      });
+      print(guestList);
+    } else {
+      print('resultant is null');
+    }
   }
 
   fetchDataBaseList(String folder) async {
@@ -155,27 +192,76 @@ class HomePageState extends State<HomePage> {
                                       //makes the onclick available
                                       return GestureDetector(
                                           onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return CasePage(
-                                                      image:
-                                                          caseObject['image'],
-                                                      title:
-                                                          caseObject['title'],
-                                                      author:
-                                                          caseObject['author'],
-                                                      publishedDate: caseObject[
-                                                          'publishedDate'],
-                                                      introduction: caseObject[
-                                                          'introduction'],
-                                                      text: caseObject['text'],
-                                                      lastEdited: caseObject[
-                                                          'lastEdited']);
-                                                },
-                                              ),
-                                            );
+                                            switch (currentUserRole) {
+                                              case 'Admin':
+                                                {
+                                                  if (guestList.contains(
+                                                      caseObject['title'])) {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    CasePage(
+                                                                      image: caseObject[
+                                                                          'image'],
+                                                                      title: caseObject[
+                                                                          'title'],
+                                                                      author: caseObject[
+                                                                          'author'],
+                                                                      publishedDate:
+                                                                          caseObject[
+                                                                              'publishedDate'],
+                                                                      introduction:
+                                                                          caseObject[
+                                                                              'introduction'],
+                                                                      text: caseObject[
+                                                                          'text'],
+                                                                      lastEdited:
+                                                                          caseObject[
+                                                                              'lastEdited'],
+                                                                    )));
+                                                  }
+                                                }
+                                                break;
+                                              case 'User':
+                                                {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                                  CasePage(
+                                                                    image: caseObject[
+                                                                        'image'],
+                                                                    title: caseObject[
+                                                                        'title'],
+                                                                    author: caseObject[
+                                                                        'author'],
+                                                                    publishedDate:
+                                                                        caseObject[
+                                                                            'publishedDate'],
+                                                                    introduction:
+                                                                        caseObject[
+                                                                            'introduction'],
+                                                                    text: caseObject[
+                                                                        'text'],
+                                                                    lastEdited:
+                                                                        caseObject[
+                                                                            'lastEdited'],
+                                                                  )));
+                                                }
+                                                break;
+                                              case 'Guest':
+                                                {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProfilePage()));
+                                                }
+                                                break;
+                                            }
                                           },
                                           child: Container(
                                               //height: 40,
@@ -222,21 +308,73 @@ class HomePageState extends State<HomePage> {
                               height: 250,
                               child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => CasePage(
-                                                  image: caseObject['image'],
-                                                  title: caseObject['title'],
-                                                  author: caseObject['author'],
-                                                  publishedDate: caseObject[
-                                                      'publishedDate'],
-                                                  introduction: caseObject[
-                                                      'introduction'],
-                                                  text: caseObject['text'],
-                                                  lastEdited:
-                                                      caseObject['lastEdited'],
-                                                )));
+                                    switch (currentUserRole) {
+                                      case 'Admin':
+                                        {
+                                          if (guestList
+                                              .contains(caseObject['title'])) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CasePage(
+                                                          image: caseObject[
+                                                              'image'],
+                                                          title: caseObject[
+                                                              'title'],
+                                                          author: caseObject[
+                                                              'author'],
+                                                          publishedDate:
+                                                              caseObject[
+                                                                  'publishedDate'],
+                                                          introduction:
+                                                              caseObject[
+                                                                  'introduction'],
+                                                          text: caseObject[
+                                                              'text'],
+                                                          lastEdited:
+                                                              caseObject[
+                                                                  'lastEdited'],
+                                                        )));
+                                          }
+                                        }
+                                        break;
+                                      case 'User':
+                                        {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CasePage(
+                                                        image:
+                                                            caseObject['image'],
+                                                        title:
+                                                            caseObject['title'],
+                                                        author: caseObject[
+                                                            'author'],
+                                                        publishedDate:
+                                                            caseObject[
+                                                                'publishedDate'],
+                                                        introduction:
+                                                            caseObject[
+                                                                'introduction'],
+                                                        text:
+                                                            caseObject['text'],
+                                                        lastEdited: caseObject[
+                                                            'lastEdited'],
+                                                      )));
+                                        }
+                                        break;
+                                      case 'Guest':
+                                        {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProfilePage()));
+                                        }
+                                        break;
+                                    }
                                   },
                                   child: BaseCaseBox(
                                       image: caseObject['image'],

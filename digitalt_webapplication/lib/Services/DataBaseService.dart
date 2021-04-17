@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:digitalt_application/Services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:path/path.dart' as Path;
-import 'package:http/http.dart' as http;
 
 class DatabaseService {
   final String uid;
@@ -17,28 +12,6 @@ class DatabaseService {
   // collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users'); //What to collect
-
-  Future<Null> changePassword(String newPassword) async {
-    User user = AuthService().getFirebaseUser();
-    const String API_KEY = 'AIzaSyAWYdE1NumFN9OR3g2tU4q29TrQGAs5X-A';
-    final Uri changePasswordUrl = Uri.parse(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key=$API_KEY');
-
-    final String idToken =
-        await user.getIdToken(); // where user is FirebaseUser user
-
-    final Map<String, dynamic> payload = {
-      'email': idToken,
-      'password': newPassword,
-      'returnSecureToken': true
-    };
-
-    await http.post(
-      changePasswordUrl,
-      body: json.encode(payload),
-      headers: {'Content-Type': 'application/json'},
-    );
-  }
 
   Future updateUserData(String id, String name, String email,
       String phonenumber, String userRole) async {
@@ -119,6 +92,19 @@ class DatabaseService {
     return infoList;
   }
 
+  Future getGuestListContent() async {
+    List guestList = [];
+    await FirebaseFirestore.instance
+        .collection('GuestList')
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) {
+                guestList.add(element);
+              })
+            });
+    return guestList;
+  }
+
   Future getSingleCaseItem(String title) async {
     List resultList = [];
     await FirebaseFirestore.instance
@@ -183,6 +169,24 @@ class DatabaseService {
           item['introduction'],
           item['text'],
           item['lastEdited']);
+    }
+  }
+
+  Future updateGuestList(List<Map<String, dynamic>> newList) async {
+    await FirebaseFirestore.instance
+        .collection('GuestList')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+    for (int i = 0; i < newList.length; i++) {
+      Map<String, dynamic> item = newList[i];
+      await FirebaseFirestore.instance
+          .collection('GuestList')
+          .doc(uid)
+          .set({'Title': item['Title']});
     }
   }
 
