@@ -46,7 +46,7 @@ class CasePage extends StatelessWidget {
       //this is the appbar for the home page
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

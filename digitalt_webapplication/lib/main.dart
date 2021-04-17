@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return Container(
       child: Consumer<ThemeNotifier>(
         builder: (context, theme, widget) => MaterialApp(
-          title: 'DIGI-TALT',
+          title: 'DIGI-TALT.NO',
           builder: (context, child) => Navigator(
             key: locator<DialogService>().dialogNavigationKey,
             onGenerateRoute: (settings) => MaterialPageRoute(

@@ -109,7 +109,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

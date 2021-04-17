@@ -106,7 +106,7 @@ class _MyFormState extends State<MyForm> {
       backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

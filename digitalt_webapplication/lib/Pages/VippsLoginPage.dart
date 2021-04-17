@@ -55,7 +55,7 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                   height: 10,
                 ),
                 Center(
-                  child: Text('DIGI-TALT',
+                  child: Text('DIGI-TALT.NO',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey,

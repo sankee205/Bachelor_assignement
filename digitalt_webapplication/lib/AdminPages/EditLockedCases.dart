@@ -133,7 +133,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),

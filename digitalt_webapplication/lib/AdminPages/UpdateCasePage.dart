@@ -149,7 +149,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
       backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
         title: Text(
-          'DIGI-TALT',
+          'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),
