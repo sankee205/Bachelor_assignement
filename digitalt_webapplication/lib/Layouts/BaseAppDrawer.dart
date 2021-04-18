@@ -1,4 +1,6 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
+import 'package:digitalt_application/LoginRegister/Model/startUpViewModel.dart';
+import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
@@ -99,16 +101,57 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Logg ut'),
-            onTap: () async {
-              try {
-                await _auth.signOut();
-              } catch (e) {
-                print(e);
-              }
+            onTap: () {
+              showAlertSignOutDialog(context);
             },
           ),
         ],
       ),
+    );
+  }
+
+  signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Widget showAlertSignOutDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed: () {
+        signOut();
+        Navigator.of(context, rootNavigator: true).pop();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => StartUpView()));
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Logg ut av DIGI-TALT.NO"),
+      content: Text("Er du sikker på at du vil logge ut?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

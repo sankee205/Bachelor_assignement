@@ -192,6 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       phonenumber: currentUser.phonenumber,
                                       uid: currentUser.uid,
                                       role: currentUser.userRole,
+                                      myCases: currentUser.myCases,
                                     )));
                       },
                       child: Padding(

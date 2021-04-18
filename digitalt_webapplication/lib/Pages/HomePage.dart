@@ -78,7 +78,6 @@ class HomePageState extends State<HomePage> {
       setState(() {
         guestList = firebaseList;
       });
-      print(guestList);
     } else {
       print('resultant is null');
     }

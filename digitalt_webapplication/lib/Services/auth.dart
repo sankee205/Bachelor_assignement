@@ -72,12 +72,12 @@ class AuthService {
 
       // create a new user profile on firestore
       _currentUser = BaseUser(
-        uid: authResult.user.uid,
-        email: email,
-        fullName: fullName,
-        phonenumber: phonenumber,
-        userRole: role,
-      );
+          uid: authResult.user.uid,
+          email: email,
+          fullName: fullName,
+          phonenumber: phonenumber,
+          userRole: role,
+          myCases: []);
 
       await _firestoreService.createUser(_currentUser);
 
