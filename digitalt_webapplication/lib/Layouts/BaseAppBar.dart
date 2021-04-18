@@ -1,3 +1,4 @@
+import 'package:digitalt_application/Layouts/BaseFadeRoute.dart';
 import 'package:flutter/material.dart';
 
 /**
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
  * in all the different pages in the app/web app
  */
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
- // final Color backgroundColor = Colors.red;
+  // final Color backgroundColor = Colors.red;
   final Text title;
   final AppBar appBar;
   final List<Widget> widgets;
@@ -30,10 +31,6 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                 borderRadius: BorderRadius.circular((20))),
           ),
         ),
-        Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-                onTap: () {}, child: Icon(Icons.account_circle)))
       ],
     );
   }
