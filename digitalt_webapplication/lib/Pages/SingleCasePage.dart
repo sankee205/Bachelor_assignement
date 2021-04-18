@@ -2,8 +2,9 @@ import 'dart:math';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:easy_rich_text/easy_rich_text.dart';
+import 'package:digitalt_application/Services/auth.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
+import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -13,9 +14,7 @@ import 'package:responsive_grid/responsive_grid.dart';
  * this is the case PAge. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
-class CasePage extends StatelessWidget {
-  final DatabaseService db = DatabaseService();
-  //caseItem to be layed out in the casepage
+class CasePage extends StatefulWidget {
   final String image;
   final String title;
   final List author;
@@ -23,8 +22,6 @@ class CasePage extends StatelessWidget {
   final String lastEdited;
   final String introduction;
   final List text;
-
-  Text _lastEditedText;
 
   CasePage(
       {Key key,
@@ -36,11 +33,48 @@ class CasePage extends StatelessWidget {
       @required this.text,
       this.lastEdited})
       : super(key: key);
+  @override
+  _CasePageState createState() => _CasePageState();
+}
+
+class _CasePageState extends State<CasePage> {
+  BaseUser currentUser;
+  final AuthService auth = AuthService();
+  final FirestoreService firestoreService = FirestoreService();
+  Text _lastEditedText;
+  bool isArticleSaved;
+
+  setBaseUser() async {
+    String userID = auth.getUser();
+    BaseUser user = await firestoreService.getUser(userID);
+    if (user != null) {
+      setState(() {
+        currentUser = user;
+      });
+      if (user.myCases.contains(widget.title)) {
+        setState(() {
+          isArticleSaved = true;
+        });
+      } else {
+        setState(() {
+          isArticleSaved = false;
+        });
+      }
+    } else {
+      print('user from authservice is null');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setBaseUser() {}
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (lastEdited != null) {
-      _lastEditedText = Text('Sist edret: ' + lastEdited);
+    if (widget.lastEdited != null) {
+      _lastEditedText = Text('Sist edret: ' + widget.lastEdited);
     }
     return Scaffold(
       //this is the appbar for the home page
@@ -78,7 +112,7 @@ class CasePage extends StatelessWidget {
             width: 800,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(image),
+                image: NetworkImage(widget.image),
                 fit: BoxFit.fitWidth,
                 alignment: FractionalOffset.topCenter,
               ),
@@ -106,7 +140,7 @@ class CasePage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Text(
-                                title,
+                                widget.title,
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -127,7 +161,7 @@ class CasePage extends StatelessWidget {
                                   child: ResponsiveGridRow(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: author.map((author) {
+                                    children: widget.author.map((author) {
                                       return ResponsiveGridCol(
                                           xl: 12,
                                           md: 12,
@@ -145,14 +179,31 @@ class CasePage extends StatelessWidget {
                                   width: 20,
                                 ),
                                 Icon(Icons.date_range),
-                                Text(publishedDate)
+                                Text(widget.publishedDate),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                isArticleSaved == null
+                                    ? SizedBox()
+                                    : Checkbox(
+                                        value: isArticleSaved,
+                                        onChanged: (bool newValue) {
+                                          setState(() {
+                                            isArticleSaved = newValue;
+                                          });
+                                        },
+                                      ),
                               ],
+                            ),
+
+                            SizedBox(
+                              height: 10,
                             ),
 
                             Container(
                               margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Text(
-                                introduction,
+                                widget.introduction,
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
@@ -166,7 +217,7 @@ class CasePage extends StatelessWidget {
                               margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               width: 600,
                               child: Column(
-                                children: text.map((item) {
+                                children: widget.text.map((item) {
                                   return Container(
                                     margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                     alignment: Alignment.centerLeft,

@@ -20,6 +20,7 @@ class EditProfilePage extends StatefulWidget {
   final String uid;
   final String phonenumber;
   final String role;
+  final List<String> myCases;
 
   const EditProfilePage({
     Key key,
@@ -28,6 +29,7 @@ class EditProfilePage extends StatefulWidget {
     @required this.uid,
     @required this.phonenumber,
     @required this.role,
+    @required this.myCases,
   }) : super(key: key);
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -63,8 +65,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool changeProfileData() {
     bool success = true;
 
-    dynamic result = db.updateUserData(
-        id, fullname.text, emailAdress.text, number.text, userRole);
+    dynamic result = db.updateUserData(id, fullname.text, emailAdress.text,
+        number.text, userRole, widget.myCases);
     if (result != null) {
       success = true;
     } else {
