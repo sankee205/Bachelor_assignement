@@ -65,8 +65,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool changeProfileData() {
     bool success = true;
 
-    dynamic result = db.updateUserData(id, fullname.text, emailAdress.text,
-        number.text, userRole, widget.myCases);
+    dynamic result =
+        db.updateUserData(id, fullname.text, emailAdress.text, number.text);
     if (result != null) {
       success = true;
     } else {

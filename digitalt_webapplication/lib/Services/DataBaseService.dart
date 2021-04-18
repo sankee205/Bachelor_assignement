@@ -13,16 +13,17 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users'); //What to collect
 
-  Future updateUserData(String id, String name, String email,
-      String phonenumber, String userRole, List<String> myCases) async {
+  Future updateUserData(
+      String id, String name, String email, String phonenumber) async {
     return await userCollection.doc(id).update({
       'name': name,
       'email': email,
       'phonenumber': phonenumber,
-      'uid': id,
-      'userRole': userRole,
-      'myCases': myCases
     });
+  }
+
+  Future updateMyCasesData(String id, List myCases) async {
+    return await userCollection.doc(id).update({'myCases': myCases});
   }
 
   Future updateCaseItemData(String id, String image, String title, List author,
