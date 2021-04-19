@@ -1,10 +1,7 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
-import 'package:digitalt_application/LoginRegister/Model/startUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
-import 'package:digitalt_application/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,19 +20,12 @@ class BaseAppDrawer extends StatefulWidget {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
-final FirestoreService firestoreService = FirestoreService();
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
-  String currentUserRole;
-
-  getUserRole() async {
-    User firebaseUser = _auth.currentUser;
-    firestoreService.getUser(firebaseUser.uid).then((value) {
-      setState(() {
-        BaseUser user = value;
-        currentUserRole = user.userRole;
-      });
-    });
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -88,7 +78,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          currentUserRole == 'Admin'
+          _auth.currentUser.isAnonymous
               ? SizedBox()
               : ListTile(
                   leading: Icon(Icons.admin_panel_settings),

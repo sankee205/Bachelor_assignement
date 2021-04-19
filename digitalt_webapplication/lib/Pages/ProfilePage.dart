@@ -1,10 +1,12 @@
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
+import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/EditProfilePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final AuthService auth = AuthService();
   final FirestoreService firestoreService = FirestoreService();
   BaseUser currentUser;
@@ -35,6 +38,14 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } else {
       print('user from authservice is null');
+    }
+  }
+
+  signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -61,7 +72,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Container(
               width: 400,
-              color: Colors.white,
               child: Column(
                 children: [
                   SizedBox(
@@ -181,24 +191,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(
                     height: 30,
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProfilePage(
-                                      email: currentUser.email,
-                                      name: currentUser.fullName,
-                                      phonenumber: currentUser.phonenumber,
-                                      uid: currentUser.uid,
-                                      role: currentUser.userRole,
-                                      myCases: currentUser.myCases,
-                                    )));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Rediger'),
-                      )),
+                  _auth.currentUser.isAnonymous
+                      ? ElevatedButton(
+                          onPressed: () {
+                            signOut();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StartUpView()));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Logg inn'),
+                          ))
+                      : ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProfilePage(
+                                          email: currentUser.email,
+                                          name: currentUser.fullName,
+                                          phonenumber: currentUser.phonenumber,
+                                          uid: currentUser.uid,
+                                          role: currentUser.userRole,
+                                          myCases: currentUser.myCases,
+                                        )));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Rediger'),
+                          )),
                   SizedBox(
                     height: 30,
                   ),

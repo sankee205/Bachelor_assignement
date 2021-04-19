@@ -59,12 +59,18 @@ class HomePageState extends State<HomePage> {
 
   getUserRole() async {
     User firebaseUser = _firebaseAuth.currentUser;
-    firestoreService.getUser(firebaseUser.uid).then((value) {
+    if (firebaseUser.isAnonymous) {
       setState(() {
-        BaseUser user = value;
-        currentUserRole = user.userRole;
+        currentUserRole = 'Guest';
       });
-    });
+    } else {
+      firestoreService.getUser(firebaseUser.uid).then((value) {
+        setState(() {
+          BaseUser user = value;
+          currentUserRole = user.userRole;
+        });
+      });
+    }
   }
 
   getGuestList() async {
