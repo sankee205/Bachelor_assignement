@@ -10,45 +10,37 @@ import 'package:responsive_grid/responsive_grid.dart';
  * contact inofrmation
  */
 class InfoPage extends StatefulWidget {
+  final List infoList;
+  final List text;
+  final List author;
+  final String contactPhoto;
+  final String date;
+  final String email;
+  final String textPhoto;
+  final String tlf;
+  final String backgroundPhoto;
+
+  const InfoPage(
+      {Key key,
+      @required this.infoList,
+      @required this.text,
+      @required this.author,
+      @required this.contactPhoto,
+      @required this.date,
+      @required this.email,
+      @required this.textPhoto,
+      @required this.backgroundPhoto,
+      @required this.tlf});
   @override
   _InfoPageState createState() => _InfoPageState();
 }
 
 class _InfoPageState extends State<InfoPage> {
   DatabaseService db = DatabaseService();
-  List infoList = [];
-  List text = [];
-  List author = [];
-  String contactPhoto = '';
-  String date = '';
-  String email = '';
-  String textPhoto = '';
-  String tlf = '';
-  String backgroundPhoto = '';
 
   @override
   void initState() {
     super.initState();
-    getInfo();
-  }
-
-  Future getInfo() async {
-    List resultant = await db.getInfoPageContent();
-    if (resultant != null) {
-      var result = resultant[0];
-      setState(() {
-        textPhoto = result['textPhoto'];
-        contactPhoto = result['contactPhoto'];
-        backgroundPhoto = result['backgroundPhoto'];
-        text = result['text'];
-        author = result['author'];
-        date = result['date'];
-        email = result['email'];
-        tlf = result['tlf'];
-      });
-    } else {
-      print('resultant is null');
-    }
   }
 
   @override

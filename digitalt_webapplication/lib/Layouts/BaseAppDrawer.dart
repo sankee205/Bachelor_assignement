@@ -2,6 +2,7 @@ import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +25,17 @@ class BaseAppDrawer extends StatefulWidget {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirestoreService firestoreService = FirestoreService();
 
+final DatabaseService db = DatabaseService();
+List infoList = [];
+List text = [];
+List author = [];
+String contactPhoto = '';
+String date = '';
+String email = '';
+String textPhoto = '';
+String tlf = '';
+String backgroundPhoto = '';
+
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
   String currentUserRole = 'User';
   @override
@@ -31,6 +43,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
     // TODO: implement initState
     super.initState();
     getUserRole();
+    getInfo();
   }
 
   getUserRole() async {
@@ -44,6 +57,25 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           currentUserRole = user.userRole;
         });
       });
+    }
+  }
+
+  Future getInfo() async {
+    List resultant = await db.getInfoPageContent();
+    if (resultant != null) {
+      var result = resultant[0];
+      setState(() {
+        textPhoto = result['textPhoto'];
+        contactPhoto = result['contactPhoto'];
+        backgroundPhoto = result['backgroundPhoto'];
+        text = result['text'];
+        author = result['author'];
+        date = result['date'];
+        email = result['email'];
+        tlf = result['tlf'];
+      });
+    } else {
+      print('resultant is null');
     }
   }
 
@@ -70,7 +102,18 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             title: Text('About'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => InfoPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => InfoPage(
+                          infoList: infoList,
+                          text: text,
+                          author: author,
+                          contactPhoto: contactPhoto,
+                          date: date,
+                          email: email,
+                          textPhoto: textPhoto,
+                          backgroundPhoto: backgroundPhoto,
+                          tlf: tlf)));
             },
           ),
           ListTile(
