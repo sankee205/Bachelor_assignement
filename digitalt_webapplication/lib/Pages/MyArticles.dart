@@ -99,56 +99,59 @@ class _MyArticlesState extends State<MyArticles> {
         child: Container(
           child: Center(
             child: Container(
-              width: 800,
-              color: Colors.white,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
+                width: 800,
+                child: Material(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Dine Lagrede Artikler',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ResponsiveGridRow(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: myCases.map((caseObject) {
+                          return ResponsiveGridCol(
+                              lg: 6,
+                              md: 6,
+                              xs: 6,
+                              child: Container(
+                                  margin: EdgeInsets.all(5),
+                                  height: 250,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => CasePage(
+                                                      image:
+                                                          caseObject['image'],
+                                                      title:
+                                                          caseObject['title'],
+                                                      author:
+                                                          caseObject['author'],
+                                                      publishedDate: caseObject[
+                                                          'publishedDate'],
+                                                      introduction: caseObject[
+                                                          'introduction'],
+                                                      text: caseObject['text'],
+                                                      lastEdited: caseObject[
+                                                          'lastEdited'],
+                                                    )));
+                                      },
+                                      child: BaseCaseBox(
+                                          image: caseObject['image'],
+                                          title: caseObject['title']))));
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Dine Lagrede Artikler',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ResponsiveGridRow(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: myCases.map((caseObject) {
-                      return ResponsiveGridCol(
-                          lg: 6,
-                          md: 6,
-                          xs: 6,
-                          child: Container(
-                              margin: EdgeInsets.all(5),
-                              height: 250,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => CasePage(
-                                                  image: caseObject['image'],
-                                                  title: caseObject['title'],
-                                                  author: caseObject['author'],
-                                                  publishedDate: caseObject[
-                                                      'publishedDate'],
-                                                  introduction: caseObject[
-                                                      'introduction'],
-                                                  text: caseObject['text'],
-                                                  lastEdited:
-                                                      caseObject['lastEdited'],
-                                                )));
-                                  },
-                                  child: BaseCaseBox(
-                                      image: caseObject['image'],
-                                      title: caseObject['title']))));
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
+                )),
           ),
         ),
       ),

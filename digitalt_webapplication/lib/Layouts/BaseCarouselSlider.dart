@@ -31,13 +31,17 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
   List<String> guestList = [];
 
   getUserRole() async {
-    User firebaseUser = _firebaseAuth.currentUser;
-    firestoreService.getUser(firebaseUser.uid).then((value) {
-      setState(() {
-        BaseUser user = value;
-        currentUserRole = user.userRole;
+    if (_firebaseAuth.currentUser.isAnonymous) {
+      currentUserRole = 'Guest';
+    } else {
+      User firebaseUser = _firebaseAuth.currentUser;
+      firestoreService.getUser(firebaseUser.uid).then((value) {
+        setState(() {
+          BaseUser user = value;
+          currentUserRole = user.userRole;
+        });
       });
-    });
+    }
   }
 
   getGuestList() async {
@@ -88,6 +92,22 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                 switch (currentUserRole) {
                   case 'Admin':
                     {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CasePage(
+                                    image: caseObject['image'],
+                                    title: caseObject['title'],
+                                    author: caseObject['author'],
+                                    publishedDate: caseObject['publishedDate'],
+                                    introduction: caseObject['introduction'],
+                                    text: caseObject['text'],
+                                    lastEdited: caseObject['lastEdited'],
+                                  )));
+                    }
+                    break;
+                  case 'User':
+                    {
                       if (guestList.contains(caseObject['title'])) {
                         Navigator.push(
                             context,
@@ -105,7 +125,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                       }
                     }
                     break;
-                  case 'User':
+                  case 'Subscriber':
                     {
                       Navigator.push(
                           context,
