@@ -90,13 +90,28 @@ class AuthService {
   Future<bool> isUserLoggedIn() async {
     _auth.authStateChanges().listen((User user) {});
     var firebaseUser = _auth.currentUser;
-    return await _populateCurrentUser(firebaseUser);
+    if (firebaseUser == null) {
+      return false;
+    } else {
+      return await _populateCurrentUser(firebaseUser);
+    }
   }
 
   Future<bool> _populateCurrentUser(User user) async {
     if (user != null) {
-      _currentUser = await _firestoreService.getUser(user.uid);
-      return true;
+      if (user.isAnonymous) {
+        _currentUser = BaseUser(
+            email: 'null',
+            fullName: 'null',
+            myCases: [],
+            phonenumber: 'null',
+            uid: user.uid,
+            userRole: 'Guest');
+        return true;
+      } else {
+        _currentUser = await _firestoreService.getUser(user.uid);
+        return true;
+      }
     } else {
       return false;
     }

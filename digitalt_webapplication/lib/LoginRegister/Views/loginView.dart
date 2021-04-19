@@ -141,6 +141,10 @@ class _LoginViewState extends State<LoginView> {
                             } else {
                               print('signed in');
                               print(result);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomePage()));
                             }
                           },
                         ),

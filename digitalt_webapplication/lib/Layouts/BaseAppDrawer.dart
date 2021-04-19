@@ -1,5 +1,4 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
-import 'package:digitalt_application/LoginRegister/Model/startUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
@@ -26,16 +25,26 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final FirestoreService firestoreService = FirestoreService();
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
-  String currentUserRole;
+  String currentUserRole = 'User';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserRole();
+  }
 
   getUserRole() async {
-    User firebaseUser = _auth.currentUser;
-    firestoreService.getUser(firebaseUser.uid).then((value) {
-      setState(() {
+    if (_auth.currentUser.isAnonymous) {
+      currentUserRole = 'Guest';
+    } else {
+      User firebaseUser = _auth.currentUser;
+      firestoreService.getUser(firebaseUser.uid).then((value) {
         BaseUser user = value;
-        currentUserRole = user.userRole;
+        setState(() {
+          currentUserRole = user.userRole;
+        });
       });
-    });
+    }
   }
 
   @override
@@ -89,15 +98,15 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             },
           ),
           currentUserRole == 'Admin'
-              ? SizedBox()
-              : ListTile(
+              ? ListTile(
                   leading: Icon(Icons.admin_panel_settings),
                   title: Text('Admin'),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => AdminPage()));
                   },
-                ),
+                )
+              : SizedBox(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Logg ut'),
