@@ -2,6 +2,8 @@ import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/Services/firestoreService.dart';
+import 'package:digitalt_application/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +22,29 @@ class BaseAppDrawer extends StatefulWidget {
 }
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirestoreService firestoreService = FirestoreService();
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
+  String currentUserRole = 'User';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getUserRole();
+  }
+
+  getUserRole() async {
+    if (_auth.currentUser.isAnonymous) {
+      currentUserRole = 'Guest';
+    } else {
+      User firebaseUser = _auth.currentUser;
+      firestoreService.getUser(firebaseUser.uid).then((value) {
+        BaseUser user = value;
+        setState(() {
+          currentUserRole = user.userRole;
+        });
+      });
+    }
   }
 
   @override
@@ -78,16 +97,16 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          _auth.currentUser.isAnonymous
-              ? SizedBox()
-              : ListTile(
+          currentUserRole == 'Admin'
+              ? ListTile(
                   leading: Icon(Icons.admin_panel_settings),
                   title: Text('Admin'),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => AdminPage()));
                   },
-                ),
+                )
+              : SizedBox(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Logg ut'),
