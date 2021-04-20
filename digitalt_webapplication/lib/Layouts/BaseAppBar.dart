@@ -1,10 +1,9 @@
 import 'package:digitalt_application/Layouts/BaseFadeRoute.dart';
 import 'package:flutter/material.dart';
 
-/**
- * This is a BAse App Bar class. It is a class for the appbar that will be used 
- * in all the different pages in the app/web app
- */
+///
+///This is a Base App Bar class. It is a class for the appbar that will be used
+///in all the different pages in the app/web app
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   // final Color backgroundColor = Colors.red;
   final Text title;

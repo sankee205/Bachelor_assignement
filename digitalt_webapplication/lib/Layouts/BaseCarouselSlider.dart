@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 
 import 'BaseCaseBox.dart';
 
-/**
- * this is the carouselslider. is will show the top X cases in the home page
- */
+///
+///this is the carousel slider used in
+///the home page to display the most popular cases
+///
 class BaseCarouselSlider extends StatefulWidget {
   //list of cass it gets from the database
   final List caseList;
