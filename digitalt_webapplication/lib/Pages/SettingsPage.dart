@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/**
- * this is the profile page.
+/*
+ * this is the settings page
+ * here you can change the theme to dark or light mode
  */
 class SettingsPage extends StatefulWidget {
   @override

@@ -3,6 +3,7 @@ import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,57 +23,48 @@ class BaseAppDrawer extends StatefulWidget {
   _BaseAppDrawerState createState() => _BaseAppDrawerState();
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-final FirestoreService firestoreService = FirestoreService();
+final AuthService _auth = AuthService();
 
-final DatabaseService db = DatabaseService();
-List infoList = [];
-List text = [];
-List author = [];
-String contactPhoto = '';
-String date = '';
-String email = '';
-String textPhoto = '';
-String tlf = '';
-String backgroundPhoto = '';
+final DatabaseService _db = DatabaseService();
+List _infoList = [];
+List _text = [];
+List _author = [];
+String _contactPhoto = '';
+String _date = '';
+String _email = '';
+String _textPhoto = '';
+String _tlf = '';
+String _backgroundPhoto = '';
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
-  String currentUserRole = 'User';
+  String _currentUserRole = 'User';
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserRole();
-    getInfo();
+    _getUserRole();
+    _getInfo();
   }
 
-  getUserRole() async {
-    if (_auth.currentUser.isAnonymous) {
-      currentUserRole = 'Guest';
-    } else {
-      User firebaseUser = _auth.currentUser;
-      firestoreService.getUser(firebaseUser.uid).then((value) {
-        BaseUser user = value;
-        setState(() {
-          currentUserRole = user.userRole;
-        });
-      });
-    }
+  _getUserRole() async {
+    setState(() {
+      _currentUserRole = _auth.getUserRole();
+    });
   }
 
-  Future getInfo() async {
-    List resultant = await db.getInfoPageContent();
+  Future _getInfo() async {
+    List resultant = await _db.getInfoPageContent();
     if (resultant != null) {
       var result = resultant[0];
       setState(() {
-        textPhoto = result['textPhoto'];
-        contactPhoto = result['contactPhoto'];
-        backgroundPhoto = result['backgroundPhoto'];
-        text = result['text'];
-        author = result['author'];
-        date = result['date'];
-        email = result['email'];
-        tlf = result['tlf'];
+        _textPhoto = result['textPhoto'];
+        _contactPhoto = result['contactPhoto'];
+        _backgroundPhoto = result['backgroundPhoto'];
+        _text = result['text'];
+        _author = result['author'];
+        _date = result['date'];
+        _email = result['email'];
+        _tlf = result['tlf'];
       });
     } else {
       print('resultant is null');
@@ -105,15 +97,15 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => InfoPage(
-                          infoList: infoList,
-                          text: text,
-                          author: author,
-                          contactPhoto: contactPhoto,
-                          date: date,
-                          email: email,
-                          textPhoto: textPhoto,
-                          backgroundPhoto: backgroundPhoto,
-                          tlf: tlf)));
+                          infoList: _infoList,
+                          text: _text,
+                          author: _author,
+                          contactPhoto: _contactPhoto,
+                          date: _date,
+                          email: _email,
+                          textPhoto: _textPhoto,
+                          backgroundPhoto: _backgroundPhoto,
+                          tlf: _tlf)));
             },
           ),
           ListTile(
@@ -140,7 +132,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
-          currentUserRole == 'Admin'
+          _currentUserRole == 'Admin'
               ? ListTile(
                   leading: Icon(Icons.admin_panel_settings),
                   title: Text('Admin'),

@@ -45,46 +45,45 @@ class UpdateCasePage extends StatefulWidget {
 }
 
 class _UpdateCasePageState extends State<UpdateCasePage> {
-  DatabaseService db = DatabaseService();
+  final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  String id;
-  String imageUrl;
-  final title = TextEditingController();
-  final introduction = TextEditingController();
-  String date;
-  static List descriptionList = [];
-  static List authorList = [];
+  String _id;
+  String _imageUrl;
+  final _title = TextEditingController();
+  final _introduction = TextEditingController();
+  String _date;
+  static List _descriptionList = [];
+  static List _authorList = [];
 
   Image _imageWidget;
-  MediaInfo mediaInfo;
-  String richText;
+  MediaInfo _mediaInfo;
 
   @override
   void initState() {
     super.initState();
-    setCaseItem();
+    _setCaseItem();
   }
 
   ///this method will set the caseitems in page from input fields to the widget
-  Future setCaseItem() async {
+  Future _setCaseItem() async {
     setState(() {
-      imageUrl = widget.caseImageUrl;
+      _imageUrl = widget.caseImageUrl;
       _imageWidget = Image.network(widget.caseImageUrl);
-      id = widget.caseId;
-      date = widget.caseDate;
-      title.text = widget.caseTitle;
-      introduction.text = widget.caseIntroduction;
-      descriptionList = widget.caseText;
-      authorList = widget.caseAuthorList;
+      _id = widget.caseId;
+      _date = widget.caseDate;
+      _title.text = widget.caseTitle;
+      _introduction.text = widget.caseIntroduction;
+      _descriptionList = widget.caseText;
+      _authorList = widget.caseAuthorList;
     });
   }
 
   ///this methods will update the case in firebase
-  bool addCaseItem() {
+  bool _updateCaseItem() {
     bool success = true;
-    if (mediaInfo == null) {
-      var result = db.updateCaseItemData(id, imageUrl, title.text, authorList,
-          date, introduction.text, descriptionList);
+    if (_mediaInfo == null) {
+      var result = _db.updateCaseItemData(_id, _imageUrl, _title.text,
+          _authorList, _date, _introduction.text, _descriptionList);
       if (result != null) {
         success = true;
       } else {
@@ -92,11 +91,11 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         success = false;
       }
     } else {
-      db.uploadFile(mediaInfo).then((value) {
+      _db.uploadFile(_mediaInfo).then((value) {
         String imageUri = value.toString();
         if (imageUri != null) {
-          var result = db.updateCaseItemData(id, imageUri, title.text,
-              authorList, date, introduction.text, descriptionList);
+          var result = _db.updateCaseItemData(_id, imageUri, _title.text,
+              _authorList, _date, _introduction.text, _descriptionList);
           if (result != null) {
             success = true;
           } else {
@@ -113,9 +112,9 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   }
 
 //gets the image that is added
-  Future<void> getImage() async {
+  Future<void> _getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    mediaInfo = mediaData;
+    _mediaInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
@@ -132,8 +131,8 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
 
   @override
   void dispose() {
-    title.dispose();
-    introduction.dispose();
+    _title.dispose();
+    _introduction.dispose();
     super.dispose();
   }
 
@@ -192,7 +191,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                           : _imageWidget,
                     ),
                     FloatingActionButton(
-                      onPressed: getImage,
+                      onPressed: _getImage,
                       heroTag: 'PickImage',
                       child: Icon(Icons.add_a_photo),
                     ),
@@ -209,7 +208,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: title,
+                        controller: _title,
                         decoration:
                             InputDecoration(hintText: 'Enter your Title'),
                         validator: (v) {
@@ -233,7 +232,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: introduction,
+                        controller: _introduction,
                         decoration: InputDecoration(
                             hintText: 'Enter your Introduction'),
                         validator: (v) {
@@ -268,7 +267,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                         SizedBox(
                           width: 10,
                         ),
-                        Text(date),
+                        Text(_date),
                       ],
                     ),
 
@@ -291,7 +290,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            showAlertPublishDialog(context);
+                            _showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
@@ -318,7 +317,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        date = selectedDate.toString();
+        _date = selectedDate.toString();
       });
   }
 
@@ -327,20 +326,20 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   /// creates a list of paragraphs
   List<Widget> _getParagraphs() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < descriptionList.length; i++) {
+    for (int i = 0; i < _descriptionList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child:
-                    BaseTextFields(descriptionList, i, 5, 'Enter a paragraph')),
+                child: BaseTextFields(
+                    _descriptionList, i, 5, 'Enter a paragraph')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
             _addRemoveButton(
-                i == descriptionList.length - 1, i, descriptionList),
+                i == _descriptionList.length - 1, i, _descriptionList),
           ],
         ),
       ));
@@ -349,7 +348,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   }
 
   ///creates an alertdialog before pushing changes to firebase
-  Widget showAlertPublishDialog(BuildContext context) {
+  Widget _showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -361,7 +360,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
       child: Text("Ja"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop();
-        if (addCaseItem()) {
+        if (_updateCaseItem()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AdminPage()));
         }
@@ -390,18 +389,18 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
 // creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < authorList.length; i++) {
+    for (int i = 0; i < _authorList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child: BaseTextFields(authorList, i, 1, 'Enter an Author')),
+                child: BaseTextFields(_authorList, i, 1, 'Enter an Author')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(i == authorList.length - 1, i, authorList),
+            _addRemoveButton(i == _authorList.length - 1, i, _authorList),
           ],
         ),
       ));
@@ -410,7 +409,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   }
 
   /// creates a alert dialog
-  Widget showAlertDialog(BuildContext context, List list, int index) {
+  Widget _showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -455,7 +454,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
           list.insert(list.length, null);
           setState(() {});
         } else
-          showAlertDialog(context, list, index);
+          _showAlertDialog(context, list, index);
       },
       child: Container(
         width: 30,

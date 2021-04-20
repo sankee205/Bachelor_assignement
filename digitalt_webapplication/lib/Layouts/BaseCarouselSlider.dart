@@ -2,9 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
-import 'package:digitalt_application/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:digitalt_application/Services/auth.dart';
 import 'package:flutter/material.dart';
 
 import 'BaseCaseBox.dart';
@@ -15,39 +13,30 @@ import 'BaseCaseBox.dart';
 ///
 class BaseCarouselSlider extends StatefulWidget {
   //list of cass it gets from the database
-  final List caseList;
+  final List _caseList;
 
-  const BaseCarouselSlider(this.caseList);
+  const BaseCarouselSlider(this._caseList);
 
   @override
   _BaseCarouselSliderState createState() => _BaseCarouselSliderState();
 }
 
 class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
-  String currentUserRole;
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirestoreService firestoreService = FirestoreService();
-  final DatabaseService db = DatabaseService();
+  String _currentUserRole;
+  final AuthService _authService = AuthService();
+  final DatabaseService _db = DatabaseService();
 
   List<String> guestList = [];
 
-  getUserRole() async {
-    if (_firebaseAuth.currentUser.isAnonymous) {
-      currentUserRole = 'Guest';
-    } else {
-      User firebaseUser = _firebaseAuth.currentUser;
-      firestoreService.getUser(firebaseUser.uid).then((value) {
-        setState(() {
-          BaseUser user = value;
-          currentUserRole = user.userRole;
-        });
-      });
-    }
+  _getUserRole() async {
+    setState(() {
+      _currentUserRole = _authService.getUserRole();
+    });
   }
 
-  getGuestList() async {
+  _getGuestList() async {
     List<String> firebaseList = [];
-    List resultant = await db.getGuestListContent();
+    List resultant = await _db.getGuestListContent();
     if (resultant != null) {
       for (int i = 0; i < resultant.length; i++) {
         var object = resultant[i];
@@ -66,8 +55,8 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserRole();
-    getGuestList();
+    _getUserRole();
+    _getGuestList();
   }
 
   @override
@@ -83,14 +72,14 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
           autoPlayInterval: Duration(seconds: 10),
           viewportFraction: 0.8,
           initialPage: 0),
-      items: widget.caseList.map((caseObject) {
+      items: widget._caseList.map((caseObject) {
         return Builder(builder: (
           BuildContext context,
         ) {
           //makes the onclick available
           return GestureDetector(
               onTap: () {
-                switch (currentUserRole) {
+                switch (_currentUserRole) {
                   case 'Admin':
                     {
                       Navigator.push(
@@ -144,10 +133,21 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                     break;
                   case 'Guest':
                     {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
+                      if (guestList.contains(caseObject['title'])) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CasePage(
+                                      image: caseObject['image'],
+                                      title: caseObject['title'],
+                                      author: caseObject['author'],
+                                      publishedDate:
+                                          caseObject['publishedDate'],
+                                      introduction: caseObject['introduction'],
+                                      text: caseObject['text'],
+                                      lastEdited: caseObject['lastEdited'],
+                                    )));
+                      }
                     }
                     break;
                 }

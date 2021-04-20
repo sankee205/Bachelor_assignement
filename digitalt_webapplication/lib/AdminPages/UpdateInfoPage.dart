@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
-/**
+/*
  * this is the add case form. it is used by the admin to add cases
  * to the database and the app.
  *
@@ -27,60 +27,59 @@ class UpdateInfoPage extends StatefulWidget {
 }
 
 class _UpdateInfoPageState extends State<UpdateInfoPage> {
-  DatabaseService db = DatabaseService();
+  final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  String contactUrl;
-  String textUrl;
-  String backgroundUrl;
-  final email = TextEditingController();
-  final tlf = TextEditingController();
+  String _contactUrl;
+  String _textUrl;
+  String _backgroundUrl;
+  final _email = TextEditingController();
+  final _tlf = TextEditingController();
 
-  String date;
-  static List textList = [];
-  static List authorList = [];
+  String _date;
+  static List _textList = [];
+  static List _authorList = [];
 
-  Text saveImageText = Text(
+  Text _saveImageText = Text(
     'Save new images',
     style: TextStyle(fontSize: 15),
   );
 
-  Image contactPhoto;
-  Image textPhoto;
-  Image backgroundPhoto;
+  Image _contactPhoto;
+  Image _textPhoto;
+  Image _backgroundPhoto;
 
-  MediaInfo contactPhotoInfo;
-  MediaInfo textPhotoInfo;
-  MediaInfo backgroundPhotoInfo;
-  String richText;
+  MediaInfo _contactPhotoInfo;
+  MediaInfo _textPhotoInfo;
+  MediaInfo _backgroundPhotoInfo;
 
   @override
   void initState() {
     super.initState();
-    fetchCaseItem();
+    _fetchCaseItem();
   }
 
-  Future fetchCaseItem() async {
-    List resultList = await db.getInfoPageContent();
+  Future _fetchCaseItem() async {
+    List resultList = await _db.getInfoPageContent();
     var result = resultList[0];
     setState(() {
-      textList = result['text'];
-      authorList = result['author'];
-      contactUrl = result['contactPhoto'];
-      contactPhoto = Image.network(contactUrl);
-      date = result['date'];
-      email.text = result['email'];
-      textUrl = result['textPhoto'];
-      textPhoto = Image.network(textUrl);
-      tlf.text = result['tlf'];
-      backgroundUrl = result['backgroundPhoto'];
-      backgroundPhoto = Image.network(backgroundUrl);
+      _textList = result['text'];
+      _authorList = result['author'];
+      _contactUrl = result['contactPhoto'];
+      _contactPhoto = Image.network(_contactUrl);
+      _date = result['date'];
+      _email.text = result['email'];
+      _textUrl = result['textPhoto'];
+      _textPhoto = Image.network(_textUrl);
+      _tlf.text = result['tlf'];
+      _backgroundUrl = result['backgroundPhoto'];
+      _backgroundPhoto = Image.network(_backgroundUrl);
     });
   }
 
-  bool addCaseItem() {
+  bool _updateInfoData() {
     bool success = true;
-    var result = db.updateInfoPageContent(textUrl, contactUrl, email.text,
-        tlf.text, textList, authorList, date, backgroundUrl);
+    var result = _db.updateInfoPageContent(_textUrl, _contactUrl, _email.text,
+        _tlf.text, _textList, _authorList, _date, _backgroundUrl);
     if (result != null) {
       success = true;
     } else {
@@ -90,46 +89,46 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     return success;
   }
 
-  Future savePhotoState() async {
-    if (contactPhotoInfo != null) {
+  Future _savePhotoState() async {
+    if (_contactPhotoInfo != null) {
       String imageUri;
-      await db.uploadFile(contactPhotoInfo).then((value) {
+      await _db.uploadFile(_contactPhotoInfo).then((value) {
         imageUri = value.toString();
       });
       setState(() {
-        contactUrl = imageUri;
+        _contactUrl = imageUri;
       });
     }
-    if (textPhotoInfo != null) {
+    if (_textPhotoInfo != null) {
       String imageUri;
-      await db.uploadFile(textPhotoInfo).then((value) {
+      await _db.uploadFile(_textPhotoInfo).then((value) {
         imageUri = value.toString();
       });
       setState(() {
-        textUrl = imageUri;
+        _textUrl = imageUri;
       });
     }
-    if (backgroundPhotoInfo != null) {
+    if (_backgroundPhotoInfo != null) {
       String imageUri;
-      await db.uploadFile(backgroundPhotoInfo).then((value) {
+      await _db.uploadFile(_backgroundPhotoInfo).then((value) {
         imageUri = value.toString();
       });
       setState(() {
-        backgroundUrl = imageUri;
+        _backgroundUrl = imageUri;
       });
     }
-    if (contactPhotoInfo != null ||
-        backgroundPhotoInfo != null ||
-        textPhotoInfo != null) {
+    if (_contactPhotoInfo != null ||
+        _backgroundPhotoInfo != null ||
+        _textPhotoInfo != null) {
       setState(() {
-        saveImageText = Text(
+        _saveImageText = Text(
           'Uploaded succesfully',
           style: TextStyle(color: Colors.green, fontSize: 15),
         );
       });
     } else {
       setState(() {
-        saveImageText = Text(
+        _saveImageText = Text(
           'No new Images, old will be kept',
           style: TextStyle(color: Colors.red, fontSize: 15),
         );
@@ -138,16 +137,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   }
 
 //gets the image that is added
-  Future<void> getContactImage() async {
+  Future<void> _getContactImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    contactPhotoInfo = mediaData;
+    _contactPhotoInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        contactPhoto = Image.memory(
+        _contactPhoto = Image.memory(
           mediaData.data,
           fit: BoxFit.fitWidth,
         );
@@ -155,16 +154,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     }
   }
 
-  Future<void> getTextImage() async {
+  Future<void> _getTextImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    textPhotoInfo = mediaData;
+    _textPhotoInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        textPhoto = Image.memory(
+        _textPhoto = Image.memory(
           mediaData.data,
           fit: BoxFit.fitWidth,
         );
@@ -172,16 +171,16 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     }
   }
 
-  Future<void> getBackgroundImage() async {
+  Future<void> _getBackgroundImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    backgroundPhotoInfo = mediaData;
+    _backgroundPhotoInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
 
     if (mediaFile != null) {
       setState(() {
-        backgroundPhoto = Image.memory(
+        _backgroundPhoto = Image.memory(
           mediaData.data,
           fit: BoxFit.fitWidth,
         );
@@ -191,8 +190,8 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
 
   @override
   void dispose() {
-    email.dispose();
-    tlf.dispose();
+    _email.dispose();
+    _tlf.dispose();
     super.dispose();
   }
 
@@ -247,13 +246,14 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     Row(
                       children: [
                         Center(
-                          child: contactPhoto == null ? Text('') : contactPhoto,
+                          child:
+                              _contactPhoto == null ? Text('') : _contactPhoto,
                         ),
                         SizedBox(
                           width: 20,
                         ),
                         FloatingActionButton(
-                          onPressed: getContactImage,
+                          onPressed: _getContactImage,
                           heroTag: 'contactImage',
                           child: Icon(Icons.add_a_photo),
                         ),
@@ -270,13 +270,13 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     Row(
                       children: [
                         Center(
-                          child: textPhoto == null ? Text('') : textPhoto,
+                          child: _textPhoto == null ? Text('') : _textPhoto,
                         ),
                         SizedBox(
                           width: 20,
                         ),
                         FloatingActionButton(
-                          onPressed: getTextImage,
+                          onPressed: _getTextImage,
                           heroTag: 'textImage',
                           child: Icon(Icons.add_a_photo),
                         ),
@@ -293,15 +293,15 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     Row(
                       children: [
                         Center(
-                          child: backgroundPhoto == null
+                          child: _backgroundPhoto == null
                               ? Text('')
-                              : backgroundPhoto,
+                              : _backgroundPhoto,
                         ),
                         SizedBox(
                           width: 20,
                         ),
                         FloatingActionButton(
-                          onPressed: getBackgroundImage,
+                          onPressed: _getBackgroundImage,
                           heroTag: 'backgroundImage',
                           child: Icon(Icons.add_a_photo),
                         ),
@@ -319,7 +319,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       children: [
                         FlatButton(
                           onPressed: () {
-                            savePhotoState();
+                            _savePhotoState();
                           },
                           child: Icon(Icons.save),
                           color: Colors.green,
@@ -327,7 +327,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                         SizedBox(
                           width: 10,
                         ),
-                        saveImageText,
+                        _saveImageText,
                       ],
                     ),
 
@@ -347,7 +347,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: email,
+                        controller: _email,
                         decoration:
                             InputDecoration(hintText: 'Enter your Email'),
                         validator: (v) {
@@ -371,7 +371,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: tlf,
+                        controller: _tlf,
                         decoration: InputDecoration(hintText: 'Enter your tlf'),
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
@@ -447,12 +447,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            if (addCaseItem()) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AdminPage()));
-                            }
+                            _showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
@@ -469,6 +464,45 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     );
   }
 
+  ///creates an alertdialog before pushing changes to firebase
+  Widget _showAlertPublishDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Nei"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ja"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+        if (_updateInfoData()) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminPage()));
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Publisere endring av artikkel"),
+      content: Text("Er du sikker på at du vil publisere denne endringen?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 // creates the select date pop up view
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -479,7 +513,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        date = selectedDate.toString();
+        _date = selectedDate.toString();
       });
   }
 
@@ -488,18 +522,18 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   /// creates a list of paragraphs
   List<Widget> _getParagraphs() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < textList.length; i++) {
+    for (int i = 0; i < _textList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child: BaseTextFields(textList, i, 5, 'Enter a paragraph')),
+                child: BaseTextFields(_textList, i, 5, 'Enter a paragraph')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(i == textList.length - 1, i, textList),
+            _addRemoveButton(i == _textList.length - 1, i, _textList),
           ],
         ),
       ));
@@ -510,18 +544,18 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
 //creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < authorList.length; i++) {
+    for (int i = 0; i < _authorList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child: BaseTextFields(authorList, i, 1, 'Enter an Author')),
+                child: BaseTextFields(_authorList, i, 1, 'Enter an Author')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(i == authorList.length - 1, i, authorList),
+            _addRemoveButton(i == _authorList.length - 1, i, _authorList),
           ],
         ),
       ));
@@ -529,7 +563,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
     return friendsTextFields;
   }
 
-  Widget showAlertDialog(BuildContext context, List list, int index) {
+  Widget _showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -574,7 +608,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
           list.insert(list.length, null);
           setState(() {});
         } else
-          showAlertDialog(context, list, index);
+          _showAlertDialog(context, list, index);
       },
       child: Container(
         width: 30,

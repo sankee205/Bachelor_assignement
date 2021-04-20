@@ -23,57 +23,57 @@ class UpdateAllCaseLists extends StatefulWidget {
 
 class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   List<BoardList> _lists = [];
-  BoardListObject allBoardList;
+  BoardListObject _allBoardList;
 
   List<BoardListObject> _listData = [];
-  BoardViewController boardViewController = new BoardViewController();
+  BoardViewController _boardViewController = new BoardViewController();
 
-  final DatabaseService db = DatabaseService();
-  List allCases;
+  final DatabaseService _db = DatabaseService();
+  List _allCases;
 
   @override
   void initState() {
     super.initState();
-    fetchDataBaseList('AllCases');
+    _fetchDataBaseList('AllCases');
   }
 
   ///this method fetched the allcase list from firebase
-  fetchDataBaseList(String folder) async {
-    dynamic resultant = await db.getCaseItems(folder);
+  _fetchDataBaseList(String folder) async {
+    dynamic resultant = await _db.getCaseItems(folder);
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        allCases = resultant;
+        _allCases = resultant;
       });
     }
   }
 
   ///this method creates a boardlist from the listdata list
-  createListData() {
+  _createListData() {
     for (int i = 0; i < _listData.length; i++) {
       _lists.add(_createBoardList(_listData[i]) as BoardList);
     }
   }
 
   /// this method maps the firebaselist and adds it to the listdata
-  fromMapToBoardList() {
+  _fromMapToBoardList() {
     BoardListObject allBoard = BoardListObject(title: "Alle saker");
 
-    if (allCases != null) {
-      for (int i = 0; i < allCases.length; i++) {
-        var caseObject = allCases[i];
+    if (_allCases != null) {
+      for (int i = 0; i < _allCases.length; i++) {
+        var caseObject = _allCases[i];
         allBoard.items.add(BoardItemObject(title: caseObject['title']));
       }
       setState(() {
-        allBoardList = allBoard;
-        _listData.add(allBoardList);
+        _allBoardList = allBoard;
+        _listData.add(_allBoardList);
       });
     }
   }
 
   ///this method will update the firebase popularcases list
-  Future<bool> updatePopularCaseList() {
+  Future<bool> _updatePopularCaseList() {
     List<BoardItemObject> theList = _listData[0].items;
     List<String> newPopularCaseList = [];
     for (int i = 0; i < theList.length; i++) {
@@ -81,22 +81,22 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
       newPopularCaseList.add(objectITem.title);
     }
 
-    return createNewPopularCaseList(newPopularCaseList);
+    return _createNewPopularCaseList(newPopularCaseList);
   }
 
   ///this method creates a new list to update in firebase and update it
-  Future<bool> createNewPopularCaseList(List<String> newList) async {
+  Future<bool> _createNewPopularCaseList(List<String> newList) async {
     List<Map<String, dynamic>> listToFirebase = [];
     for (int i = 0; i < newList.length; i++) {
-      for (int j = 0; j < allCases.length; j++) {
-        QueryDocumentSnapshot object = allCases[j];
+      for (int j = 0; j < _allCases.length; j++) {
+        QueryDocumentSnapshot object = _allCases[j];
         if (newList[i].toString() == object['title']) {
           listToFirebase.add(object.data());
         }
       }
     }
 
-    var result = await db.updateFolder('AllCases', listToFirebase);
+    var result = await _db.updateFolder('AllCases', listToFirebase);
     if (result != null) {
       return true;
     } else {
@@ -106,8 +106,8 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
 
   @override
   Widget build(BuildContext context) {
-    fromMapToBoardList();
-    createListData();
+    _fromMapToBoardList();
+    _createListData();
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
@@ -151,7 +151,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
               child: Center(
                 child: BoardView(
                   lists: _lists,
-                  boardViewController: boardViewController,
+                  boardViewController: _boardViewController,
                 ),
               ),
             ),
@@ -161,7 +161,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
             Center(
               child: FlatButton(
                 onPressed: () {
-                  showAlertPublishDialog(context);
+                  _showAlertPublishDialog(context);
                 },
                 child: Text('Submit'),
                 color: Colors.green,
@@ -180,7 +180,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   Widget _createBoardList(BoardListObject list) {
     List<BoardItem> items = [];
     for (int i = 0; i < list.items.length; i++) {
-      items.insert(i, buildBoardItem(list.items[i]) as BoardItem);
+      items.insert(i, _buildBoardItem(list.items[i]) as BoardItem);
     }
 
     return BoardList(
@@ -203,7 +203,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   }
 
   /// this method creates a boarditem
-  Widget buildBoardItem(BoardItemObject itemObject) {
+  Widget _buildBoardItem(BoardItemObject itemObject) {
     return BoardItem(
         onStartDragItem:
             (int listIndex, int itemIndex, BoardItemState state) {},
@@ -224,7 +224,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
   }
 
   ///this method creates a alert dialog
-  Widget showAlertPublishDialog(BuildContext context) {
+  Widget _showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -235,7 +235,7 @@ class _UpdateAllCaseListsState extends State<UpdateAllCaseLists> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        updatePopularCaseList();
+        _updatePopularCaseList();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AdminPage()));
         Navigator.of(context, rootNavigator: true).pop();

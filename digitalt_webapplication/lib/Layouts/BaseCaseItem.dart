@@ -8,9 +8,6 @@ import 'dart:convert';
  * @Sander Keedklang
  */
 
-/**
- * this is the caseItem object class.
- */
 class CaseItem {
   final String image;
   final String title;

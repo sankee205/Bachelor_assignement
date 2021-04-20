@@ -1,4 +1,3 @@
-import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/services.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
-/**
+/*
  * this is the add case form. it is used by the admin to add cases
  * to the database and the app.
  *
@@ -36,37 +35,37 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  DatabaseService db = DatabaseService();
+  DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
-  String id;
-  String userRole;
-  final fullname = TextEditingController();
-  final emailAdress = TextEditingController();
-  final number = TextEditingController();
+  String _id;
+  String _userRole;
+  final _fullname = TextEditingController();
+  final _emailAdress = TextEditingController();
+  final _number = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    setCaseItem();
+    _setProfileDetails();
   }
 
   ///this method will set the caseitems in page from input fields to the widget
-  Future setCaseItem() async {
+  Future _setProfileDetails() async {
     setState(() {
-      fullname.text = widget.name;
-      emailAdress.text = widget.email;
-      number.text = widget.phonenumber;
-      id = widget.uid;
-      userRole = widget.role;
+      _fullname.text = widget.name;
+      _emailAdress.text = widget.email;
+      _number.text = widget.phonenumber;
+      _id = widget.uid;
+      _userRole = widget.role;
     });
   }
 
   ///this methods will update the case in firebase
-  bool changeProfileData() {
+  bool _changeProfileData() {
     bool success = true;
 
-    dynamic result =
-        db.updateUserData(id, fullname.text, emailAdress.text, number.text);
+    dynamic result = _db.updateUserData(
+        _id, _fullname.text, _emailAdress.text, _number.text);
     if (result != null) {
       success = true;
     } else {
@@ -77,9 +76,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void dispose() {
-    fullname.dispose();
-    emailAdress.dispose();
-    number.dispose();
+    _fullname.dispose();
+    _emailAdress.dispose();
+    _number.dispose();
     super.dispose();
   }
 
@@ -146,7 +145,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: fullname,
+                        controller: _fullname,
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
                           return null;
@@ -168,7 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: emailAdress,
+                        controller: _emailAdress,
                         validator: (v) {
                           if (v.trim().isEmpty) return 'Please enter something';
                           return null;
@@ -190,7 +189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: number,
+                        controller: _number,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
@@ -215,7 +214,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            showAlertPublishDialog(context);
+                            _showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
@@ -233,7 +232,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   ///creates an alertdialog before pushing changes to firebase
-  Widget showAlertPublishDialog(BuildContext context) {
+  Widget _showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -244,7 +243,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        if (changeProfileData()) {
+        if (_changeProfileData()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
           Navigator.of(context, rootNavigator: true).pop();

@@ -5,17 +5,20 @@ import 'package:mime_type/mime_type.dart';
 import 'package:firebase/firebase.dart' as fb;
 import 'package:path/path.dart' as Path;
 
+/// this is the dabate service. it handles data
+/// requests, posts and updates to the database
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
 
   // collection reference
-  final CollectionReference userCollection =
+  final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('users'); //What to collect
 
+  //-----------------user related methods---------------------------------------
   Future updateUserData(
       String id, String name, String email, String phonenumber) async {
-    return await userCollection.doc(id).update({
+    return await _userCollection.doc(id).update({
       'name': name,
       'email': email,
       'phonenumber': phonenumber,
@@ -23,9 +26,10 @@ class DatabaseService {
   }
 
   Future updateMyCasesData(String id, List myCases) async {
-    return await userCollection.doc(id).update({'myCases': myCases});
+    return await _userCollection.doc(id).update({'myCases': myCases});
   }
 
+  //------------------case item methods-----------------------------------------
   Future updateCaseItemData(String id, String image, String title, List author,
       String publishedDate, String introduction, List text) async {
     return await FirebaseFirestore.instance
@@ -41,7 +45,7 @@ class DatabaseService {
     });
   }
 
-  Future updateCaseData(String image, String title, List author,
+  Future addCaseItem(String image, String title, List author,
       String publishedDate, String introduction, List text) async {
     return await FirebaseFirestore.instance
         .collection('AllCases')
@@ -57,6 +61,29 @@ class DatabaseService {
     });
   }
 
+  Future getCaseItems(String folder) async {
+    List itemsList = [];
+    try {
+      await FirebaseFirestore.instance
+          .collection(folder)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          //print(element.id);
+          if (!element.data().containsKey('id')) {
+            element.reference.update({'id': element.id});
+          }
+          itemsList.add(element);
+        });
+      });
+      return itemsList;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //---------------------------info page methods--------------------------------
   Future updateInfoPageContent(
       String textPhoto,
       String contactPhoto,
@@ -94,47 +121,9 @@ class DatabaseService {
     return infoList;
   }
 
-  Future getGuestListContent() async {
-    List guestList = [];
-    await FirebaseFirestore.instance
-        .collection('GuestList')
-        .get()
-        .then((value) => {
-              value.docs.forEach((element) {
-                guestList.add(element);
-              })
-            });
-    return guestList;
-  }
+  //--------------------------folder methods------------------------------------
 
-  Future getSingleCaseItem(String title) async {
-    List resultList = [];
-    await FirebaseFirestore.instance
-        .collection('AllCases')
-        .where('title', isEqualTo: title)
-        .get()
-        .then((value) => {
-              value.docs.forEach((element) {
-                resultList.add(element);
-              })
-            });
-    return resultList;
-  }
-
-  Future updateCaseByFolder(String folder, String image, String title,
-      List author, String publishedDate, String introduction, List text) async {
-    return await FirebaseFirestore.instance.collection(folder).doc(uid).set({
-      'image': image,
-      'title': title,
-      'author': author,
-      'publishedDate': publishedDate,
-      'introduction': introduction,
-      'text': text,
-      'lastEdited': null
-    });
-  }
-
-  Future updateCaseFolder(
+  Future updateCaseByFolder(
       String folder,
       String image,
       String title,
@@ -162,7 +151,7 @@ class DatabaseService {
     });
     for (int i = 0; i < newList.length; i++) {
       Map<String, dynamic> item = newList[i];
-      updateCaseFolder(
+      updateCaseByFolder(
           folder,
           item['image'],
           item['title'],
@@ -174,6 +163,7 @@ class DatabaseService {
     }
   }
 
+//---------------------------Guest list methods---------------------------------
   Future updateGuestList(List<Map<String, dynamic>> newList) async {
     await FirebaseFirestore.instance
         .collection('GuestList')
@@ -192,28 +182,20 @@ class DatabaseService {
     }
   }
 
-  Future getCaseItems(String folder) async {
-    List itemsList = [];
-    try {
-      await FirebaseFirestore.instance
-          .collection(folder)
-          .get()
-          .then((querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          //print(element.id);
-          if (!element.data().containsKey('id')) {
-            element.reference.update({'id': element.id});
-          }
-          itemsList.add(element);
-        });
-      });
-      return itemsList;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+  Future getGuestListContent() async {
+    List guestList = [];
+    await FirebaseFirestore.instance
+        .collection('GuestList')
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) {
+                guestList.add(element);
+              })
+            });
+    return guestList;
   }
 
+  //-------------------------------Image methods--------------------------------
   Future<Uri> uploadFile(MediaInfo mediaInfo) async {
     try {
       String mimeType = mime(Path.basename(mediaInfo.fileName));

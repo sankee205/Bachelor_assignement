@@ -22,89 +22,89 @@ class EditLockedCases extends StatefulWidget {
 
 class _EditLockedCasesState extends State<EditLockedCases> {
   List<BoardList> _lists = [];
-  BoardListObject allBoardList;
-  BoardListObject guestBoardList;
+  BoardListObject _allBoardList;
+  BoardListObject _guestBoardList;
 
   List<BoardListObject> _listData = [];
-  BoardViewController boardViewController = new BoardViewController();
+  BoardViewController _boardViewController = new BoardViewController();
 
-  final DatabaseService db = DatabaseService();
-  List allCases;
-  List<String> guestList = [];
+  final DatabaseService _db = DatabaseService();
+  List _allCases;
+  List<String> _guestList = [];
 
   @override
   void initState() {
     super.initState();
-    fetchDataBaseList('AllCases');
-    getGuestList();
+    _fetchDataBaseList('AllCases');
+    _getGuestList();
   }
 
   ///fetches the lists from firebase
-  fetchDataBaseList(String folder) async {
-    dynamic resultant = await db.getCaseItems(folder);
+  _fetchDataBaseList(String folder) async {
+    dynamic resultant = await _db.getCaseItems(folder);
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        allCases = resultant;
+        _allCases = resultant;
       });
     }
   }
 
   /// fetches the guestlist from firebase
-  getGuestList() async {
+  _getGuestList() async {
     List<String> firebaseList = [];
-    List resultant = await db.getGuestListContent();
+    List resultant = await _db.getGuestListContent();
     if (resultant != null) {
       for (int i = 0; i < resultant.length; i++) {
         var object = resultant[i];
         firebaseList.add(object['Title'].toString());
       }
       setState(() {
-        guestList = firebaseList;
+        _guestList = firebaseList;
       });
-      print(guestList);
+      print(_guestList);
     } else {
       print('resultant is null');
     }
   }
 
   ///this method creates a boardlist from the listdata list
-  createListData() {
+  _createListData() {
     for (int i = 0; i < _listData.length; i++) {
       _lists.add(_createBoardList(_listData[i]) as BoardList);
     }
   }
 
   /// this method maps the firebaselist and adds it to the listdata
-  fromMapToBoardList() {
+  _fromMapToBoardList() {
     BoardListObject allBoard = BoardListObject(title: "Alle saker");
     BoardListObject guestBoard = BoardListObject(title: "Gjeste saker");
 
-    if (guestList.isNotEmpty) {
-      for (int i = 0; i < guestList.length; i++) {
-        String title = guestList[i];
+    if (_guestList.isNotEmpty) {
+      for (int i = 0; i < _guestList.length; i++) {
+        String title = _guestList[i];
         guestBoard.items.add(BoardItemObject(title: title));
       }
       setState(() {
-        guestBoardList = guestBoard;
-        _listData.add(guestBoardList);
+        _guestBoardList = guestBoard;
+        _listData.add(_guestBoardList);
       });
     }
-    if (allCases != null) {
-      for (int i = 0; i < allCases.length; i++) {
-        var caseObject = allCases[i];
+    if (_allCases != null) {
+      for (int i = 0; i < _allCases.length; i++) {
+        var caseObject = _allCases[i];
         allBoard.items.add(BoardItemObject(title: caseObject['title']));
       }
       setState(() {
-        allBoardList = allBoard;
-        _listData.add(allBoardList);
+        _allBoardList = allBoard;
+        _listData.add(_allBoardList);
       });
     }
   }
 
   ///updates the guestlist
-  Future<bool> updateGuestList() {
+  Future<bool> _updateGuestList() {
     List<BoardItemObject> theList = _listData[0].items;
     List<String> newPopularCaseList = [];
     for (int i = 0; i < theList.length; i++) {
@@ -112,17 +112,17 @@ class _EditLockedCasesState extends State<EditLockedCases> {
       newPopularCaseList.add(objectITem.title);
     }
     print(newPopularCaseList);
-    return createNewGuestList(newPopularCaseList);
+    return _createNewGuestList(newPopularCaseList);
   }
 
   /// creates new guestlist from edit stringlist by the admin user
-  Future<bool> createNewGuestList(List<String> newList) async {
+  Future<bool> _createNewGuestList(List<String> newList) async {
     List<Map<String, dynamic>> listToFirebase = [];
     for (int i = 0; i < newList.length; i++) {
       listToFirebase.add({'Title': newList[i]});
     }
 
-    var result = await db.updateGuestList(listToFirebase);
+    var result = await _db.updateGuestList(listToFirebase);
     if (result != null) {
       return true;
     } else {
@@ -132,8 +132,8 @@ class _EditLockedCasesState extends State<EditLockedCases> {
 
   @override
   Widget build(BuildContext context) {
-    fromMapToBoardList();
-    createListData();
+    _fromMapToBoardList();
+    _createListData();
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
@@ -177,7 +177,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
               child: Center(
                 child: BoardView(
                   lists: _lists,
-                  boardViewController: boardViewController,
+                  boardViewController: _boardViewController,
                 ),
               ),
             ),
@@ -187,7 +187,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
             Center(
               child: FlatButton(
                 onPressed: () {
-                  showAlertPublishDialog(context);
+                  _showAlertPublishDialog(context);
                 },
                 child: Text('Submit'),
                 color: Colors.green,
@@ -205,7 +205,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
   Widget _createBoardList(BoardListObject list) {
     List<BoardItem> items = [];
     for (int i = 0; i < list.items.length; i++) {
-      items.insert(i, buildBoardItem(list.items[i]) as BoardItem);
+      items.insert(i, _buildBoardItem(list.items[i]) as BoardItem);
     }
 
     return BoardList(
@@ -227,7 +227,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     );
   }
 
-  Widget buildBoardItem(BoardItemObject itemObject) {
+  Widget _buildBoardItem(BoardItemObject itemObject) {
     return BoardItem(
         onStartDragItem:
             (int listIndex, int itemIndex, BoardItemState state) {},
@@ -248,7 +248,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
   }
 
   /// alerts the admin user before ushing changes to firebase
-  Widget showAlertPublishDialog(BuildContext context) {
+  Widget _showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -259,7 +259,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        updateGuestList();
+        _updateGuestList();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AdminPage()));
         Navigator.of(context, rootNavigator: true).pop();

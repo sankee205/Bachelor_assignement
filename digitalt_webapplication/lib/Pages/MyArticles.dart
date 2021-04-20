@@ -2,11 +2,9 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
-import 'package:digitalt_application/Pages/EditProfilePage.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,57 +17,56 @@ class MyArticles extends StatefulWidget {
 }
 
 class _MyArticlesState extends State<MyArticles> {
-  final AuthService auth = AuthService();
-  final FirestoreService firestoreService = FirestoreService();
-  final DatabaseService db = DatabaseService();
-  BaseUser currentUser = BaseUser();
-  List allCases = [];
-  List myCases = [];
-  List userMyCases = [];
+  final AuthService _auth = AuthService();
+
+  final DatabaseService _db = DatabaseService();
+  BaseUser _currentUser = BaseUser();
+  List _allCases = [];
+  List _myCases = [];
+  List _userMyCases = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchDataBaseList();
-    setBaseUser();
+    _fetchDataBaseList();
+    _setBaseUser();
   }
 
-  fetchDataBaseList() async {
-    dynamic resultant = await db.getCaseItems('AllCases');
+  _fetchDataBaseList() async {
+    dynamic resultant = await _db.getCaseItems('AllCases');
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        allCases = resultant;
+        _allCases = resultant;
       });
     }
   }
 
-  createMyCaseList() {
+  _createMyCaseList() {
     List newList = [];
-    if (userMyCases.isNotEmpty) {
-      for (int i = 0; i < allCases.length; i++) {
-        for (int j = 0; j < userMyCases.length; j++) {
-          var object = allCases[i];
-          if (object['title'] == userMyCases[j]) {
-            newList.add(allCases[i]);
+    if (_userMyCases.isNotEmpty) {
+      for (int i = 0; i < _allCases.length; i++) {
+        for (int j = 0; j < _userMyCases.length; j++) {
+          var object = _allCases[i];
+          if (object['title'] == _userMyCases[j]) {
+            newList.add(_allCases[i]);
           }
         }
       }
     }
     setState(() {
-      myCases = newList;
+      _myCases = newList;
     });
   }
 
-  setBaseUser() async {
-    String userID = auth.getUser();
-    BaseUser user = await firestoreService.getUser(userID);
+  _setBaseUser() async {
+    BaseUser user = _auth.getFirebaseUser();
     if (user != null) {
       setState(() {
-        currentUser = user;
-        userMyCases = user.myCases;
+        _currentUser = user;
+        _userMyCases = user.myCases;
       });
     } else {
       print('user from authservice is null');
@@ -78,7 +75,7 @@ class _MyArticlesState extends State<MyArticles> {
 
   @override
   Widget build(BuildContext context) {
-    createMyCaseList();
+    _createMyCaseList();
     return Scaffold(
       //this is the appbar for the home page
       appBar: BaseAppBar(
@@ -115,7 +112,7 @@ class _MyArticlesState extends State<MyArticles> {
                       ),
                       ResponsiveGridRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: myCases.map((caseObject) {
+                        children: _myCases.map((caseObject) {
                           return ResponsiveGridCol(
                               lg: 6,
                               md: 6,
