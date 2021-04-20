@@ -4,6 +4,8 @@ import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:digitalt_application/Services/firestoreService.dart';
 
+///
+///this class handles authentication services regarding user
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = locator<FirestoreService>();
@@ -16,10 +18,29 @@ class AuthService {
     return user != null ? BaseUser(uid: user.uid) : null;
   }
 
-  getUser() {
+  isUserAnonymous() {
+    return _auth.currentUser.isAnonymous;
+  }
+
+  //returns the user id / uid
+  getUserUid() {
     return _auth.currentUser.uid;
   }
 
+  //returns the user role
+  getUserRole() {
+    if (_auth.currentUser.isAnonymous) {
+      return 'Guest';
+    } else {
+      BaseUser user;
+      _firestoreService.getUser(_auth.currentUser.uid).then((value) {
+        user = value;
+      });
+      return user.userRole;
+    }
+  }
+
+  //returns the firebase baseuser
   getFirebaseUser() async {
     return await _firestoreService.getUser(_auth.currentUser.uid);
   }
@@ -87,6 +108,7 @@ class AuthService {
     }
   }
 
+  //checks if the user is logged inn
   Future<bool> isUserLoggedIn() async {
     _auth.authStateChanges().listen((User user) {});
     var firebaseUser = _auth.currentUser;
@@ -97,6 +119,7 @@ class AuthService {
     }
   }
 
+  //sets the _current user variable
   Future<bool> _populateCurrentUser(User user) async {
     if (user != null) {
       if (user.isAnonymous) {
@@ -117,6 +140,7 @@ class AuthService {
     }
   }
 
+  //signs out the user
   Future signOut() async {
     try {
       return await _auth.signOut();

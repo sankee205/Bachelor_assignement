@@ -2,10 +2,9 @@ import 'package:digitalt_application/AppManagement/ThemeManager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/**
- * this is the base case box. it is a static layout for all the 
- * cases in the app.  
- */
+///
+///this is the base casebox class. its a layout for all the cases to be displayed in the homepage
+///before entering the whole case
 class BaseCaseBox extends StatefulWidget {
   //takes in the object caseITem and builds the box from image and title
   final String image;

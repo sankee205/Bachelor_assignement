@@ -4,9 +4,7 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/EditProfilePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,31 +15,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final AuthService auth = AuthService();
-  final FirestoreService firestoreService = FirestoreService();
-  BaseUser currentUser;
+  final AuthService _auth = AuthService();
+  BaseUser _currentUser;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    setBaseUser();
+    _setBaseUser();
   }
 
-  setBaseUser() async {
-    String userID = auth.getUser();
-    BaseUser user = await firestoreService.getUser(userID);
-    if (user != null) {
-      setState(() {
-        currentUser = user;
-      });
-    } else {
-      print('user from authservice is null');
-    }
+  _setBaseUser() async {
+    setState(() {
+      _currentUser = _auth.getFirebaseUser();
+    });
   }
 
-  signOut() async {
+  _signOut() async {
     try {
       await _auth.signOut();
     } catch (e) {
@@ -106,10 +95,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: 5,
                           ),
-                          currentUser == null
+                          _currentUser == null
                               ? Text('')
                               : Text(
-                                  currentUser.fullName,
+                                  _currentUser.fullName,
                                   style: TextStyle(fontSize: 15),
                                 )
                         ],
@@ -131,10 +120,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: 5,
                           ),
-                          currentUser == null
+                          _currentUser == null
                               ? Text('')
                               : Text(
-                                  currentUser.email,
+                                  _currentUser.email,
                                   style: TextStyle(fontSize: 15),
                                 )
                         ],
@@ -156,10 +145,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: 5,
                           ),
-                          currentUser == null
+                          _currentUser == null
                               ? Text('')
                               : Text(
-                                  currentUser.phonenumber,
+                                  _currentUser.phonenumber,
                                   style: TextStyle(fontSize: 15),
                                 )
                         ],
@@ -181,10 +170,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: 5,
                           ),
-                          currentUser == null
+                          _currentUser == null
                               ? Text('')
                               : Text(
-                                  currentUser.userRole,
+                                  _currentUser.userRole,
                                   style: TextStyle(fontSize: 15),
                                 )
                         ],
@@ -192,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         height: 30,
                       ),
-                      _auth.currentUser.isAnonymous
+                      _auth.isUserAnonymous()
                           ? Column(
                               children: [
                                 Padding(
@@ -213,7 +202,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 ElevatedButton(
                                     onPressed: () {
-                                      signOut();
+                                      _signOut();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -232,13 +221,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditProfilePage(
-                                              email: currentUser.email,
-                                              name: currentUser.fullName,
+                                              email: _currentUser.email,
+                                              name: _currentUser.fullName,
                                               phonenumber:
-                                                  currentUser.phonenumber,
-                                              uid: currentUser.uid,
-                                              role: currentUser.userRole,
-                                              myCases: currentUser.myCases,
+                                                  _currentUser.phonenumber,
+                                              uid: _currentUser.uid,
+                                              role: _currentUser.userRole,
+                                              myCases: _currentUser.myCases,
                                             )));
                               },
                               child: Padding(

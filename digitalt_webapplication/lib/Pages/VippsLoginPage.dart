@@ -1,12 +1,7 @@
-import 'dart:convert';
-
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
-import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../Screens/Authenticate/loginPage.dart';
 
 class VippsLoginPage extends StatefulWidget {
   @override

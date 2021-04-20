@@ -4,7 +4,6 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 /*
- * this is the case PAge. t takes in a caseitem and creates a layout 
+ * this is the Case Page. t takes in a caseitem and creates a layout 
  * for the caseitem to be read.
  */
 class CasePage extends StatefulWidget {
@@ -39,50 +38,35 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
-  DatabaseService db = DatabaseService();
-  BaseUser currentUser;
-  final AuthService auth = AuthService();
-  final FirestoreService firestoreService = FirestoreService();
+  final DatabaseService _db = DatabaseService();
+  final AuthService _auth = AuthService();
+
+  BaseUser _currentUser;
   Text _lastEditedText;
   bool isArticleSaved;
 
-  setBaseUser() async {
-    String userID = auth.getUser();
-    BaseUser user = await firestoreService.getUser(userID);
-    if (user != null) {
-      setState(() {
-        currentUser = user;
-      });
-      if (user.myCases.contains(widget.title)) {
-        setState(() {
-          isArticleSaved = true;
-        });
-      } else {
-        setState(() {
-          isArticleSaved = false;
-        });
-      }
-    } else {
-      print('user from authservice is null');
-    }
+  _setBaseUser() async {
+    setState(() {
+      _currentUser = _auth.getFirebaseUser();
+    });
   }
 
-  changeMyCasesList(bool value) {
-    if (!value && currentUser.myCases.contains(widget.title)) {
-      List newList = currentUser.myCases;
+  _changeMyCasesList(bool value) {
+    if (!value && _currentUser.myCases.contains(widget.title)) {
+      List newList = _currentUser.myCases;
       newList.remove(widget.title);
-      updateMyCasesList(newList);
+      _updateMyCasesList(newList);
     }
-    if (value && !currentUser.myCases.contains(widget.title)) {
-      List newList = currentUser.myCases;
+    if (value && !_currentUser.myCases.contains(widget.title)) {
+      List newList = _currentUser.myCases;
       newList.add(widget.title);
-      updateMyCasesList(newList);
+      _updateMyCasesList(newList);
     }
   }
 
-  bool updateMyCasesList(List newMyCaseList) {
+  bool _updateMyCasesList(List newMyCaseList) {
     bool success = true;
-    dynamic result = db.updateMyCasesData(currentUser.uid, newMyCaseList);
+    dynamic result = _db.updateMyCasesData(_currentUser.uid, newMyCaseList);
     if (result != null) {
       success = true;
     } else {
@@ -94,7 +78,7 @@ class _CasePageState extends State<CasePage> {
   @override
   void initState() {
     super.initState();
-    setBaseUser();
+    _setBaseUser();
   }
 
   @override
@@ -233,7 +217,7 @@ class _CasePageState extends State<CasePage> {
                                           Checkbox(
                                             value: isArticleSaved,
                                             onChanged: (bool newValue) {
-                                              changeMyCasesList(newValue);
+                                              _changeMyCasesList(newValue);
                                               setState(() {
                                                 isArticleSaved = newValue;
                                               });

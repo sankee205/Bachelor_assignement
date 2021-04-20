@@ -76,7 +76,7 @@ class _InfoPageState extends State<InfoPage> {
           padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(backgroundPhoto), fit: BoxFit.cover),
+                image: NetworkImage(widget.backgroundPhoto), fit: BoxFit.cover),
           ),
           child: TabBarView(
             children: [
@@ -118,7 +118,7 @@ class _InfoPageState extends State<InfoPage> {
                           SizedBox(
                             width: 400,
                             child: Image(
-                              image: NetworkImage(textPhoto),
+                              image: NetworkImage(widget.textPhoto),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -141,7 +141,7 @@ class _InfoPageState extends State<InfoPage> {
                                   child: ResponsiveGridRow(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: author.map((author) {
+                                    children: widget.author.map((author) {
                                       return ResponsiveGridCol(
                                           xl: 12,
                                           md: 12,
@@ -159,7 +159,7 @@ class _InfoPageState extends State<InfoPage> {
                                   width: 20,
                                 ),
                                 Icon(Icons.date_range),
-                                Text(date)
+                                Text(widget.date)
                               ],
                             ),
                           ),
@@ -168,7 +168,7 @@ class _InfoPageState extends State<InfoPage> {
                           Padding(
                             padding: EdgeInsets.all(20),
                             child: Column(
-                              children: text.map((item) {
+                              children: widget.text.map((item) {
                                 return Container(
                                   margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                   alignment: Alignment.centerLeft,
@@ -201,7 +201,7 @@ class _InfoPageState extends State<InfoPage> {
                           ),
                           SizedBox(
                             child: Image(
-                              image: NetworkImage(contactPhoto),
+                              image: NetworkImage(widget.contactPhoto),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -223,10 +223,10 @@ class _InfoPageState extends State<InfoPage> {
                           //this is the description of the case. the main text
                           Padding(
                               padding: EdgeInsets.all(20),
-                              child: Text('Telefon: ' + tlf)),
+                              child: Text('Telefon: ' + widget.tlf)),
                           Padding(
                               padding: EdgeInsets.all(20),
-                              child: Text('Email: ' + email)),
+                              child: Text('Email: ' + widget.email)),
                         ],
                       ),
                     ),

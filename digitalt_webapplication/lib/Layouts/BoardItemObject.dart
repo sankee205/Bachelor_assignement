@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-
+/// this is a board item object for the board list object
 class BoardItemObject {
   String title;
 

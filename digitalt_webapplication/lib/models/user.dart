@@ -1,3 +1,5 @@
+///
+///this is a base user for this project
 class BaseUser {
   final String uid;
   final String fullName;

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'StorageManager.dart';
 import 'package:flutter/material.dart';
 
+/// this class holds the different theme colors for the app
+/// light and dark
 class ThemeNotifier with ChangeNotifier {
   bool state;
   final darkTheme = ThemeData(

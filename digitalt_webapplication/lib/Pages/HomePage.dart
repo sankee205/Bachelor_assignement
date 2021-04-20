@@ -3,12 +3,8 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
-import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
-import 'package:digitalt_application/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -24,7 +20,6 @@ import 'package:digitalt_application/Services/auth.dart';
  * 
  */
 
-//creates a stateful widget
 class HomePage extends StatefulWidget {
   @override
   HomePageState createState() => HomePageState();
@@ -32,65 +27,49 @@ class HomePage extends StatefulWidget {
 
 // this class represents a home page with a grid layout
 class HomePageState extends State<HomePage> {
-  //example list for the grid layout
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirestoreService firestoreService = FirestoreService();
   final AuthService _auth = AuthService();
-  final DatabaseService db = DatabaseService();
-  List newCases = [];
-  List allCases = [];
-  List popularCases = [];
+  final DatabaseService _db = DatabaseService();
+  List _newCases = [];
+  List _allCases = [];
+  List _popularCases = [];
 
-  String currentUserRole;
-  List<String> guestList = [];
+  String _currentUserRole;
+  List<String> _guestList = [];
 
   @override
   void initState() {
     super.initState();
-    //db.updateCaseData('image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
-    //db.updateCaseByFolder('PopularCases','image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
-    //db.updateCaseByFolder('NewCases','image', 'title', ['author'], 'publishedDate', 'introduction', 'text');
-    fetchDataBaseList('PopularCases');
-    fetchDataBaseList('AllCases');
-    fetchDataBaseList('NewCases');
-    getUserRole();
-    getGuestList();
+    _fetchDataBaseList('PopularCases');
+    _fetchDataBaseList('AllCases');
+    _fetchDataBaseList('NewCases');
+    _getUserRole();
+    _getGuestList();
   }
 
-  getUserRole() async {
-    User firebaseUser = _firebaseAuth.currentUser;
-    if (firebaseUser.isAnonymous) {
-      setState(() {
-        currentUserRole = 'Guest';
-      });
-    } else {
-      firestoreService.getUser(firebaseUser.uid).then((value) {
-        setState(() {
-          BaseUser user = value;
-          currentUserRole = user.userRole;
-        });
-      });
-    }
+  _getUserRole() async {
+    setState(() {
+      _currentUserRole = _auth.getUserRole();
+    });
   }
 
-  getGuestList() async {
+  _getGuestList() async {
     List<String> firebaseList = [];
-    List resultant = await db.getGuestListContent();
+    List resultant = await _db.getGuestListContent();
     if (resultant != null) {
       for (int i = 0; i < resultant.length; i++) {
         var object = resultant[i];
         firebaseList.add(object['Title'].toString());
       }
       setState(() {
-        guestList = firebaseList;
+        _guestList = firebaseList;
       });
     } else {
       print('resultant is null');
     }
   }
 
-  fetchDataBaseList(String folder) async {
-    dynamic resultant = await db.getCaseItems(folder);
+  _fetchDataBaseList(String folder) async {
+    dynamic resultant = await _db.getCaseItems(folder);
 
     if (resultant == null) {
       print('unable to get data');
@@ -99,18 +78,18 @@ class HomePageState extends State<HomePage> {
         switch (folder) {
           case 'PopularCases':
             {
-              popularCases = resultant;
+              _popularCases = resultant;
             }
             break;
 
           case 'NewCases':
             {
-              newCases = resultant;
+              _newCases = resultant;
             }
             break;
           case 'AllCases':
             {
-              allCases = resultant;
+              _allCases = resultant;
             }
             break;
         }
@@ -161,7 +140,7 @@ class HomePageState extends State<HomePage> {
                                 child: ListView(
                                   children: <Widget>[
                                     //should we add a play and stop button?
-                                    BaseCarouselSlider(popularCases)
+                                    BaseCarouselSlider(_popularCases)
                                   ],
                                 ),
                               ),
@@ -190,14 +169,14 @@ class HomePageState extends State<HomePage> {
                                   height: 5,
                                 ),
                                 Column(
-                                  children: newCases.map((caseObject) {
+                                  children: _newCases.map((caseObject) {
                                     return Builder(builder: (
                                       BuildContext context,
                                     ) {
                                       //makes the onclick available
                                       return GestureDetector(
                                           onTap: () {
-                                            switch (currentUserRole) {
+                                            switch (_currentUserRole) {
                                               case 'Admin':
                                                 {
                                                   Navigator.push(
@@ -256,7 +235,7 @@ class HomePageState extends State<HomePage> {
                                                 break;
                                               case 'User':
                                                 {
-                                                  if (guestList.contains(
+                                                  if (_guestList.contains(
                                                       caseObject['title'])) {
                                                     Navigator.push(
                                                         context,
@@ -287,11 +266,33 @@ class HomePageState extends State<HomePage> {
                                                 break;
                                               case 'Guest':
                                                 {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ProfilePage()));
+                                                  if (_guestList.contains(
+                                                      caseObject['title'])) {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    CasePage(
+                                                                      image: caseObject[
+                                                                          'image'],
+                                                                      title: caseObject[
+                                                                          'title'],
+                                                                      author: caseObject[
+                                                                          'author'],
+                                                                      publishedDate:
+                                                                          caseObject[
+                                                                              'publishedDate'],
+                                                                      introduction:
+                                                                          caseObject[
+                                                                              'introduction'],
+                                                                      text: caseObject[
+                                                                          'text'],
+                                                                      lastEdited:
+                                                                          caseObject[
+                                                                              'lastEdited'],
+                                                                    )));
+                                                  }
                                                 }
                                                 break;
                                             }
@@ -331,7 +332,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   ResponsiveGridRow(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: allCases.map((caseObject) {
+                    children: _allCases.map((caseObject) {
                       return ResponsiveGridCol(
                           lg: 4,
                           md: 6,
@@ -341,7 +342,7 @@ class HomePageState extends State<HomePage> {
                               height: 250,
                               child: GestureDetector(
                                   onTap: () {
-                                    switch (currentUserRole) {
+                                    switch (_currentUserRole) {
                                       case 'Admin':
                                         {
                                           Navigator.push(
@@ -396,7 +397,7 @@ class HomePageState extends State<HomePage> {
                                         break;
                                       case 'User':
                                         {
-                                          if (guestList
+                                          if (_guestList
                                               .contains(caseObject['title'])) {
                                             Navigator.push(
                                                 context,
@@ -426,11 +427,32 @@ class HomePageState extends State<HomePage> {
                                         break;
                                       case 'Guest':
                                         {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProfilePage()));
+                                          if (_guestList
+                                              .contains(caseObject['title'])) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CasePage(
+                                                          image: caseObject[
+                                                              'image'],
+                                                          title: caseObject[
+                                                              'title'],
+                                                          author: caseObject[
+                                                              'author'],
+                                                          publishedDate:
+                                                              caseObject[
+                                                                  'publishedDate'],
+                                                          introduction:
+                                                              caseObject[
+                                                                  'introduction'],
+                                                          text: caseObject[
+                                                              'text'],
+                                                          lastEdited:
+                                                              caseObject[
+                                                                  'lastEdited'],
+                                                        )));
+                                          }
                                         }
                                         break;
                                     }

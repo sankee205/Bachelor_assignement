@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+///
+///this class will set the theme of the app
 class StorageManager {
   static void saveData(String key, dynamic value) async {
     final prefs = await SharedPreferences.getInstance();

@@ -13,58 +13,68 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
-/**
- * this is the add case form. it is used by the admin to add cases
- * to the database and the app. 
- * 
- * this page is only available on web
- */
+///
+///this is the add case page. in this page, users with admin access
+///can add new articles to the server
+///
 class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
 }
 
 class _MyFormState extends State<MyForm> {
-  DatabaseService db = DatabaseService();
+  //get the database service
+  final DatabaseService _db = DatabaseService();
+
+  //creates a form key to evaluate the form
   final _formKey = GlobalKey<FormState>();
-  final title = TextEditingController();
-  final introduction = TextEditingController();
-  static List authorList = [null];
-  final textController = TextEditingController();
 
+  //theese are text editing controllers
+  final _title = TextEditingController();
+  final _introduction = TextEditingController();
+  final _textController = TextEditingController();
+
+  //creates an author list
+  static List _authorList = [null];
+
+  // this is the image to be displayed
   Image _imageWidget;
-  MediaInfo mediaInfo = MediaInfo();
-  String richText;
 
-  bool addToNewCase = false;
-  bool addToPopularCase = false;
+  // this is the mediainfo of the image to be displayed
+  MediaInfo _mediaInfo = MediaInfo();
 
-  bool addCaseItem() {
-    String date = getDate();
+  //theese are bool variable to determine if the article is to be added in the different lists in firebase
+  bool _addToNewCase = false;
+  bool _addToPopularCase = false;
+
+  /// this function uploads the image to firebase and
+  /// adds the case to the firebase lists
+  bool _addCaseItem() {
+    String date = _getDate();
     bool success = true;
-    db.uploadFile(mediaInfo).then((value) {
+    _db.uploadFile(_mediaInfo).then((value) {
       String imageUri = value.toString();
       if (imageUri != null) {
-        if (addToNewCase == true) {
-          db.updateCaseByFolder('NewCases', imageUri, title.text, authorList,
-              date, introduction.text, textController.text.split('/p'));
+        if (_addToNewCase == true) {
+          _db.updateCaseByFolder('NewCases', imageUri, _title.text, _authorList,
+              date, _introduction.text, _textController.text.split('/p'), null);
         }
-        if (addToPopularCase == true) {
-          db.updateCaseByFolder(
+        if (_addToPopularCase == true) {
+          _db.updateCaseByFolder(
               'PopularCases',
               imageUri,
-              title.text,
-              authorList,
+              _title.text,
+              _authorList,
               date,
-              introduction.text,
-              textController.text.split('/p'));
+              _introduction.text,
+              _textController.text.split('/p'),
+              null);
         }
-        db.updateCaseData(imageUri, title.text, authorList, date,
-            introduction.text, textController.text.split('/p'));
+        _db.addCaseItem(imageUri, _title.text, _authorList, date,
+            _introduction.text, _textController.text.split('/p'));
 
         success = true;
       } else {
@@ -76,9 +86,9 @@ class _MyFormState extends State<MyForm> {
   }
 
 //gets the image that is added
-  Future<void> getImage() async {
+  Future<void> _getImage() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
-    mediaInfo = mediaData;
+    _mediaInfo = mediaData;
     String mimeType = mime(Path.basename(mediaData.fileName));
     html.File mediaFile =
         new html.File(mediaData.data, mediaData.fileName, {'type': mimeType});
@@ -95,8 +105,8 @@ class _MyFormState extends State<MyForm> {
 
   @override
   void dispose() {
-    title.dispose();
-    introduction.dispose();
+    _title.dispose();
+    _introduction.dispose();
     super.dispose();
   }
 
@@ -123,8 +133,6 @@ class _MyFormState extends State<MyForm> {
           Navigator.pop(context);
         },
       ),
-
-      //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
       body: SingleChildScrollView(
         child: Center(
@@ -154,11 +162,10 @@ class _MyFormState extends State<MyForm> {
                           : _imageWidget,
                     ),
                     FloatingActionButton(
-                      onPressed: getImage,
+                      onPressed: _getImage,
                       heroTag: 'PickImage',
                       child: Icon(Icons.add_a_photo),
                     ),
-
                     Text(
                       'Title',
                       style:
@@ -167,11 +174,10 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-                    // name textfield
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: title,
+                        controller: _title,
                         decoration:
                             InputDecoration(hintText: 'Enter your Title'),
                         validator: (v) {
@@ -191,11 +197,10 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
-                        controller: introduction,
+                        controller: _introduction,
                         decoration: InputDecoration(
                             hintText: 'Enter your Introduction'),
                         validator: (v) {
@@ -216,24 +221,22 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-
                     SizedBox(
                       height: 40,
                     ),
                     Row(
-                      children: [Text("Date: "), Text(getDate())],
+                      children: [Text("Date: "), Text(_getDate())],
                     ),
                     SizedBox(
                       height: 40,
                     ),
-
                     Text(
                       'Description',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
                     TextField(
-                      controller: textController,
+                      controller: _textController,
                       decoration: InputDecoration(
                           hintText: 'Skriv inn din artikkel her...'),
                       minLines: 1,
@@ -249,11 +252,11 @@ class _MyFormState extends State<MyForm> {
                           width: 20,
                         ),
                         Checkbox(
-                          value: addToNewCase,
+                          value: _addToNewCase,
                           checkColor: Colors.green,
                           onChanged: (bool value) {
                             setState(() {
-                              addToNewCase = value;
+                              _addToNewCase = value;
                             });
                           },
                         ),
@@ -269,11 +272,11 @@ class _MyFormState extends State<MyForm> {
                           width: 20,
                         ),
                         Checkbox(
-                          value: addToPopularCase,
+                          value: _addToPopularCase,
                           checkColor: Colors.green,
                           onChanged: (bool value) {
                             setState(() {
-                              addToPopularCase = value;
+                              _addToPopularCase = value;
                             });
                           },
                         ),
@@ -287,7 +290,7 @@ class _MyFormState extends State<MyForm> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            showAlertPublishDialog(context);
+                            _showAlertPublishDialog(context);
                           }
                         },
                         child: Text('Submit'),
@@ -304,28 +307,32 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
-  String getDate() {
+  ///
+  ///this function gets the current date
+  ///and formats it before returning the value
+  String _getDate() {
     DateTime selectedDate = DateTime.now();
     final DateFormat formatter = DateFormat('dd-MM-yyyy hh:mm');
     final String formatted = formatter.format(selectedDate);
     return formatted;
   }
 
-// creates a list of authors
+  ///
+  /// creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
-    for (int i = 0; i < authorList.length; i++) {
+    for (int i = 0; i < _authorList.length; i++) {
       friendsTextFields.add(Padding(
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: Row(
           children: [
             Expanded(
-                child: BaseTextFields(authorList, i, 1, 'Enter an Author')),
+                child: BaseTextFields(_authorList, i, 1, 'Enter an Author')),
             SizedBox(
               width: 16,
             ),
             // we need add button at last friends row
-            _addRemoveButton(i == authorList.length - 1, i, authorList),
+            _addRemoveButton(i == _authorList.length - 1, i, _authorList),
           ],
         ),
       ));
@@ -333,7 +340,10 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
-  Widget showAlertDialog(BuildContext context, List list, int index) {
+  ///
+  ///creates and alert dialog if an author is to be deleted
+  ///from the list
+  Widget _showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -369,7 +379,9 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
-  Widget showAlertPublishDialog(BuildContext context) {
+  /// creates an alert dialog when trying to publish the
+  /// new article
+  Widget _showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
       child: Text("Nei"),
@@ -381,7 +393,7 @@ class _MyFormState extends State<MyForm> {
       child: Text("Ja"),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop();
-        if (addCaseItem()) {
+        if (_addCaseItem()) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AdminPage()));
         }
@@ -416,7 +428,7 @@ class _MyFormState extends State<MyForm> {
           list.insert(list.length, null);
           setState(() {});
         } else
-          showAlertDialog(context, list, index);
+          _showAlertDialog(context, list, index);
       },
       child: Container(
         width: 30,

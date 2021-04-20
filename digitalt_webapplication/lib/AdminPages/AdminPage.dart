@@ -14,51 +14,63 @@ import 'package:searchfield/searchfield.dart';
 import 'UpdateAllCaseLists.dart';
 import 'UpdatePopularLists.dart';
 
+///
+///this is the admin console page. this page will link to the different activities
+///one is able to do as an admin user.
 class AdminPage extends StatefulWidget {
   @override
   _AdminPageState createState() => _AdminPageState();
 }
 
 class _AdminPageState extends State<AdminPage> {
-  final editArticle = TextEditingController();
-  final DatabaseService db = DatabaseService();
-  List allCases = [];
-  List<String> allCaseList = [];
+  //gets the database service for activities with the database
+  final DatabaseService _db = DatabaseService();
 
+  ///creates a ext editing controller for the search bar
+  ///where one can search for articles in the database to edit
+  final _editArticle = TextEditingController();
+
+  //lists from firebase with all articles
+  List _allCases = [];
+
+  //a list with only string objects for the search bar
+  List<String> _allCaseList = [];
+
+  //form key to evaluate the search bar input
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    fetchDataBaseList('AllCases');
+    _fetchDataBaseList('AllCases');
   }
 
   /// fetches the list from firebase
-  fetchDataBaseList(String folder) async {
-    dynamic resultant = await db.getCaseItems(folder);
+  _fetchDataBaseList(String folder) async {
+    dynamic resultant = await _db.getCaseItems(folder);
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        allCases = resultant;
+        _allCases = resultant;
       });
     }
   }
 
   ///creates a stringlist for the searchfield
-  createStringList() {
-    allCaseList.clear();
-    for (int i = 0; i < allCases.length; i++) {
-      var caseObject = allCases[i];
-      allCaseList.add(caseObject['title']);
+  _createStringList() {
+    _allCaseList.clear();
+    for (int i = 0; i < _allCases.length; i++) {
+      var caseObject = _allCases[i];
+      _allCaseList.add(caseObject['title']);
     }
   }
 
   ///this methods sends you to the updatesinglecase page
-  updateSingleCase(String title) {
+  _updateSingleCase(String title) {
     var caseToEdit;
-    for (int i = 0; i < allCases.length; i++) {
-      var caseObject = allCases[i];
+    for (int i = 0; i < _allCases.length; i++) {
+      var caseObject = _allCases[i];
       if (caseObject['title'] == title) {
         caseToEdit = caseObject;
       }
@@ -80,7 +92,7 @@ class _AdminPageState extends State<AdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    createStringList();
+    _createStringList();
     return Scaffold(
       appBar: BaseAppBar(
         title: Text(
@@ -159,14 +171,14 @@ class _AdminPageState extends State<AdminPage> {
                                 child: Form(
                                   key: _formKey,
                                   child: SearchField(
-                                    suggestions: allCaseList,
+                                    suggestions: _allCaseList,
                                     hint: 'Søk etter saken du vil redigere',
                                     searchStyle: TextStyle(
                                       fontSize: 18,
                                       color: Colors.black.withOpacity(0.8),
                                     ),
                                     validator: (x) {
-                                      if (!allCaseList.contains(x) ||
+                                      if (!_allCaseList.contains(x) ||
                                           x.isEmpty) {
                                         return 'Please Enter a valid State';
                                       }
@@ -187,7 +199,7 @@ class _AdminPageState extends State<AdminPage> {
                                     itemHeight: 50,
                                     onTap: (x) {
                                       setState(() {
-                                        editArticle.text = x;
+                                        _editArticle.text = x;
                                       });
                                     },
                                   ),
@@ -196,8 +208,8 @@ class _AdminPageState extends State<AdminPage> {
                               ElevatedButton(
                                   onPressed: () {
                                     _formKey.currentState.validate();
-                                    if (editArticle.text != null) {
-                                      updateSingleCase(editArticle.text);
+                                    if (_editArticle.text != null) {
+                                      _updateSingleCase(_editArticle.text);
                                     }
                                   },
                                   child: Padding(
