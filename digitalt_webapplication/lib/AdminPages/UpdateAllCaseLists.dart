@@ -14,6 +14,8 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
+///this page will make the admin able to edit the
+///order of the lists in the home page
 class UpdateAllCaseLists extends StatefulWidget {
   @override
   _UpdateAllCaseListsState createState() => _UpdateAllCaseListsState();

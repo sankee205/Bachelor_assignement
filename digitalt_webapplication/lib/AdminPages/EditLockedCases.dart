@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
@@ -14,6 +13,8 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
+///
+///this class edits what articles that are available to the guests
 class EditLockedCases extends StatefulWidget {
   @override
   _EditLockedCasesState createState() => _EditLockedCasesState();
@@ -25,7 +26,6 @@ class _EditLockedCasesState extends State<EditLockedCases> {
   BoardListObject guestBoardList;
 
   List<BoardListObject> _listData = [];
-  //Can be used to animate to different sections of the BoardView
   BoardViewController boardViewController = new BoardViewController();
 
   final DatabaseService db = DatabaseService();
@@ -39,6 +39,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     getGuestList();
   }
 
+  ///fetches the lists from firebase
   fetchDataBaseList(String folder) async {
     dynamic resultant = await db.getCaseItems(folder);
     if (resultant == null) {
@@ -50,6 +51,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     }
   }
 
+  /// fetches the guestlist from firebase
   getGuestList() async {
     List<String> firebaseList = [];
     List resultant = await db.getGuestListContent();
@@ -101,7 +103,8 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     }
   }
 
-  Future<bool> updatePopularCaseList() {
+  ///updates the guestlist
+  Future<bool> updateGuestList() {
     List<BoardItemObject> theList = _listData[0].items;
     List<String> newPopularCaseList = [];
     for (int i = 0; i < theList.length; i++) {
@@ -109,10 +112,11 @@ class _EditLockedCasesState extends State<EditLockedCases> {
       newPopularCaseList.add(objectITem.title);
     }
     print(newPopularCaseList);
-    return createNewPopularCaseList(newPopularCaseList);
+    return createNewGuestList(newPopularCaseList);
   }
 
-  Future<bool> createNewPopularCaseList(List<String> newList) async {
+  /// creates new guestlist from edit stringlist by the admin user
+  Future<bool> createNewGuestList(List<String> newList) async {
     List<Map<String, dynamic>> listToFirebase = [];
     for (int i = 0; i < newList.length; i++) {
       listToFirebase.add({'Title': newList[i]});
@@ -243,6 +247,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
         ));
   }
 
+  /// alerts the admin user before ushing changes to firebase
   Widget showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -254,7 +259,7 @@ class _EditLockedCasesState extends State<EditLockedCases> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        updatePopularCaseList();
+        updateGuestList();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AdminPage()));
         Navigator.of(context, rootNavigator: true).pop();

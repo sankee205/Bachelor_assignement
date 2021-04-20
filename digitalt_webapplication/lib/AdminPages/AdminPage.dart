@@ -14,17 +14,29 @@ import 'package:searchfield/searchfield.dart';
 import 'UpdateAllCaseLists.dart';
 import 'UpdatePopularLists.dart';
 
+///
+///this is the admin console page. this page will link to the different activities
+///one is able to do as an admin user.
 class AdminPage extends StatefulWidget {
   @override
   _AdminPageState createState() => _AdminPageState();
 }
 
 class _AdminPageState extends State<AdminPage> {
-  final editArticle = TextEditingController();
+  //gets the database service for activities with the database
   final DatabaseService db = DatabaseService();
+
+  ///creates a ext editing controller for the search bar
+  ///where one can search for articles in the database to edit
+  final editArticle = TextEditingController();
+
+  //lists from firebase with all articles
   List allCases = [];
+
+  //a list with only string objects for the search bar
   List<String> allCaseList = [];
 
+  //form key to evaluate the search bar input
   final _formKey = GlobalKey<FormState>();
 
   @override

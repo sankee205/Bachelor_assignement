@@ -13,36 +13,45 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
-/**
- * this is the add case form. it is used by the admin to add cases
- * to the database and the app. 
- * 
- * this page is only available on web
- */
+///
+///this is the add case page. in this page, users with admin access
+///can add new articles to the server
+///
 class MyForm extends StatefulWidget {
   @override
   _MyFormState createState() => _MyFormState();
 }
 
 class _MyFormState extends State<MyForm> {
-  DatabaseService db = DatabaseService();
+  //get the database service
+  final DatabaseService db = DatabaseService();
+
+  //creates a form key to evaluate the form
   final _formKey = GlobalKey<FormState>();
+
+  //theese are text editing controllers
   final title = TextEditingController();
   final introduction = TextEditingController();
-  static List authorList = [null];
   final textController = TextEditingController();
 
-  Image _imageWidget;
-  MediaInfo mediaInfo = MediaInfo();
-  String richText;
+  //creates an author list
+  static List authorList = [null];
 
+  // this is the image to be displayed
+  Image _imageWidget;
+
+  // this is the mediainfo of the image to be displayed
+  MediaInfo mediaInfo = MediaInfo();
+
+  //theese are bool variable to determine if the article is to be added in the different lists in firebase
   bool addToNewCase = false;
   bool addToPopularCase = false;
 
+  /// this function uploads the image to firebase and
+  /// adds the case to the firebase lists
   bool addCaseItem() {
     String date = getDate();
     bool success = true;
@@ -123,8 +132,6 @@ class _MyFormState extends State<MyForm> {
           Navigator.pop(context);
         },
       ),
-
-      //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
       body: SingleChildScrollView(
         child: Center(
@@ -158,7 +165,6 @@ class _MyFormState extends State<MyForm> {
                       heroTag: 'PickImage',
                       child: Icon(Icons.add_a_photo),
                     ),
-
                     Text(
                       'Title',
                       style:
@@ -167,7 +173,6 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-                    // name textfield
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
@@ -191,7 +196,6 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
@@ -216,7 +220,6 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 5,
                     ),
-
                     SizedBox(
                       height: 40,
                     ),
@@ -226,7 +229,6 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
-
                     Text(
                       'Description',
                       style:
@@ -304,6 +306,9 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
+  ///
+  ///this function gets the current date
+  ///and formats it before returning the value
   String getDate() {
     DateTime selectedDate = DateTime.now();
     final DateFormat formatter = DateFormat('dd-MM-yyyy hh:mm');
@@ -311,7 +316,8 @@ class _MyFormState extends State<MyForm> {
     return formatted;
   }
 
-// creates a list of authors
+  ///
+  /// creates a list of authors
   List<Widget> _getAuthors() {
     List<Widget> friendsTextFields = [];
     for (int i = 0; i < authorList.length; i++) {
@@ -333,6 +339,9 @@ class _MyFormState extends State<MyForm> {
     return friendsTextFields;
   }
 
+  ///
+  ///creates and alert dialog if an author is to be deleted
+  ///from the list
   Widget showAlertDialog(BuildContext context, List list, int index) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -369,6 +378,8 @@ class _MyFormState extends State<MyForm> {
     );
   }
 
+  /// creates an alert dialog when trying to publish the
+  /// new article
   Widget showAlertPublishDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = FlatButton(
