@@ -14,6 +14,9 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
+///
+///this page will allow the admin users to edit the carousel sliders popularcaselist
+///in the home page.
 class UpdatePopularLists extends StatefulWidget {
   @override
   _UpdatePopularListsState createState() => _UpdatePopularListsState();

@@ -14,6 +14,9 @@ import 'package:boardview/boardview.dart';
 
 import 'package:flutter/material.dart';
 
+///
+///this page will allow the admin users to edit the
+///"siste nytt" list in home page.
 class UpdateNewLists extends StatefulWidget {
   @override
   _UpdateNewListsState createState() => _UpdateNewListsState();

@@ -1,7 +1,6 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
-import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 
 import 'package:universal_html/html.dart' as html;

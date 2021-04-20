@@ -7,7 +7,6 @@ import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -17,16 +16,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 
-import '../Pages/HomePage.dart';
 import '../Layouts/BaseAppBar.dart';
 import '../Layouts/BaseAppDrawer.dart';
 
-/**
- * this is the add case form. it is used by the admin to add cases
- * to the database and the app.
- *
- * this page is only available on web
- */
+///
+///this page update the case page found in the search bar in admin console
 class UpdateCasePage extends StatefulWidget {
   final String caseTitle;
   final String caseImageUrl;
