@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
@@ -125,150 +127,186 @@ class _CasePageState extends State<CasePage> {
         },
       ),
       //here starts the body
-      body: SingleChildScrollView(
+      body: Center(
         child: Container(
+          width: 1200,
           alignment: Alignment.topCenter,
-          child: Center(
-              child: Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Container(
-              alignment: Alignment.topCenter,
-              width: 800,
-              child: Material(
-                borderRadius: BorderRadius.circular(35),
-                child: Column(
-                  children: <Widget>[
-                    Image(
-                      image: NetworkImage(widget.image),
-                    ),
-                    //this is the title
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+          //this is the backgound image of the case
 
-                    SizedBox(
-                      height: 20,
-                    ),
-                    //in this row you find author and published date
-                    ResponsiveGridRow(
-                      children: [
-                        ResponsiveGridCol(
-                          lg: 4,
-                          xs: 4,
-                          child: Row(
-                            children: [
-                              Icon(Icons.person),
-                              Container(
-                                width: 100,
-                                margin: EdgeInsets.all(10),
-                                child: ResponsiveGridRow(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: widget.author.map((author) {
-                                    return ResponsiveGridCol(
-                                        xl: 12,
-                                        md: 12,
-                                        xs: 12,
-                                        child: Container(
-                                          child: Text(
-                                            author,
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ));
-                                  }).toList(),
+          //here starts the case
+          child: Container(
+            width: 800,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Material(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              width: 800,
+                              child: Image(
+                                image: NetworkImage(widget.image),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            //this is the title
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                widget.title,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        ResponsiveGridCol(
-                          lg: 4,
-                          xs: 4,
-                          child: Row(
-                            children: [
-                              Icon(Icons.date_range),
-                              Text(widget.publishedDate),
-                            ],
-                          ),
-                        ),
-                        ResponsiveGridCol(
-                          lg: 4,
-                          xs: 4,
-                          child: isArticleSaved == null
-                              ? SizedBox()
-                              : Row(children: [
-                                  Text('Lagre Artikkel'),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Checkbox(
-                                    value: isArticleSaved,
-                                    onChanged: (bool newValue) {
-                                      _changeMyCasesList(newValue);
-                                      setState(() {
-                                        isArticleSaved = newValue;
-                                      });
-                                    },
-                                  ),
-                                ]),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      child: Text(
-                        widget.introduction,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    //this is the description of the case. the main text
-                    //this is the description of the case. the main text
-                    Container(
-                      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                      width: 600,
-                      child: Column(
-                        children: widget.text.map((item) {
-                          return Container(
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              item,
-                              style: TextStyle(fontSize: 20),
                             ),
-                          );
-                        }).toList(),
+
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: ResponsiveGridRow(
+                                children: [
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.person),
+                                        Container(
+                                          width: 100,
+                                          margin: EdgeInsets.all(10),
+                                          child: ResponsiveGridRow(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children:
+                                                widget.author.map((author) {
+                                              return ResponsiveGridCol(
+                                                  xl: 12,
+                                                  md: 12,
+                                                  xs: 12,
+                                                  child: Container(
+                                                    child: Text(
+                                                      author,
+                                                      style: TextStyle(
+                                                          fontSize: 10),
+                                                    ),
+                                                  ));
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.date_range),
+                                        Text(widget.publishedDate),
+                                      ],
+                                    ),
+                                  ),
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: isArticleSaved == null
+                                        ? SizedBox()
+                                        : Row(children: [
+                                            Text('Lagre Artikkel'),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Checkbox(
+                                              value: isArticleSaved,
+                                              onChanged: (bool newValue) {
+                                                _changeMyCasesList(newValue);
+                                                setState(() {
+                                                  isArticleSaved = newValue;
+                                                });
+                                              },
+                                            ),
+                                          ]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //in this row you find author and published date
+
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                widget.title,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                widget.introduction,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            //this is the description of the case. the main text
+                            //this is the description of the case. the main text
+                            Container(
+                              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              width: 700,
+                              child: Column(
+                                children: widget.text.map((item) {
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: _lastEditedText == null
+                                  ? Text(
+                                      'Denne artikkelen har aldri blitt endret')
+                                  : _lastEditedText,
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child:
-                          _lastEditedText == null ? Text("") : _lastEditedText,
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          )),
+          ),
         ),
       ),
     );

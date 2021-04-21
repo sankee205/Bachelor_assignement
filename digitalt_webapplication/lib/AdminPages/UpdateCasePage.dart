@@ -22,6 +22,8 @@ import '../Layouts/BaseAppDrawer.dart';
 ///
 ///this page update the case page found in the search bar in admin console
 class UpdateCasePage extends StatefulWidget {
+  final List popularList;
+  final List newList;
   final String caseTitle;
   final String caseImageUrl;
   final String caseIntroduction;
@@ -32,6 +34,8 @@ class UpdateCasePage extends StatefulWidget {
 
   const UpdateCasePage(
       {Key key,
+      @required this.popularList,
+      @required this.newList,
       @required this.caseTitle,
       @required this.caseIntroduction,
       @required this.caseText,
@@ -55,10 +59,8 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   static List _descriptionList = [];
   static List _authorList = [];
 
-  bool _caseInPopularCases = false;
   String _popularCaseId;
   String _newCaseId;
-  bool _caseInNewCases = false;
 
   Image _imageWidget;
   MediaInfo _mediaInfo;
@@ -67,6 +69,26 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   void initState() {
     super.initState();
     _setCaseItem();
+    _isCaseInOtherLists();
+  }
+
+  _isCaseInOtherLists() {
+    for (int i = 0; i < widget.popularList.length; i++) {
+      var caseObject = widget.popularList[i];
+      if (caseObject['title'] == widget.caseTitle) {
+        setState(() {
+          _popularCaseId = caseObject['id'];
+        });
+      }
+    }
+    for (int i = 0; i < widget.newList.length; i++) {
+      var caseObject = widget.newList[i];
+      if (caseObject['title'] == widget.caseTitle) {
+        setState(() {
+          _newCaseId = caseObject['id'];
+        });
+      }
+    }
   }
 
   ///this method will set the caseitems in page from input fields to the widget
@@ -88,13 +110,10 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
     bool success = true;
     if (_mediaInfo == null) {
       _updateCaseByFolder('AllCases', _id);
-      print(
-          'popular: ' + _caseInPopularCases.toString() + ' ' + _popularCaseId);
-      print('new: ' + _caseInNewCases.toString() + ' ' + _newCaseId);
-      if (_caseInNewCases) {
+      if (_newCaseId != null) {
         _updateCaseByFolder('NewCases', _newCaseId);
       }
-      if (_caseInPopularCases) {
+      if (_popularCaseId != null) {
         _updateCaseByFolder('PopularCases', _popularCaseId);
       }
     } else {
