@@ -47,9 +47,13 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
   }
 
   _getUserRole() async {
-    setState(() {
-      _currentUserRole = _auth.getUserRole();
-    });
+    dynamic firebaseUserRole = await _auth.getUserRole();
+    print(firebaseUserRole);
+    if (firebaseUserRole != null) {
+      setState(() {
+        _currentUserRole = firebaseUserRole;
+      });
+    }
   }
 
   Future _getInfo() async {

@@ -46,9 +46,23 @@ class _CasePageState extends State<CasePage> {
   bool isArticleSaved;
 
   _setBaseUser() async {
-    setState(() {
-      _currentUser = _auth.getFirebaseUser();
-    });
+    var user = await _auth.getFirebaseUser();
+    if (user != null) {
+      setState(() {
+        _currentUser = user;
+      });
+      if (user.myCases.contains(widget.title)) {
+        setState(() {
+          isArticleSaved = true;
+        });
+      } else {
+        setState(() {
+          isArticleSaved = false;
+        });
+      }
+    } else {
+      print('user from authservice is null');
+    }
   }
 
   _changeMyCasesList(bool value) {

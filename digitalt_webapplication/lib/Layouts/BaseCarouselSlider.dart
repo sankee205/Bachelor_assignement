@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
@@ -29,9 +28,13 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
   List<String> guestList = [];
 
   _getUserRole() async {
-    setState(() {
-      _currentUserRole = _authService.getUserRole();
-    });
+    dynamic firebaseUserRole = await _authService.getUserRole();
+    print(firebaseUserRole);
+    if (firebaseUserRole != null) {
+      setState(() {
+        _currentUserRole = firebaseUserRole;
+      });
+    }
   }
 
   _getGuestList() async {

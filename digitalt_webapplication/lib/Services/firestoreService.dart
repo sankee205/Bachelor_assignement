@@ -17,7 +17,7 @@ class FirestoreService {
   }
 
   // returns the Base User
-  Future getUser(String uid) async {
+  Future<BaseUser> getUser(String uid) async {
     try {
       dynamic userData = await _usersCollectionReference.doc(uid).get();
       BaseUser user = BaseUser.fromData(userData.data());

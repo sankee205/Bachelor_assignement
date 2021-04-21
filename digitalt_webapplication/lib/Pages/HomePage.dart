@@ -47,9 +47,14 @@ class HomePageState extends State<HomePage> {
   }
 
   _getUserRole() async {
-    setState(() {
-      _currentUserRole = _auth.getUserRole();
-    });
+    dynamic firebaseUserRole = await _auth.getUserRole();
+    if (firebaseUserRole != null) {
+      setState(() {
+        _currentUserRole = firebaseUserRole;
+      });
+    } else {
+      print('firebaseUserRole is null');
+    }
   }
 
   _getGuestList() async {

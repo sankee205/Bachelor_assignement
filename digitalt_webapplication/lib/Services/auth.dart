@@ -28,20 +28,17 @@ class AuthService {
   }
 
   //returns the user role
-  getUserRole() {
+  Future<String> getUserRole() async {
     if (_auth.currentUser.isAnonymous) {
       return 'Guest';
     } else {
-      BaseUser user;
-      _firestoreService.getUser(_auth.currentUser.uid).then((value) {
-        user = value;
-      });
+      var user = await getFirebaseUser();
       return user.userRole;
     }
   }
 
   //returns the firebase baseuser
-  getFirebaseUser() async {
+  Future<BaseUser> getFirebaseUser() async {
     return await _firestoreService.getUser(_auth.currentUser.uid);
   }
 
