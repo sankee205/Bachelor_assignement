@@ -29,7 +29,6 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
 
   _getUserRole() async {
     dynamic firebaseUserRole = await _authService.getUserRole();
-    print(firebaseUserRole);
     if (firebaseUserRole != null) {
       setState(() {
         _currentUserRole = firebaseUserRole;
@@ -48,7 +47,6 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
       setState(() {
         guestList = firebaseList;
       });
-      print(guestList);
     } else {
       print('resultant is null');
     }

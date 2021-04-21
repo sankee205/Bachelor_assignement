@@ -238,8 +238,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                         name: _currentUser.fullName,
                                         phonenumber: _currentUser.phonenumber,
                                         uid: _currentUser.uid,
-                                        role: _currentUser.userRole,
-                                        myCases: _currentUser.myCases,
                                       ),
                                     ),
                                   );
