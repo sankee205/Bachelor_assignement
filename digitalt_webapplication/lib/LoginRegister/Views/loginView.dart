@@ -133,7 +133,7 @@ class _LoginViewState extends State<LoginView> {
                             )),
                         verticalSpaceSmall,
                         MaterialButton(
-                          child: Text('Logg inn som gjest'),
+                          child: Text('Fortsett som gjest'),
                           onPressed: () async {
                             dynamic result = await _auth.signInAnon();
                             if (result == null) {
