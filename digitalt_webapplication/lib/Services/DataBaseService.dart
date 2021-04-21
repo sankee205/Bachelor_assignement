@@ -143,6 +143,26 @@ class DatabaseService {
     });
   }
 
+  Future updateCaseItemByFolder(
+    String folder,
+    String id,
+    String image,
+    String title,
+    List author,
+    String lastEdited,
+    String introduction,
+    List text,
+  ) async {
+    return await FirebaseFirestore.instance.collection(folder).doc(id).update({
+      'image': image,
+      'title': title,
+      'author': author,
+      'lastEdited': lastEdited,
+      'introduction': introduction,
+      'text': text,
+    });
+  }
+
   Future updateFolder(String folder, List<Map<String, dynamic>> newList) async {
     await FirebaseFirestore.instance.collection(folder).get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {

@@ -2,6 +2,7 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
+import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
@@ -44,6 +45,15 @@ class _MyArticlesState extends State<MyArticles> {
     }
   }
 
+  _signOut() async {
+    print('signing out');
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   _createMyCaseList() {
     List newList = [];
     if (_userMyCases.isNotEmpty) {
@@ -62,14 +72,16 @@ class _MyArticlesState extends State<MyArticles> {
   }
 
   _setBaseUser() async {
-    BaseUser user = _auth.getFirebaseUser();
-    if (user != null) {
-      setState(() {
-        _currentUser = user;
-        _userMyCases = user.myCases;
-      });
-    } else {
-      print('user from authservice is null');
+    if (!_auth.isUserAnonymous()) {
+      var user = await _auth.getFirebaseUser();
+      if (user != null) {
+        setState(() {
+          _currentUser = user;
+          _userMyCases = user.myCases;
+        });
+      } else {
+        print('user from authservice is null');
+      }
     }
   }
 
@@ -98,56 +110,88 @@ class _MyArticlesState extends State<MyArticles> {
             child: Container(
                 width: 800,
                 child: Material(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Dine Lagrede Artikler',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ResponsiveGridRow(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: _myCases.map((caseObject) {
-                          return ResponsiveGridCol(
-                              lg: 6,
-                              md: 6,
-                              xs: 6,
-                              child: Container(
-                                  margin: EdgeInsets.all(5),
-                                  height: 250,
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => CasePage(
-                                                      image:
-                                                          caseObject['image'],
-                                                      title:
-                                                          caseObject['title'],
-                                                      author:
-                                                          caseObject['author'],
-                                                      publishedDate: caseObject[
-                                                          'publishedDate'],
-                                                      introduction: caseObject[
-                                                          'introduction'],
-                                                      text: caseObject['text'],
-                                                      lastEdited: caseObject[
-                                                          'lastEdited'],
-                                                    )));
-                                      },
-                                      child: BaseCaseBox(
-                                          image: caseObject['image'],
-                                          title: caseObject['title']))));
-                        }).toList(),
-                      ),
-                    ],
-                  ),
+                  child: _auth.isUserAnonymous()
+                      ? Column(
+                          children: [
+                            SizedBox(height: 50),
+                            Text(
+                                'Du kan ikke lagre noen artikler når du ikke er innlogget'),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _signOut();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginView()));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Logg inn'),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Dine Lagrede Artikler',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            ResponsiveGridRow(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: _myCases.map((caseObject) {
+                                return ResponsiveGridCol(
+                                    lg: 6,
+                                    md: 6,
+                                    xs: 6,
+                                    child: Container(
+                                        margin: EdgeInsets.all(5),
+                                        height: 250,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CasePage(
+                                                            image: caseObject[
+                                                                'image'],
+                                                            title: caseObject[
+                                                                'title'],
+                                                            author: caseObject[
+                                                                'author'],
+                                                            publishedDate:
+                                                                caseObject[
+                                                                    'publishedDate'],
+                                                            introduction:
+                                                                caseObject[
+                                                                    'introduction'],
+                                                            text: caseObject[
+                                                                'text'],
+                                                            lastEdited:
+                                                                caseObject[
+                                                                    'lastEdited'],
+                                                          )));
+                                            },
+                                            child: BaseCaseBox(
+                                                image: caseObject['image'],
+                                                title: caseObject['title']))));
+                              }).toList(),
+                            ),
+                          ],
+                        ),
                 )),
           ),
         ),

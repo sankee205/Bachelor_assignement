@@ -18,8 +18,6 @@ class EditProfilePage extends StatefulWidget {
   final String email;
   final String uid;
   final String phonenumber;
-  final String role;
-  final List<String> myCases;
 
   const EditProfilePage({
     Key key,
@@ -27,8 +25,6 @@ class EditProfilePage extends StatefulWidget {
     @required this.email,
     @required this.uid,
     @required this.phonenumber,
-    @required this.role,
-    @required this.myCases,
   }) : super(key: key);
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -38,7 +34,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _id;
-  String _userRole;
   final _fullname = TextEditingController();
   final _emailAdress = TextEditingController();
   final _number = TextEditingController();
@@ -56,7 +51,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _emailAdress.text = widget.email;
       _number.text = widget.phonenumber;
       _id = widget.uid;
-      _userRole = widget.role;
     });
   }
 

@@ -63,7 +63,6 @@ class _EditLockedCasesState extends State<EditLockedCases> {
       setState(() {
         _guestList = firebaseList;
       });
-      print(_guestList);
     } else {
       print('resultant is null');
     }

@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
@@ -46,9 +47,25 @@ class _CasePageState extends State<CasePage> {
   bool isArticleSaved;
 
   _setBaseUser() async {
-    setState(() {
-      _currentUser = _auth.getFirebaseUser();
-    });
+    if (!_auth.isUserAnonymous()) {
+      var user = await _auth.getFirebaseUser();
+      if (user != null) {
+        setState(() {
+          _currentUser = user;
+        });
+        if (user.myCases.contains(widget.title)) {
+          setState(() {
+            isArticleSaved = true;
+          });
+        } else {
+          setState(() {
+            isArticleSaved = false;
+          });
+        }
+      } else {
+        print('user from authservice is null');
+      }
+    }
   }
 
   _changeMyCasesList(bool value) {
@@ -99,7 +116,6 @@ class _CasePageState extends State<CasePage> {
       bottomNavigationBar: BaseBottomAppBar(),
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
-
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.arrow_back,
@@ -120,29 +136,24 @@ class _CasePageState extends State<CasePage> {
           //here starts the case
           child: Container(
             width: 800,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(widget.image),
-                fit: BoxFit.fitWidth,
-                alignment: FractionalOffset.topCenter,
-              ),
-            ),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Stack(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        0.0,
-                        max(MediaQuery.of(context).size.width * 0.225, 225),
-                        0.0,
-                        0.0),
+                    padding: EdgeInsets.all(0.0),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Material(
-                        borderRadius: BorderRadius.circular(35),
                         child: Column(
                           children: <Widget>[
+                            Container(
+                              width: 800,
+                              child: Image(
+                                image: NetworkImage(widget.image),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                             SizedBox(
                               height: 10,
                             ),
@@ -159,81 +170,95 @@ class _CasePageState extends State<CasePage> {
                             ),
 
                             SizedBox(
-                              height: 20,
+                              height: 10,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: ResponsiveGridRow(
+                                children: [
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.person),
+                                        Container(
+                                          width: 100,
+                                          margin: EdgeInsets.all(10),
+                                          child: ResponsiveGridRow(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children:
+                                                widget.author.map((author) {
+                                              return ResponsiveGridCol(
+                                                  xl: 12,
+                                                  md: 12,
+                                                  xs: 12,
+                                                  child: Container(
+                                                    child: Text(
+                                                      author,
+                                                      style: TextStyle(
+                                                          fontSize: 10),
+                                                    ),
+                                                  ));
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.date_range),
+                                        Text(widget.publishedDate),
+                                      ],
+                                    ),
+                                  ),
+                                  ResponsiveGridCol(
+                                    lg: 4,
+                                    xs: 4,
+                                    child: isArticleSaved == null
+                                        ? SizedBox()
+                                        : Row(children: [
+                                            Text('Lagre Artikkel'),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Checkbox(
+                                              value: isArticleSaved,
+                                              onChanged: (bool newValue) {
+                                                _changeMyCasesList(newValue);
+                                                setState(() {
+                                                  isArticleSaved = newValue;
+                                                });
+                                              },
+                                            ),
+                                          ]),
+                                  ),
+                                ],
+                              ),
                             ),
                             //in this row you find author and published date
-                            ResponsiveGridRow(
-                              children: [
-                                ResponsiveGridCol(
-                                  lg: 4,
-                                  xs: 4,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.person),
-                                      Container(
-                                        width: 100,
-                                        margin: EdgeInsets.all(10),
-                                        child: ResponsiveGridRow(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: widget.author.map((author) {
-                                            return ResponsiveGridCol(
-                                                xl: 12,
-                                                md: 12,
-                                                xs: 12,
-                                                child: Container(
-                                                  child: Text(
-                                                    author,
-                                                    style:
-                                                        TextStyle(fontSize: 10),
-                                                  ),
-                                                ));
-                                          }).toList(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ResponsiveGridCol(
-                                  lg: 4,
-                                  xs: 4,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.date_range),
-                                      Text(widget.publishedDate),
-                                    ],
-                                  ),
-                                ),
-                                ResponsiveGridCol(
-                                  lg: 4,
-                                  xs: 4,
-                                  child: isArticleSaved == null
-                                      ? SizedBox()
-                                      : Row(children: [
-                                          Text('Lagre Artikkel'),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Checkbox(
-                                            value: isArticleSaved,
-                                            onChanged: (bool newValue) {
-                                              _changeMyCasesList(newValue);
-                                              setState(() {
-                                                isArticleSaved = newValue;
-                                              });
-                                            },
-                                          ),
-                                        ]),
-                                ),
-                              ],
-                            ),
 
                             SizedBox(
                               height: 10,
                             ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                              child: Text(
+                                widget.title,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
 
-                            Container(
-                              margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Text(
                                 widget.introduction,
                                 style: TextStyle(
@@ -247,7 +272,7 @@ class _CasePageState extends State<CasePage> {
                             //this is the description of the case. the main text
                             Container(
                               margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              width: 600,
+                              width: 700,
                               child: Column(
                                 children: widget.text.map((item) {
                                   return Container(
@@ -266,7 +291,8 @@ class _CasePageState extends State<CasePage> {
                             ),
                             Center(
                               child: _lastEditedText == null
-                                  ? Text("")
+                                  ? Text(
+                                      'Denne artikkelen har aldri blitt endret')
                                   : _lastEditedText,
                             ),
                             SizedBox(

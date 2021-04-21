@@ -42,14 +42,17 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getUserRole();
     _getInfo();
+    _getUserRole();
   }
 
   _getUserRole() async {
-    setState(() {
-      _currentUserRole = _auth.getUserRole();
-    });
+    dynamic firebaseUserRole = await _auth.getUserRole();
+    if (firebaseUserRole != null) {
+      setState(() {
+        _currentUserRole = firebaseUserRole;
+      });
+    }
   }
 
   Future _getInfo() async {

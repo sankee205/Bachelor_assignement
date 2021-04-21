@@ -14,7 +14,9 @@ class StartUpViewModel extends BaseModel {
     if (hasLoggedInUser) {
       _navigationService.navigateTo(HomePageRoute);
     } else {
-      _navigationService.navigateTo(LoginViewRoute);
+      await _authenticationService.signInAnon().then((value) {
+        _navigationService.navigateTo(HomePageRoute);
+      });
     }
   }
 }

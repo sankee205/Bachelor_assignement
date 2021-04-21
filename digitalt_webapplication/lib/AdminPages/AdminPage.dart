@@ -32,6 +32,8 @@ class _AdminPageState extends State<AdminPage> {
 
   //lists from firebase with all articles
   List _allCases = [];
+  List _popularList = [];
+  List _newList = [];
 
   //a list with only string objects for the search bar
   List<String> _allCaseList = [];
@@ -42,17 +44,37 @@ class _AdminPageState extends State<AdminPage> {
   @override
   void initState() {
     super.initState();
+    _fetchDataBaseList('PopularCases');
     _fetchDataBaseList('AllCases');
+    _fetchDataBaseList('NewCases');
   }
 
   /// fetches the list from firebase
   _fetchDataBaseList(String folder) async {
     dynamic resultant = await _db.getCaseItems(folder);
+
     if (resultant == null) {
       print('unable to get data');
     } else {
       setState(() {
-        _allCases = resultant;
+        switch (folder) {
+          case 'PopularCases':
+            {
+              _popularList = resultant;
+            }
+            break;
+
+          case 'NewCases':
+            {
+              _newList = resultant;
+            }
+            break;
+          case 'AllCases':
+            {
+              _allCases = resultant;
+            }
+            break;
+        }
       });
     }
   }
@@ -80,6 +102,8 @@ class _AdminPageState extends State<AdminPage> {
           context,
           MaterialPageRoute(
               builder: (context) => UpdateCasePage(
+                  popularList: _popularList,
+                  newList: _newList,
                   caseTitle: caseToEdit['title'],
                   caseIntroduction: caseToEdit['introduction'],
                   caseText: caseToEdit['text'],
