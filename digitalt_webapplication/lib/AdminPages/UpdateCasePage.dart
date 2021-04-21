@@ -55,6 +55,11 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   static List _descriptionList = [];
   static List _authorList = [];
 
+  bool _caseInPopularCases = false;
+  String _popularCaseId;
+  String _newCaseId;
+  bool _caseInNewCases = false;
+
   Image _imageWidget;
   MediaInfo _mediaInfo;
 
@@ -82,26 +87,20 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   bool _updateCaseItem() {
     bool success = true;
     if (_mediaInfo == null) {
-      var result = _db.updateCaseItemData(_id, _imageUrl, _title.text,
-          _authorList, _date, _introduction.text, _descriptionList);
-      if (result != null) {
-        success = true;
-      } else {
-        print('failed to upload case item');
-        success = false;
+      _updateCaseByFolder('AllCases', _id);
+      print(
+          'popular: ' + _caseInPopularCases.toString() + ' ' + _popularCaseId);
+      print('new: ' + _caseInNewCases.toString() + ' ' + _newCaseId);
+      if (_caseInNewCases) {
+        _updateCaseByFolder('NewCases', _newCaseId);
+      }
+      if (_caseInPopularCases) {
+        _updateCaseByFolder('PopularCases', _popularCaseId);
       }
     } else {
       _db.uploadFile(_mediaInfo).then((value) {
         String imageUri = value.toString();
         if (imageUri != null) {
-          var result = _db.updateCaseItemData(_id, imageUri, _title.text,
-              _authorList, _date, _introduction.text, _descriptionList);
-          if (result != null) {
-            success = true;
-          } else {
-            print('failed to upload case item');
-            success = false;
-          }
         } else {
           print('imageUri is null');
           success = false;
@@ -109,6 +108,17 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
       });
     }
     return success;
+  }
+
+  bool _updateCaseByFolder(String folder, String id) {
+    var result = _db.updateCaseItemByFolder(folder, id, _imageUrl, _title.text,
+        _authorList, _date, _introduction.text, _descriptionList);
+    if (result != null) {
+      return true;
+    } else {
+      print('failed to upload case item');
+      return false;
+    }
   }
 
 //gets the image that is added
