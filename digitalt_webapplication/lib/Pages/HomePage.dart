@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:digitalt_application/Services/auth.dart';
+import 'package:searchfield/searchfield.dart';
 
 /*
  * This is the main page of the flutter application and this is the window that will
@@ -36,6 +37,14 @@ class HomePageState extends State<HomePage> {
   String _currentUserRole;
   List<String> _guestList = [];
 
+  //a list with only string objects for the search bar
+  List<String> _allCaseList = [];
+
+  final _searchCaseItem = TextEditingController();
+
+  //form key to evaluate the search bar input
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +63,14 @@ class HomePageState extends State<HomePage> {
       });
     } else {
       print('firebaseUserRole is null');
+    }
+  }
+
+  _createStringList() {
+    _allCaseList.clear();
+    for (int i = 0; i < _allCases.length; i++) {
+      var caseObject = _allCases[i];
+      _allCaseList.add(caseObject['title']);
     }
   }
 
@@ -104,6 +121,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _createStringList();
     //returns a material design
     return Scaffold(
       //this is the appbar for the home page
@@ -330,6 +348,54 @@ class HomePageState extends State<HomePage> {
                               ]),
                         ),
                       ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 450,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            key: _formKey,
+                            child: SearchField(
+                              suggestions: _allCaseList,
+                              hint: 'Søk etter artikler',
+                              searchStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              validator: (x) {
+                                if (!_allCaseList.contains(x) || x.isEmpty) {
+                                  return 'Please Enter a valid State';
+                                }
+                                return null;
+                              },
+                              searchInputDecoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red),
+                                ),
+                              ),
+                              maxSuggestionsInViewPort: 6,
+                              itemHeight: 50,
+                              onTap: (x) {
+                                setState(() {
+                                  _searchCaseItem.text = x;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.search))
                     ],
                   ),
                   SizedBox(
