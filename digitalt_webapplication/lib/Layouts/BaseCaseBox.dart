@@ -23,7 +23,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) => GridTile(
         footer: Container(
-          margin: EdgeInsets.fromLTRB(4, 0, 4, 0),
+          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
           decoration:
               BoxDecoration(borderRadius: BorderRadius.circular(0), boxShadow: [
             BoxShadow(
@@ -48,7 +48,6 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
         //this is the Image of the CaseBox
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(0),
             image: DecorationImage(
                 image: NetworkImage(widget.image), fit: BoxFit.cover),
           ),

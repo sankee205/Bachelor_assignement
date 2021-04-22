@@ -96,7 +96,18 @@ class _MyArticlesState extends State<MyArticles> {
           style: TextStyle(color: Colors.white),
         ),
         appBar: AppBar(),
-        widgets: <Widget>[Icon(Icons.more_vert)],
+        widgets: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Container(
+              width: 36,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular((20))),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BaseBottomAppBar(),
 
@@ -183,6 +194,7 @@ class _MyArticlesState extends State<MyArticles> {
                                                             lastEdited:
                                                                 caseObject[
                                                                     'lastEdited'],
+                                                            searchBar: false,
                                                           )));
                                             },
                                             child: BaseCaseBox(

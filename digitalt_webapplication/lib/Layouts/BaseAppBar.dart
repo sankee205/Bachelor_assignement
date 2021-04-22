@@ -1,4 +1,4 @@
-import 'package:digitalt_application/Layouts/BaseFadeRoute.dart';
+import 'package:digitalt_application/Layouts/BaseSearch.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -12,26 +12,16 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// you can add more fields that meet your needs
 
-  const BaseAppBar({Key key, this.title, this.appBar, this.widgets})
-      : super(key: key);
+  const BaseAppBar({
+    Key key,
+    this.title,
+    this.appBar,
+    this.widgets,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: title,
-      actions: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(30.0),
-          child: Container(
-            width: 36,
-            height: 30,
-            decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular((20))),
-          ),
-        ),
-      ],
-    );
+    return AppBar(title: title, actions: widgets);
   }
 
   @override
