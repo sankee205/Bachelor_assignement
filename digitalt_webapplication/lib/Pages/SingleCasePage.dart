@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
@@ -16,6 +14,7 @@ import 'package:responsive_grid/responsive_grid.dart';
  * for the caseitem to be read.
  */
 class CasePage extends StatefulWidget {
+  final bool searchBar;
   final String image;
   final String title;
   final List author;
@@ -32,6 +31,7 @@ class CasePage extends StatefulWidget {
       @required this.publishedDate,
       @required this.introduction,
       @required this.text,
+      @required this.searchBar,
       this.lastEdited})
       : super(key: key);
   @override
@@ -105,14 +105,27 @@ class _CasePageState extends State<CasePage> {
     }
     return Scaffold(
       //this is the appbar for the home page
-      appBar: BaseAppBar(
-        title: Text(
-          'DIGI-TALT.NO',
-          style: TextStyle(color: Colors.white),
-        ),
-        appBar: AppBar(),
-        widgets: <Widget>[Icon(Icons.more_vert)],
-      ),
+      appBar: widget.searchBar
+          ? null
+          : BaseAppBar(
+              title: Text(
+                'DIGI-TALT.NO',
+                style: TextStyle(color: Colors.white),
+              ),
+              appBar: AppBar(),
+              widgets: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(30.0),
+                  child: Container(
+                    width: 36,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular((20))),
+                  ),
+                ),
+              ],
+            ),
       bottomNavigationBar: BaseBottomAppBar(),
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
@@ -229,6 +242,7 @@ class _CasePageState extends State<CasePage> {
                                             ),
                                             Checkbox(
                                               value: isArticleSaved,
+                                              activeColor: Colors.red,
                                               onChanged: (bool newValue) {
                                                 _changeMyCasesList(newValue);
                                                 setState(() {
@@ -245,16 +259,6 @@ class _CasePageState extends State<CasePage> {
 
                             SizedBox(
                               height: 10,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: Text(
-                                widget.title,
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                             ),
 
                             Padding(

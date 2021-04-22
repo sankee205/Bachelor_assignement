@@ -4,21 +4,21 @@ import 'StorageManager.dart';
 import 'package:flutter/material.dart';
 
 /// this class holds the different theme colors for the app
-/// light and dark
+/// light and d
 class ThemeNotifier with ChangeNotifier {
   bool state;
   final darkTheme = ThemeData(
     primaryColor: Colors.black,
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.black87,
+    scaffoldBackgroundColor: Colors.black,
     accentColor: Colors.red,
     accentIconTheme: IconThemeData(color: Colors.black),
     dividerColor: Colors.black,
     appBarTheme: AppBarTheme(
-        backgroundColor: Colors.black.withOpacity(0.6),
+        backgroundColor: Colors.grey.shade900,
         iconTheme: IconThemeData(color: Colors.red)),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.black.withOpacity(0.4),
+        backgroundColor: Colors.grey.shade900,
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.red),
     floatingActionButtonTheme:

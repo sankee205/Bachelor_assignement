@@ -94,6 +94,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                                     introduction: caseObject['introduction'],
                                     text: caseObject['text'],
                                     lastEdited: caseObject['lastEdited'],
+                                    searchBar: false,
                                   )));
                     }
                     break;
@@ -112,6 +113,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                                       introduction: caseObject['introduction'],
                                       text: caseObject['text'],
                                       lastEdited: caseObject['lastEdited'],
+                                      searchBar: false,
                                     )));
                       }
                     }
@@ -129,6 +131,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                                     introduction: caseObject['introduction'],
                                     text: caseObject['text'],
                                     lastEdited: caseObject['lastEdited'],
+                                    searchBar: false,
                                   )));
                     }
                     break;
@@ -147,6 +150,7 @@ class _BaseCarouselSliderState extends State<BaseCarouselSlider> {
                                       introduction: caseObject['introduction'],
                                       text: caseObject['text'],
                                       lastEdited: caseObject['lastEdited'],
+                                      searchBar: false,
                                     )));
                       }
                     }

@@ -35,22 +35,22 @@ class _LoginViewState extends State<LoginView> {
     return ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(),
         builder: (context, model, child) => Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                backgroundColor: Colors.red,
-                automaticallyImplyLeading: false,
-                actions: <Widget>[
-                  MaterialButton(
-                      child: Text('Registrer deg'),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpView()));
-                      }),
-                ],
-              ),
-              body: Padding(
+            appBar: AppBar(
+              backgroundColor: Colors.red,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                MaterialButton(
+                    child: Text('Registrer deg'),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpView()));
+                    }),
+              ],
+            ),
+            body: Material(
+              child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: Form(
                     key: _formKey,
@@ -63,14 +63,16 @@ class _LoginViewState extends State<LoginView> {
                           'Logg inn her for å se alt av innhold hos DIGI-TALT.NO',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
-                              color: Colors.black, fontSize: 28),
+                              //color: Colors.black,
+                              fontSize: 28),
                         ),
                         SizedBox(height: 20),
                         Text(
                           'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT.NO',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
-                              color: Colors.black, fontSize: 14),
+                              //color: Colors.black,
+                              fontSize: 14),
                         ),
                         verticalSpaceSmall,
                         TextFormField(
@@ -79,18 +81,19 @@ class _LoginViewState extends State<LoginView> {
                           onChanged: (val) {
                             setState(() => email = val);
                           },
-                          style: TextStyle(color: Colors.black),
+                          //style: TextStyle(color: Colors.black),
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                            obscureText: true,
-                            validator: (val) => val.length < 6
-                                ? 'Enter a password 6+ characters long'
-                                : null,
-                            onChanged: (val) {
-                              setState(() => password = val);
-                            },
-                            style: TextStyle(color: Colors.black)),
+                          obscureText: true,
+                          validator: (val) => val.length < 6
+                              ? 'Enter a password 6+ characters long'
+                              : null,
+                          onChanged: (val) {
+                            setState(() => password = val);
+                          },
+                          //style: TextStyle(color: Colors.black)
+                        ),
                         verticalSpaceMedium,
                         MaterialButton(
                           elevation: 0,
@@ -113,9 +116,8 @@ class _LoginViewState extends State<LoginView> {
                             }
                           },
                           color: logoGreen,
-                          child: Text('Logg inn',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          child:
+                              Text('Logg inn', style: TextStyle(fontSize: 16)),
                           textColor: Colors.white,
                         ),
                         SizedBox(height: 20),
@@ -159,7 +161,7 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                   )),
-            ));
+            )));
   }
 
   _buildFooterLogo() {

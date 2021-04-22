@@ -1,4 +1,5 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
+import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
@@ -145,19 +146,29 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   },
                 )
               : SizedBox(),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Logg ut'),
-            onTap: () {
-              showAlertSignOutDialog(context);
-            },
-          ),
+          _auth.isUserAnonymous()
+              ? ListTile(
+                  leading: Icon(Icons.login),
+                  title: Text('Logg inn'),
+                  onTap: () {
+                    _signOut();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginView()));
+                  },
+                )
+              : ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Logg ut'),
+                  onTap: () {
+                    showAlertSignOutDialog(context);
+                  },
+                ),
         ],
       ),
     );
   }
 
-  signOut() async {
+  _signOut() async {
     try {
       await _auth.signOut();
     } catch (e) {
@@ -176,7 +187,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
     Widget continueButton = FlatButton(
       child: Text("Ja"),
       onPressed: () {
-        signOut();
+        _signOut();
         Navigator.of(context, rootNavigator: true).pop();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => StartUpView()));

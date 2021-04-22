@@ -3,6 +3,7 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
+import 'package:digitalt_application/Layouts/BaseSearch.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,13 @@ class HomePageState extends State<HomePage> {
   String _currentUserRole;
   List<String> _guestList = [];
 
+  //a list with only string objects for the search bar
+  List<String> _allCaseList = [];
+  List<String> _searchCaseList;
+
+  //form key to evaluate the search bar input
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +65,39 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  _createStringList() {
+    _allCaseList.clear();
+    for (int i = 0; i < _allCases.length; i++) {
+      var caseObject = _allCases[i];
+      _allCaseList.add(caseObject['title']);
+    }
+  }
+
+  _goToSingleCase(String title) {
+    var caseObject;
+    for (int i = 0; i < _allCases.length; i++) {
+      var caseVar = _allCases[i];
+      if (caseVar['title'] == title) {
+        caseObject = caseVar;
+      }
+    }
+    if (caseObject != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CasePage(
+                    image: caseObject['image'],
+                    title: caseObject['title'],
+                    author: caseObject['author'],
+                    publishedDate: caseObject['publishedDate'],
+                    introduction: caseObject['introduction'],
+                    text: caseObject['text'],
+                    lastEdited: caseObject['lastEdited'],
+                    searchBar: false,
+                  )));
+    }
+  }
+
   _getGuestList() async {
     List<String> firebaseList = [];
     List resultant = await _db.getGuestListContent();
@@ -70,6 +111,35 @@ class HomePageState extends State<HomePage> {
       });
     } else {
       print('resultant is null');
+    }
+  }
+
+  _setSearchBarList() {
+    switch (_currentUserRole) {
+      case 'Admin':
+        setState(() {
+          _searchCaseList = _allCaseList;
+        });
+        break;
+      case 'Subscriber':
+        setState(() {
+          _searchCaseList = _allCaseList;
+        });
+        break;
+      case 'User':
+        setState(() {
+          _searchCaseList = _guestList;
+        });
+        break;
+      case 'Guest':
+        setState(() {
+          _searchCaseList = _guestList;
+        });
+        break;
+      default:
+        setState(() {
+          _searchCaseList = _guestList;
+        });
     }
   }
 
@@ -104,6 +174,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _createStringList();
+    _setSearchBarList();
     //returns a material design
     return Scaffold(
       //this is the appbar for the home page
@@ -112,8 +184,32 @@ class HomePageState extends State<HomePage> {
           'DIGI-TALT.NO',
           style: TextStyle(color: Colors.white),
         ),
+        widgets: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Container(
+              width: 36,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular((20))),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                  onTap: () {
+                    showSearch(
+                        context: context,
+                        delegate: BaseSearch(
+                            allCases: _searchCaseList, allCaseList: _allCases));
+                  },
+                  child: Icon(Icons.search)))
+        ],
         appBar: AppBar(),
-        widgets: <Widget>[Icon(Icons.more_vert)],
+        /*widgets: <Widget>[
+          Icon(Icons.more_vert),
+        ],*/
       ),
       bottomNavigationBar: BaseBottomAppBar(),
 
@@ -128,6 +224,9 @@ class HomePageState extends State<HomePage> {
             child: Material(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
                   ResponsiveGridRow(
                     children: [
                       ResponsiveGridCol(
@@ -207,6 +306,8 @@ class HomePageState extends State<HomePage> {
                                                                     lastEdited:
                                                                         caseObject[
                                                                             'lastEdited'],
+                                                                    searchBar:
+                                                                        false,
                                                                   )));
                                                 }
                                                 break;
@@ -235,6 +336,8 @@ class HomePageState extends State<HomePage> {
                                                                     lastEdited:
                                                                         caseObject[
                                                                             'lastEdited'],
+                                                                    searchBar:
+                                                                        false,
                                                                   )));
                                                 }
                                                 break;
@@ -265,6 +368,8 @@ class HomePageState extends State<HomePage> {
                                                                       lastEdited:
                                                                           caseObject[
                                                                               'lastEdited'],
+                                                                      searchBar:
+                                                                          false,
                                                                     )));
                                                   }
                                                 }
@@ -296,6 +401,8 @@ class HomePageState extends State<HomePage> {
                                                                       lastEdited:
                                                                           caseObject[
                                                                               'lastEdited'],
+                                                                      searchBar:
+                                                                          false,
                                                                     )));
                                                   }
                                                 }
@@ -339,11 +446,11 @@ class HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: _allCases.map((caseObject) {
                       return ResponsiveGridCol(
-                          lg: 4,
+                          lg: 6,
                           md: 6,
                           xs: 12,
                           child: Container(
-                              margin: EdgeInsets.all(5),
+                              //margin: EdgeInsets.fromLTRB(6, 10, 6, 10),
                               height: 250,
                               child: GestureDetector(
                                   onTap: () {
@@ -371,6 +478,7 @@ class HomePageState extends State<HomePage> {
                                                             caseObject['text'],
                                                         lastEdited: caseObject[
                                                             'lastEdited'],
+                                                        searchBar: false,
                                                       )));
                                         }
                                         break;
@@ -397,6 +505,7 @@ class HomePageState extends State<HomePage> {
                                                             caseObject['text'],
                                                         lastEdited: caseObject[
                                                             'lastEdited'],
+                                                        searchBar: false,
                                                       )));
                                         }
                                         break;
@@ -426,6 +535,7 @@ class HomePageState extends State<HomePage> {
                                                           lastEdited:
                                                               caseObject[
                                                                   'lastEdited'],
+                                                          searchBar: false,
                                                         )));
                                           }
                                         }
@@ -456,6 +566,7 @@ class HomePageState extends State<HomePage> {
                                                           lastEdited:
                                                               caseObject[
                                                                   'lastEdited'],
+                                                          searchBar: false,
                                                         )));
                                           }
                                         }
@@ -467,6 +578,9 @@ class HomePageState extends State<HomePage> {
                                       title: caseObject['title']))));
                     }).toList(),
                   ),
+                  SizedBox(
+                    height: 10,
+                  )
                 ],
               ),
             )),
