@@ -35,7 +35,6 @@ class _LoginViewState extends State<LoginView> {
     return ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(),
         builder: (context, model, child) => Scaffold(
-            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.red,
               automaticallyImplyLeading: false,
@@ -82,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
                           onChanged: (val) {
                             setState(() => email = val);
                           },
-                          style: TextStyle(color: Colors.black),
+                          //style: TextStyle(color: Colors.black),
                         ),
                         SizedBox(height: 20),
                         TextFormField(
