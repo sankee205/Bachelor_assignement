@@ -6,6 +6,7 @@ import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
 import 'package:digitalt_application/Layouts/BaseSearch.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
+import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -30,6 +31,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
   final DatabaseService _db = DatabaseService();
+  final VippsApi _vippsApi = VippsApi();
   List _newCases = [];
   List _allCases = [];
   List _popularCases = [];
@@ -52,6 +54,7 @@ class HomePageState extends State<HomePage> {
     _fetchDataBaseList('NewCases');
     _getUserRole();
     _getGuestList();
+    _vippsApi.getAccessToken();
   }
 
   _getUserRole() async {

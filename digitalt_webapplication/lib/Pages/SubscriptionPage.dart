@@ -19,6 +19,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   final AuthService _auth = AuthService();
   final VippsApi _vippsApi = VippsApi();
   BaseUser _currentUser;
+  String _accessToken;
 
   @override
   void initState() {
@@ -27,8 +28,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     _getAccessToken();
   }
 
-  _getAccessToken() {
-    _vippsApi.getAccessToken();
+  _getAccessToken() async {
+    var token = await _vippsApi.getAccessToken();
+    if (token != null) {
+      print('initialisng _accesstoken');
+      setState(() {
+        _accessToken = token;
+      });
+    }
   }
 
   _setBaseUser() async {
@@ -148,8 +155,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     ),
                                   )),
                               onTap: () async {
-                                var vippsLink = await _vippsApi
-                                    .initiatePayment(_currentUser.phonenumber);
+                                var vippsLink = await _vippsApi.initiatePayment(
+                                    _currentUser.phonenumber, _accessToken);
                                 js.context.callMethod('open', [vippsLink]);
                               },
                             ),
