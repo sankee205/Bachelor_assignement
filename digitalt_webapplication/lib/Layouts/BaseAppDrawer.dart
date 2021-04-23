@@ -3,11 +3,9 @@ import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/Pages/SubscriptionPage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
-import 'package:digitalt_application/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -134,6 +132,14 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Abonnement'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SubscriptionPage()));
             },
           ),
           _currentUserRole == 'Admin'

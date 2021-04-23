@@ -1,15 +1,29 @@
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/Pages/SubscriptionPage.dart';
+import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class VippsLoginPage extends StatefulWidget {
+class VippsPaymentPage extends StatefulWidget {
   @override
-  _VippsLoginPageState createState() => _VippsLoginPageState();
+  _VippsPaymentPageState createState() => _VippsPaymentPageState();
 }
 
-class _VippsLoginPageState extends State<VippsLoginPage> {
+class _VippsPaymentPageState extends State<VippsPaymentPage> {
+  final VippsApi _vippsApi = VippsApi();
   final number = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getAccessToken();
+  }
+
+  _getAccessToken() {
+    _vippsApi.getAccessToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +43,20 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
               color: Colors.white,
               child: Column(children: [
                 SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
-                Image(
-                  image: AssetImage('vipps/vippsLogo.png'),
+                SizedBox(
+                  width: 50,
+                  child: Image(
+                    image: AssetImage('vipps/vippsLogo.png'),
+                  ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 Center(
                   child: Text(
-                    'Logg inn',
+                    'Betal',
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -50,20 +67,20 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                   height: 10,
                 ),
                 Center(
-                  child: Text('DIGI-TALT.NO',
+                  child: Text('1029 kr til DIGI-TALT.NO AS',
                       style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      )),
+                          fontSize: 12,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500)),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 35,
                 ),
                 SizedBox(
                   width: 150,
-                  child: TextField(
+                  child: TextFormField(
                     controller: number,
+
                     decoration: new InputDecoration(labelText: "Telefonnummer"),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -75,9 +92,10 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
                   height: 20,
                 ),
                 SizedBox(
+                  width: 75,
                   child: ElevatedButton(
                       child: Text("Neste".toUpperCase(),
-                          style: TextStyle(fontSize: 14)),
+                          style: TextStyle(fontSize: 10)),
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.deepOrange),
@@ -95,8 +113,10 @@ class _VippsLoginPageState extends State<VippsLoginPage> {
           ),
           TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginView()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SubscriptionPage()));
               },
               child: Text(
                 'Avbryt',
