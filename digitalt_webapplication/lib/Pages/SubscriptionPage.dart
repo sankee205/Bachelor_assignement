@@ -1,14 +1,13 @@
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
-import 'package:digitalt_application/Pages/EditProfilePage.dart';
-import 'package:digitalt_application/Pages/VippsPaymentPage.dart';
+import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'dart:js' as js;
 
 /// this page will display the user profile
 class SubscriptionPage extends StatefulWidget {
@@ -18,12 +17,18 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   final AuthService _auth = AuthService();
+  final VippsApi _vippsApi = VippsApi();
   BaseUser _currentUser;
 
   @override
   void initState() {
     super.initState();
     _setBaseUser();
+    _getAccessToken();
+  }
+
+  _getAccessToken() {
+    _vippsApi.getAccessToken();
   }
 
   _setBaseUser() async {
@@ -142,12 +147,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                       ],
                                     ),
                                   )),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            VippsPaymentPage()));
+                              onTap: () async {
+                                var vippsLink = await _vippsApi
+                                    .initiatePayment(_currentUser.phonenumber);
+                                js.context.callMethod('open', [vippsLink]);
                               },
                             ),
                           ),
