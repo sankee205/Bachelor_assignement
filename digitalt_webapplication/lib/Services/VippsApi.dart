@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
@@ -10,6 +11,9 @@ class VippsApi {
   static const String _client_secret = "6-lnEIve7NKxxbzGiYjgfMN-3WA=";
   static const String _merchantSerialNumber = "218468";
   static const String _sub_key = "5c194972d7994fe284168479cd99bef1";
+
+  String _accessToken;
+  String _orderId;
 
   Future<String> getAccessToken() async {
     http.Response response = await http.post(
@@ -26,6 +30,7 @@ class VippsApi {
       case 200:
         {
           final String token = body['access_token'];
+          _accessToken = token;
           return token;
         }
         break;
@@ -33,42 +38,93 @@ class VippsApi {
     return null;
   }
 
-  Future<dynamic> initiatePayment(String phoneNumber, String token) async {
-    http.Response response =
-        await http.post(Uri.http(_base_url, 'ecomm/v2/payments'), headers: {
-      "Accept": "application/json",
-      "Access-Control_Allow_Origin": "*",
-      'Authorization': 'Bearer' + token,
-      'Ocp-Apim-Subscription-Key': _sub_key,
-      'Vipps-System_Name': '',
-      'Vipps-System-Version': '',
-      'Merchant-Serial_Number': _merchantSerialNumber
-    }, body: {
+  Future<String> initiatePayment(String phoneNumber) async {
+    String randomNumber = Random().nextInt(1000).toString();
+    Map requestBody = {
+      "customerInfo": {"mobileNumber": "90232609"},
       "merchantInfo": {
         "merchantSerialNumber": _merchantSerialNumber,
-        "callbackPrefix": "{{callbackPrefix}}",
-        "fallBack": "{{fallBack}}",
-        "authToken": "{{guid}}",
-        "isApp": false
+        "callbackPrefix":
+            "https://example.com/vipps/callbacks-for-payment-update",
+        "isApp": 'false',
+        "fallBack":
+            "https://example.com/vipps/fallback-result-page/acme-shop-" +
+                randomNumber +
+                "-order" +
+                randomNumber +
+                "abc"
       },
-      "customerInfo": {"mobileNumber": "90232609"},
       "transaction": {
-        "orderId": "{{orderId}}",
-        "amount": {
-          {200}
-        },
-        "transactionText": "{{transactionTextInitiate}}",
-        "skipLandingPage": false
+        "orderId":
+            "acme-shop-" + randomNumber + "-order" + randomNumber + "abc",
+        "amount": '105000',
+        "transactionText": "One year subscription"
       }
-    });
-    print(response);
+    };
+    http.Response response =
+        await http.post(Uri.https(_base_url, 'ecomm/v2/payments'),
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer ' + _accessToken,
+              'Ocp-Apim-Subscription-Key': _sub_key,
+              'Merchant-Serial-Number': _merchantSerialNumber
+            },
+            body: json.encode(requestBody));
+    final body = json.decode(response.body);
     switch (response.statusCode) {
       case 200:
         {
-          print(response.body);
-          return response.body.toString();
+          _orderId = body['orderId'];
+          final String result = body['url'];
+          return result;
         }
         break;
     }
+    return null;
   }
+
+  Future getPaymentDetails() async {
+    Map<String, String> standardHeaders = <String, String>{
+      "Content-Type": "application/json",
+      'Ocp-Apim-Subscription-Key': _sub_key,
+      'Merchant-Serial-Number': _merchantSerialNumber,
+      'Authorization': 'Bearer $_accessToken',
+    };
+    http.Response response = await http.get(
+      Uri.https(_base_url, "/ecomm/v2/payments/$_orderId/details"),
+      headers: standardHeaders,
+    );
+    return response.statusCode.toString();
+  }
+
+  Future capturePayment() async {
+    Map requestBody = {
+      "merchantInfo": {"merchantSerialNumber": _merchantSerialNumber},
+      "transaction": {
+        "amount": "105000",
+        "transactionText": "One year subscription"
+      }
+    };
+    http.Response response = await http.post(
+        Uri.https(_base_url, "/ecomm/v2/payments/$_orderId/capture"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $_accessToken',
+          'Ocp-Apim-Subscription-Key': _sub_key,
+          'X-Request-Id': _orderId + 'XIDC1',
+          'Merchant-Serial-Number': _merchantSerialNumber
+        },
+        body: json.encode(requestBody));
+    if (response.statusCode == 200) {
+      final body = response.body.toString();
+      return body;
+    } else {
+      return response.statusCode.toString();
+    }
+  }
+
+  Future cancelPayment() async {}
+
+  Future getOrderStatus() async {}
+  Future refundPayment() async {}
 }
