@@ -31,7 +31,6 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
   final DatabaseService _db = DatabaseService();
-  final VippsApi _vippsApi = VippsApi();
   List _newCases = [];
   List _allCases = [];
   List _popularCases = [];
@@ -54,7 +53,6 @@ class HomePageState extends State<HomePage> {
     _fetchDataBaseList('NewCases');
     _getUserRole();
     _getGuestList();
-    _vippsApi.getAccessToken();
   }
 
   _getUserRole() async {
