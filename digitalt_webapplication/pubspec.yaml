@@ -38,6 +38,9 @@ dependencies:
   easy_rich_text: ^0.5.4
   mime_type: ^1.0.0
   universal_html: ^2.0.4
+  universal_io: ^2.0.4
+  dcdg: ^3.0.0
+
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^7.1.1

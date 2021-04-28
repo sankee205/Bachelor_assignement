@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:http/http.dart' as http;
 
 ///
@@ -16,9 +15,11 @@ class VippsApi {
   String _orderId;
 
   Future<String> getAccessToken() async {
-    http.Response response = await http.post(
+    final response = await http.post(
       Uri.https(_base_url, "accessToken/get"),
       headers: <String, String>{
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET",
         "Content-Type": "application/json",
         "client_id": _client_id,
         "client_secret": _client_secret,
