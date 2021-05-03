@@ -31,7 +31,6 @@ dependencies:
   carousel_slider: ^3.0.0
   flutter_staggered_grid_view: ^0.3.4
   responsive_grid: ^1.2.1+1
-  #image_form_field: ^0.1.0
   image_picker_web: any
   syncfusion_flutter_pdf: ^18.4.48-beta
   file_picker: ^3.0.0
@@ -59,7 +58,6 @@ dependencies:
   google_fonts: ^2.0.0
   provider: ^5.0.0
   stacked: ^2.0.0
-  searchfield: ^0.5.1
   url_launcher: ^6.0.3
 
 
