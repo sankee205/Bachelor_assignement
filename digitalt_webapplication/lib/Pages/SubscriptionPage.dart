@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:digitalt_application/AppManagement/ThemeManager.dart';
@@ -6,8 +5,8 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Pages/DisplayVippsOrder.dart';
+import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/VippsApi.dart';
-import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,25 +24,32 @@ class SubscriptionPage extends StatefulWidget {
 }
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
-  final AuthService _auth = AuthService();
   final VippsApi _vippsApi = VippsApi();
-  bool _isAppInstalled = false;
+  final DatabaseService _db = DatabaseService();
+  int _type;
+
+  String _month = '';
+  String _year = '';
 
   @override
   void initState() {
     super.initState();
     _getAccessToken();
-    _appInstalled();
+    _getPrices();
   }
 
-  _appInstalled() async {
-    /*bool value = await LaunchApp.isAppInstalled(
-        androidPackageName: 'vipps', iosUrlScheme: 'vipps://');
-    if (value != null) {
+  _getPrices() async {
+    List resultant = await _db.getVippsPricesContent();
+    if (resultant != null) {
+      var result = resultant[0];
+      print(result);
       setState(() {
-        _isAppInstalled = value;
+        _month = result['oneMonth'];
+        _year = result['oneYear'];
       });
-    }*/
+    } else {
+      print('resultant is null');
+    }
   }
 
   _getAccessToken() async {
@@ -53,25 +59,21 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     }
   }
 
-  _signOut() async {
-    print('signing out');
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  _initiateVipps() async {
-    await _vippsApi.initiatePayment('93249909').then((value) async {
-      await _webLaunch(true, value);
-      await _vippsApi.getPaymentDetails();
+  _initiateVipps(String cost) async {
+    await _vippsApi
+        .initiatePayment(widget._currentUser.phonenumber, _type, cost)
+        .then((value) async {
+      if (value != null) {
+        await _webLaunch(true, value);
+        await _vippsApi.getPaymentDetails();
+      }
     });
-    sleep(const Duration(seconds: 5));
+    sleep(const Duration(seconds: 10));
     _capturePayment();
   }
 
   _webLaunch(bool state, String url) async {
+    print('in web launch');
     switch (state) {
       case true:
         print('opening web view');
@@ -86,32 +88,39 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   }
 
   _capturePayment() async {
-    dynamic response = await _vippsApi.capturePayment();
+    String captureCost;
+    if (_type == 1) {
+      captureCost = _year;
+    } else {
+      captureCost = _month;
+    }
+    dynamic response = await _vippsApi.capturePayment(captureCost, _type);
     print(response);
-    if (response.contains('status')) {
-      final jsonResponse = json.decode(response);
-      print(jsonResponse['orderId']);
+    if (response.toString().contains('status')) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              DisplayVippsOrder(response, widget._currentUser.uid),
+              DisplayVippsOrder(response, widget._currentUser.uid, _type),
         ),
       );
       _webLaunch(false, null);
     } else {
       switch (response) {
         case '404':
-          sleep(const Duration(seconds: 3));
+          sleep(const Duration(seconds: 10));
           _capturePayment();
           break;
         case '402':
-          sleep(const Duration(seconds: 3));
+          sleep(const Duration(seconds: 10));
           _capturePayment();
           break;
         case '429':
-          sleep(const Duration(seconds: 4));
-          _capturePayment();
+          _webLaunch(false, null);
+          break;
+        case 'denied':
+          _webLaunch(false, null);
+
           break;
         default:
       }
@@ -230,7 +239,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                         height: 20,
                                                       ),
                                                       Text(
-                                                        'Pris: 1050,00 kr',
+                                                        'Pris: ' +
+                                                            _displayAmount(
+                                                                _year) +
+                                                            'kr',
                                                         style: TextStyle(
                                                             color: theme
                                                                     .getState()
@@ -247,14 +259,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                             ),
                                           )),
                                       onTap: () {
-                                        _initiateVipps();
+                                        setState(() {
+                                          _type = 1;
+                                        });
+                                        _initiateVipps(_year);
                                       },
                                     ),
                                   ),
                                   ResponsiveGridCol(
-                                      xl: 6,
-                                      lg: 6,
-                                      xs: 12,
+                                    xl: 6,
+                                    lg: 6,
+                                    xs: 12,
+                                    child: GestureDetector(
                                       child: Container(
                                           margin: EdgeInsets.all(5),
                                           width: 300,
@@ -293,22 +309,69 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                       : Colors.grey.shade800,
                                                   height: 200,
                                                   child: Center(
-                                                    child: Text(
-                                                      'Prøve abonnement: 1 måned',
-                                                      style: TextStyle(
-                                                          color: theme
-                                                                  .getState()
-                                                              ? Colors.white
-                                                              : Colors.black),
-                                                    ),
-                                                  ),
+                                                      child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Text(
+                                                        'En måned, prøve abonemment',
+                                                        style: TextStyle(
+                                                            color: theme
+                                                                    .getState()
+                                                                ? Colors.white
+                                                                : Colors.black),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      Text(
+                                                        'Pris: ' +
+                                                            _displayAmount(
+                                                                _month) +
+                                                            'kr',
+                                                        style: TextStyle(
+                                                            color: theme
+                                                                    .getState()
+                                                                ? Colors.white
+                                                                : Colors.black),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      widget
+                                                              ._currentUser
+                                                              .mySubscription
+                                                              .freeMonthUsed
+                                                          ? Text(
+                                                              'Du har allerede brukt din prøve måned',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize: 18),
+                                                            )
+                                                          : SizedBox(),
+                                                    ],
+                                                  )),
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
                                               ],
                                             ),
-                                          ))),
+                                          )),
+                                      onTap: () {
+                                        if (widget._currentUser.mySubscription
+                                                .freeMonthUsed !=
+                                            true) {
+                                          setState(() {
+                                            _type = 2;
+                                          });
+                                          _initiateVipps(_month);
+                                        } else {}
+                                      },
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -322,14 +385,95 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text('Type: ' +
-                                  widget._currentUser.mySubscription
-                                      .transactionText),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text('Pris: ' +
-                                  widget._currentUser.mySubscription.amount),
+                              Container(
+                                  margin: EdgeInsets.all(5),
+                                  width: 300,
+                                  child: Material(
+                                    color: Colors.blueAccent,
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                          color: Colors.greenAccent,
+                                          height: 75,
+                                          child: Center(
+                                            child: Text(
+                                              'Abonnement',
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: theme.getState()
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                          color: theme.getState() == false
+                                              ? Colors.white
+                                              : Colors.grey.shade800,
+                                          height: 200,
+                                          child: Center(
+                                              child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                'Type: ' +
+                                                    widget
+                                                        ._currentUser
+                                                        .mySubscription
+                                                        .transactionText,
+                                                style: TextStyle(
+                                                    color: theme.getState()
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                'Betalt: ' +
+                                                    _displayAmount(
+                                                      widget
+                                                          ._currentUser
+                                                          .mySubscription
+                                                          .amount,
+                                                    ),
+                                                style: TextStyle(
+                                                    color: theme.getState()
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text(
+                                                'Status: ' +
+                                                    widget._currentUser
+                                                        .mySubscription.status
+                                                        .toUpperCase(),
+                                                style: TextStyle(
+                                                    color: theme.getState()
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                              )
+                                            ],
+                                          )),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  )),
                               SizedBox(
                                 height: 20,
                               ),
@@ -341,5 +485,16 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         ),
       ),
     );
+  }
+
+  _displayAmount(String number) {
+    if (number != '') {
+      List<String> characterList = number.split('');
+      characterList.insert(number.length - 2, ',');
+      String newNumber = characterList.join();
+      return newNumber;
+    } else {
+      return '';
+    }
   }
 }

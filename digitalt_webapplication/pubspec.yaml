@@ -39,6 +39,8 @@ dependencies:
   universal_html: ^2.0.4
   universal_io: ^2.0.4
   dcdg: ^3.0.0
+  jiffy: ^4.1.0
+
 
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
