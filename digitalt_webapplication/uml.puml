@@ -1,0 +1,1041 @@
+@startuml UmlClassDiagram
+set namespaceSeparator ::
+
+class "digitalt_application::AppManagement::ThemeManager.dart::ThemeNotifier" {
+  +bool* state
+  +ThemeData* darkTheme
+  +ThemeData* lightTheme
+  -ThemeData* _themeData
+  +ThemeData* getTheme()
+  +void setDarkMode()
+  +void setLightMode()
+  +bool* getState()
+}
+
+"digitalt_application::AppManagement::ThemeManager.dart::ThemeNotifier" o-- "flutter::src::material::theme_data.dart::ThemeData*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "digitalt_application::AppManagement::ThemeManager.dart::ThemeNotifier"
+
+class "digitalt_application::AppManagement::StorageManager.dart::StorageManager" {
+  {static} +void saveData()
+  {static} +Future<dynamic>* readData()
+  {static} +Future<bool*>* deleteData()
+}
+
+class "digitalt_application::models::baseModel.dart::BaseModel" {
+  -AuthService* _authenticationService
+  -bool* _busy
+  +BaseUser* currentUser
+  +bool* busy
+  +void setBusy()
+}
+
+"digitalt_application::models::baseModel.dart::BaseModel" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::models::baseModel.dart::BaseModel" o-- "digitalt_application::models::user.dart::BaseUser*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "digitalt_application::models::baseModel.dart::BaseModel"
+
+class "digitalt_application::models::user.dart::BaseUser" {
+  +String* uid
+  +String* fullName
+  +String* email
+  +String* phonenumber
+  +String* userRole
+  +List<dynamic>* myCases
+  +Subscription* mySubscription
+  +Map<String*, dynamic>* toJson()
+}
+
+"digitalt_application::models::user.dart::BaseUser" o-- "digitalt_application::models::subscription.dart::Subscription*"
+
+class "digitalt_application::models::subscription.dart::Subscription" {
+  +bool* freeMonthUsed
+  +String* orderId
+  +String* amount
+  +String* status
+  +String* transactionText
+  +String* timeStamp
+  +Map<String*, dynamic>* toJson()
+}
+
+class "digitalt_application::LoginRegister::navigationService.dart::NavigationService" {
+  -GlobalKey<NavigatorState*>* _navigationKey
+  +GlobalKey<NavigatorState*>* navigationKey
+  +void pop()
+  +Future<dynamic>* navigateTo()
+}
+
+"digitalt_application::LoginRegister::navigationService.dart::NavigationService" o-- "flutter::src::widgets::framework.dart::GlobalKey<NavigatorState*>*"
+
+class "digitalt_application::LoginRegister::Model::signUpViewModel.dart::SignUpViewModel" {
+  -AuthService* _authenticationService
+  -DialogService* _dialogService
+  -NavigationService* _navigationService
+  -String* _selectedRole
+  +String* selectedRole
+  +void setSelectedRole()
+  +Future<dynamic>* signUp()
+}
+
+"digitalt_application::LoginRegister::Model::signUpViewModel.dart::SignUpViewModel" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::LoginRegister::Model::signUpViewModel.dart::SignUpViewModel" o-- "digitalt_application::Services::dialogService.dart::DialogService*"
+"digitalt_application::LoginRegister::Model::signUpViewModel.dart::SignUpViewModel" o-- "digitalt_application::LoginRegister::navigationService.dart::NavigationService*"
+"digitalt_application::models::baseModel.dart::BaseModel" <|-- "digitalt_application::LoginRegister::Model::signUpViewModel.dart::SignUpViewModel"
+
+class "digitalt_application::LoginRegister::Model::startUpViewModel.dart::StartUpViewModel" {
+  -AuthService* _authenticationService
+  -NavigationService* _navigationService
+  +Future<dynamic>* handleStartUpLogic()
+}
+
+"digitalt_application::LoginRegister::Model::startUpViewModel.dart::StartUpViewModel" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::LoginRegister::Model::startUpViewModel.dart::StartUpViewModel" o-- "digitalt_application::LoginRegister::navigationService.dart::NavigationService*"
+"digitalt_application::models::baseModel.dart::BaseModel" <|-- "digitalt_application::LoginRegister::Model::startUpViewModel.dart::StartUpViewModel"
+
+class "digitalt_application::LoginRegister::Model::dialogModels.dart::DialogRequest" {
+  +String* title
+  +String* description
+  +String* buttonTitle
+  +String* cancelTitle
+}
+
+class "digitalt_application::LoginRegister::Model::dialogModels.dart::DialogResponse" {
+  +String* fieldOne
+  +String* fieldTwo
+  +bool* confirmed
+}
+
+class "digitalt_application::LoginRegister::Model::loginViewModel.dart::LoginViewModel" {
+  -AuthService* _authenticationService
+  -DialogService* _dialogService
+  -NavigationService* _navigationService
+  +Future<dynamic>* login()
+  +void navigateToSignUp()
+}
+
+"digitalt_application::LoginRegister::Model::loginViewModel.dart::LoginViewModel" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::LoginRegister::Model::loginViewModel.dart::LoginViewModel" o-- "digitalt_application::Services::dialogService.dart::DialogService*"
+"digitalt_application::LoginRegister::Model::loginViewModel.dart::LoginViewModel" o-- "digitalt_application::LoginRegister::navigationService.dart::NavigationService*"
+"digitalt_application::models::baseModel.dart::BaseModel" <|-- "digitalt_application::LoginRegister::Model::loginViewModel.dart::LoginViewModel"
+
+class "digitalt_application::LoginRegister::Views::loginView.dart::LoginView" {
+  +Function* toggleView
+  +_LoginViewState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::LoginRegister::Views::loginView.dart::LoginView"
+
+class "digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState" {
+  +TextEditingController* emailController
+  +TextEditingController* passwordController
+  +Color* logoGreen
+  -AuthService* _auth
+  -GlobalKey<FormState*>* _formKey
+  +String* email
+  +String* password
+  +String* error
+  +Widget* build()
+  -dynamic _buildFooterLogo()
+}
+
+"digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState" o-- "dart::ui::Color*"
+"digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::LoginRegister::Views::loginView.dart::_LoginViewState"
+
+class "digitalt_application::LoginRegister::Views::signUpView.dart::SignUpView" {
+  +TextEditingController* emailController
+  +TextEditingController* passwordController
+  +TextEditingController* fullNameController
+  +TextEditingController* phonenumberController
+  +Function* toggleView
+  +Widget* build()
+}
+
+"digitalt_application::LoginRegister::Views::signUpView.dart::SignUpView" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::LoginRegister::Views::signUpView.dart::SignUpView"
+
+class "digitalt_application::LoginRegister::Views::startUpView.dart::StartUpView" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::LoginRegister::Views::startUpView.dart::StartUpView"
+
+class "digitalt_application::LoginRegister::dialogManager.dart::DialogManager" {
+  +Widget* child
+  +_DialogManagerState* createState()
+}
+
+"digitalt_application::LoginRegister::dialogManager.dart::DialogManager" o-- "flutter::src::widgets::framework.dart::Widget*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::LoginRegister::dialogManager.dart::DialogManager"
+
+class "digitalt_application::LoginRegister::dialogManager.dart::_DialogManagerState" {
+  -DialogService* _dialogService
+  +void initState()
+  +Widget* build()
+  -void _showDialog()
+}
+
+"digitalt_application::LoginRegister::dialogManager.dart::_DialogManagerState" o-- "digitalt_application::Services::dialogService.dart::DialogService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::LoginRegister::dialogManager.dart::_DialogManagerState"
+
+class "digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" {
+  +TextEditingController* controller
+  +TextInputType* textInputType
+  +bool* password
+  +bool* isReadOnly
+  +String* placeholder
+  +String* validationMessage
+  +Function* enterPressed
+  +bool* smallVersion
+  +FocusNode* fieldFocusNode
+  +FocusNode* nextFocusNode
+  +TextInputAction* textInputAction
+  +String* additionalNote
+  +dynamic Function(String*)* onChanged
+  +TextInputFormatter* formatter
+  +_InputFieldState* createState()
+}
+
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "flutter::src::services::text_input.dart::TextInputType*"
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "flutter::src::widgets::focus_manager.dart::FocusNode*"
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "flutter::src::services::text_input.dart::TextInputAction*"
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "null::dynamic Function(String*)*"
+"digitalt_application::LoginRegister::Widgets::inputField.dart::InputField" o-- "flutter::src::services::text_formatter.dart::TextInputFormatter*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::LoginRegister::Widgets::inputField.dart::InputField"
+
+class "digitalt_application::LoginRegister::Widgets::inputField.dart::_InputFieldState" {
+  +bool* isPassword
+  +double* fieldHeight
+  +void initState()
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::LoginRegister::Widgets::inputField.dart::_InputFieldState"
+
+class "digitalt_application::LoginRegister::Widgets::noteText.dart::NoteText" {
+  +String* text
+  +TextAlign* textAlign
+  +Color* color
+  +Widget* build()
+}
+
+"digitalt_application::LoginRegister::Widgets::noteText.dart::NoteText" o-- "dart::ui::TextAlign*"
+"digitalt_application::LoginRegister::Widgets::noteText.dart::NoteText" o-- "dart::ui::Color*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::LoginRegister::Widgets::noteText.dart::NoteText"
+
+class "digitalt_application::LoginRegister::Widgets::expansionList.dart::ExpansionList" {
+  +List<T*>* items
+  +String* title
+  +dynamic Function(dynamic)* onItemSelected
+  +bool* smallVersion
+  +_ExpansionListState* createState()
+}
+
+"digitalt_application::LoginRegister::Widgets::expansionList.dart::ExpansionList" o-- "null::dynamic Function(dynamic)*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::LoginRegister::Widgets::expansionList.dart::ExpansionList"
+
+class "digitalt_application::LoginRegister::Widgets::expansionList.dart::_ExpansionListState" {
+  +double* startingHeight
+  +double* expandedHeight
+  +bool* expanded
+  +String* selectedValue
+  +void initState()
+  +Widget* build()
+  -List<Widget*>* _getDropdownListItems()
+  -void _calculateExpandedHeight()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::LoginRegister::Widgets::expansionList.dart::_ExpansionListState"
+
+class "digitalt_application::LoginRegister::Widgets::expansionList.dart::ExpansionListItem" {
+  +Function* onTap
+  +String* title
+  +bool* showArrow
+  +bool* smallVersion
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::LoginRegister::Widgets::expansionList.dart::ExpansionListItem"
+
+class "digitalt_application::LoginRegister::Widgets::busyButton.dart::BusyButton" {
+  +bool* busy
+  +String* title
+  +Function* onPressed
+  +bool* enabled
+  +_BusyButtonState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::LoginRegister::Widgets::busyButton.dart::BusyButton"
+
+class "digitalt_application::LoginRegister::Widgets::busyButton.dart::_BusyButtonState" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::LoginRegister::Widgets::busyButton.dart::_BusyButtonState"
+
+class "digitalt_application::LoginRegister::Widgets::textLink.dart::TextLink" {
+  +String* text
+  +Function* onPressed
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::LoginRegister::Widgets::textLink.dart::TextLink"
+
+class "digitalt_application::main.dart::MyApp" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::main.dart::MyApp"
+
+class "digitalt_application::Layouts::BaseAppDrawer.dart::BaseAppDrawer" {
+  +_BaseAppDrawerState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Layouts::BaseAppDrawer.dart::BaseAppDrawer"
+
+class "digitalt_application::Layouts::BaseAppDrawer.dart::_BaseAppDrawerState" {
+  -String* _currentUserRole
+  -BaseUser* _currentUser
+  +void initState()
+  -dynamic _setBaseUser()
+  -Future<dynamic>* _getInfo()
+  +Widget* build()
+  -dynamic _signOut()
+  +Widget* showAlertSignOutDialog()
+}
+
+"digitalt_application::Layouts::BaseAppDrawer.dart::_BaseAppDrawerState" o-- "digitalt_application::models::user.dart::BaseUser*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Layouts::BaseAppDrawer.dart::_BaseAppDrawerState"
+
+class "digitalt_application::Layouts::BaseCaseItem.dart::CaseItem" {
+  +String* image
+  +String* title
+  +List<dynamic>* author
+  +String* publishedDate
+  +String* introduction
+  +List<dynamic>* text
+  +Map<String*, dynamic>* toMap()
+}
+
+class "digitalt_application::Layouts::BaseCarouselSlider.dart::BaseCarouselSlider" {
+  -List<dynamic>* _caseList
+  +_BaseCarouselSliderState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Layouts::BaseCarouselSlider.dart::BaseCarouselSlider"
+
+class "digitalt_application::Layouts::BaseCarouselSlider.dart::_BaseCarouselSliderState" {
+  -String* _currentUserRole
+  -AuthService* _authService
+  -DatabaseService* _db
+  +List<String*>* guestList
+  -dynamic _getUserRole()
+  -dynamic _getGuestList()
+  +void initState()
+  +Widget* build()
+}
+
+"digitalt_application::Layouts::BaseCarouselSlider.dart::_BaseCarouselSliderState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Layouts::BaseCarouselSlider.dart::_BaseCarouselSliderState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Layouts::BaseCarouselSlider.dart::_BaseCarouselSliderState"
+
+class "digitalt_application::Layouts::BaseSearch.dart::BaseSearch" {
+  +List<String*>* allCases
+  +List<dynamic>* allCaseList
+  +String* selectedResult
+  +ThemeData* appBarTheme()
+  +List<Widget*>* buildActions()
+  +Widget* buildLeading()
+  +Widget* buildResults()
+  +Widget* buildSuggestions()
+}
+
+"flutter::src::material::search.dart::SearchDelegate" <|-- "digitalt_application::Layouts::BaseSearch.dart::BaseSearch"
+
+class "digitalt_application::Layouts::BaseTextFields.dart::BaseTextFields" {
+  +int* index
+  +int* maxlines
+  +String* hintText
+  +List<dynamic>* list
+  +_BaseTextFieldsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Layouts::BaseTextFields.dart::BaseTextFields"
+
+class "digitalt_application::Layouts::BaseTextFields.dart::_BaseTextFieldsState" {
+  -TextEditingController* _nameController
+  +void initState()
+  +void dispose()
+  +Widget* build()
+}
+
+"digitalt_application::Layouts::BaseTextFields.dart::_BaseTextFieldsState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Layouts::BaseTextFields.dart::_BaseTextFieldsState"
+
+class "digitalt_application::Layouts::BaseFadeRoute.dart::BaseFadeRoute" {
+  +Widget* page
+}
+
+"digitalt_application::Layouts::BaseFadeRoute.dart::BaseFadeRoute" o-- "flutter::src::widgets::framework.dart::Widget*"
+"flutter::src::widgets::pages.dart::PageRouteBuilder" <|-- "digitalt_application::Layouts::BaseFadeRoute.dart::BaseFadeRoute"
+
+class "digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar" {
+  +Text* title
+  +AppBar* appBar
+  +List<Widget*>* widgets
+  +Size* preferredSize
+  +Widget* build()
+}
+
+"digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar" o-- "flutter::src::widgets::text.dart::Text*"
+"digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar" o-- "flutter::src::material::app_bar.dart::AppBar*"
+"digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar" o-- "dart::ui::Size*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar"
+"flutter::src::widgets::preferred_size.dart::PreferredSizeWidget" <|-- "digitalt_application::Layouts::BaseAppBar.dart::BaseAppBar"
+
+class "digitalt_application::Layouts::BoardListObject.dart::BoardListObject" {
+  +String* title
+  +List<BoardItemObject*>* items
+}
+
+class "digitalt_application::Layouts::BaseBottomAppBar.dart::BaseBottomAppBar" {
+  +AppBar* appBar
+  +_BaseBottomAppBarState* createState()
+}
+
+"digitalt_application::Layouts::BaseBottomAppBar.dart::BaseBottomAppBar" o-- "flutter::src::material::app_bar.dart::AppBar*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Layouts::BaseBottomAppBar.dart::BaseBottomAppBar"
+
+class "digitalt_application::Layouts::BaseBottomAppBar.dart::_BaseBottomAppBarState" {
+  +Size* preferredSize
+  -List<Widget*>* _buildScreens()
+  +void onTabTapped()
+  +Widget* build()
+}
+
+"digitalt_application::Layouts::BaseBottomAppBar.dart::_BaseBottomAppBarState" o-- "dart::ui::Size*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Layouts::BaseBottomAppBar.dart::_BaseBottomAppBarState"
+
+class "digitalt_application::Layouts::BaseCaseBox.dart::BaseCaseBox" {
+  +String* image
+  +String* title
+  +_BaseCaseBoxState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Layouts::BaseCaseBox.dart::BaseCaseBox"
+
+class "digitalt_application::Layouts::BaseCaseBox.dart::_BaseCaseBoxState" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Layouts::BaseCaseBox.dart::_BaseCaseBoxState"
+
+class "digitalt_application::Layouts::BoardItemObject.dart::BoardItemObject" {
+  +String* title
+}
+
+class "digitalt_application::AdminPages::AdminPage.dart::AdminPage" {
+  +_AdminPageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::AdminPage.dart::AdminPage"
+
+class "digitalt_application::AdminPages::AdminPage.dart::_AdminPageState" {
+  -DatabaseService* _db
+  -TextEditingController* _editArticle
+  -List<dynamic>* _allCases
+  -List<dynamic>* _popularList
+  -List<dynamic>* _newList
+  -List<String*>* _allCaseList
+  -GlobalKey<FormState*>* _formKey
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _createStringList()
+  -dynamic _updateSingleCase()
+  +Widget* build()
+}
+
+"digitalt_application::AdminPages::AdminPage.dart::_AdminPageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::AdminPages::AdminPage.dart::_AdminPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::AdminPages::AdminPage.dart::_AdminPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::AdminPage.dart::_AdminPageState"
+
+class "digitalt_application::AdminPages::UpdateInfoPage.dart::UpdateInfoPage" {
+  +_UpdateInfoPageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::UpdateInfoPage.dart::UpdateInfoPage"
+
+class "digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" {
+  -DatabaseService* _db
+  -GlobalKey<FormState*>* _formKey
+  -String* _contactUrl
+  -String* _textUrl
+  -String* _backgroundUrl
+  -TextEditingController* _email
+  -TextEditingController* _tlf
+  -String* _date
+  {static} -List<dynamic>* _textList
+  {static} -List<dynamic>* _authorList
+  -Text* _saveImageText
+  -Image* _contactPhoto
+  -Image* _textPhoto
+  -Image* _backgroundPhoto
+  -MediaInfo* _contactPhotoInfo
+  -MediaInfo* _textPhotoInfo
+  -MediaInfo* _backgroundPhotoInfo
+  +DateTime* selectedDate
+  +void initState()
+  -Future<dynamic>* _fetchCaseItem()
+  -bool* _updateInfoData()
+  -Future<dynamic>* _savePhotoState()
+  -Future<void>* _getContactImage()
+  -Future<void>* _getTextImage()
+  -Future<void>* _getBackgroundImage()
+  +void dispose()
+  +Widget* build()
+  -Widget* _showAlertPublishDialog()
+  -Future<void>* _selectDate()
+  -List<Widget*>* _getParagraphs()
+  -List<Widget*>* _getAuthors()
+  -Widget* _showAlertDialog()
+  -Widget* _addRemoveButton()
+}
+
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "flutter::src::widgets::text.dart::Text*"
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "flutter::src::widgets::image.dart::Image*"
+"digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState" o-- "image_picker_web::src::Models::Types.dart::MediaInfo*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::UpdateInfoPage.dart::_UpdateInfoPageState"
+
+class "digitalt_application::AdminPages::UpdatePopularLists.dart::UpdatePopularLists" {
+  +_UpdatePopularListsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::UpdatePopularLists.dart::UpdatePopularLists"
+
+class "digitalt_application::AdminPages::UpdatePopularLists.dart::_UpdatePopularListsState" {
+  -List<BoardList*>* _lists
+  -BoardListObject* _popularBoardList
+  -BoardListObject* _allBoardList
+  -List<BoardListObject*>* _listData
+  -BoardViewController* _boardViewController
+  -DatabaseService* _db
+  -List<dynamic>* _allCases
+  -List<dynamic>* _popularCases
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _createListData()
+  -dynamic _fromMapToBoardList()
+  -Future<bool*>* _updatePopularCaseList()
+  -Future<bool*>* _createNewPopularCaseList()
+  +Widget* build()
+  -Widget* _createBoardList()
+  -Widget* _buildBoardItem()
+  -Widget* _showAlertPublishDialog()
+}
+
+"digitalt_application::AdminPages::UpdatePopularLists.dart::_UpdatePopularListsState" o-- "digitalt_application::Layouts::BoardListObject.dart::BoardListObject*"
+"digitalt_application::AdminPages::UpdatePopularLists.dart::_UpdatePopularListsState" o-- "boardview::boardview_controller.dart::BoardViewController*"
+"digitalt_application::AdminPages::UpdatePopularLists.dart::_UpdatePopularListsState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::UpdatePopularLists.dart::_UpdatePopularListsState"
+
+class "digitalt_application::AdminPages::UpdateCasePage.dart::UpdateCasePage" {
+  +List<dynamic>* popularList
+  +List<dynamic>* newList
+  +String* caseTitle
+  +String* caseImageUrl
+  +String* caseIntroduction
+  +String* caseId
+  +List<dynamic>* caseText
+  +List<dynamic>* caseAuthorList
+  +String* caseDate
+  +_UpdateCasePageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::UpdateCasePage.dart::UpdateCasePage"
+
+class "digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" {
+  -DatabaseService* _db
+  -GlobalKey<FormState*>* _formKey
+  -String* _id
+  -String* _imageUrl
+  -TextEditingController* _title
+  -TextEditingController* _introduction
+  -String* _date
+  {static} -List<dynamic>* _descriptionList
+  {static} -List<dynamic>* _authorList
+  -String* _popularCaseId
+  -String* _newCaseId
+  -Image* _imageWidget
+  -MediaInfo* _mediaInfo
+  +DateTime* selectedDate
+  +void initState()
+  -dynamic _isCaseInOtherLists()
+  -Future<dynamic>* _setCaseItem()
+  -bool* _updateCaseItem()
+  -bool* _updateCaseByFolder()
+  -Future<void>* _getImage()
+  +void dispose()
+  +Widget* build()
+  -Future<void>* _selectDate()
+  -List<Widget*>* _getParagraphs()
+  -Widget* _showAlertPublishDialog()
+  -List<Widget*>* _getAuthors()
+  -Widget* _showAlertDialog()
+  -Widget* _addRemoveButton()
+}
+
+"digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" o-- "flutter::src::widgets::image.dart::Image*"
+"digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState" o-- "image_picker_web::src::Models::Types.dart::MediaInfo*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::UpdateCasePage.dart::_UpdateCasePageState"
+
+class "digitalt_application::AdminPages::UpdateAllCaseLists.dart::UpdateAllCaseLists" {
+  +_UpdateAllCaseListsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::UpdateAllCaseLists.dart::UpdateAllCaseLists"
+
+class "digitalt_application::AdminPages::UpdateAllCaseLists.dart::_UpdateAllCaseListsState" {
+  -List<BoardList*>* _lists
+  -BoardListObject* _allBoardList
+  -List<BoardListObject*>* _listData
+  -BoardViewController* _boardViewController
+  -DatabaseService* _db
+  -List<dynamic>* _allCases
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _createListData()
+  -dynamic _fromMapToBoardList()
+  -Future<bool*>* _updatePopularCaseList()
+  -Future<bool*>* _createNewPopularCaseList()
+  +Widget* build()
+  -Widget* _createBoardList()
+  -Widget* _buildBoardItem()
+  -Widget* _showAlertPublishDialog()
+}
+
+"digitalt_application::AdminPages::UpdateAllCaseLists.dart::_UpdateAllCaseListsState" o-- "digitalt_application::Layouts::BoardListObject.dart::BoardListObject*"
+"digitalt_application::AdminPages::UpdateAllCaseLists.dart::_UpdateAllCaseListsState" o-- "boardview::boardview_controller.dart::BoardViewController*"
+"digitalt_application::AdminPages::UpdateAllCaseLists.dart::_UpdateAllCaseListsState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::UpdateAllCaseLists.dart::_UpdateAllCaseListsState"
+
+class "digitalt_application::AdminPages::UpdateNewLists.dart::UpdateNewLists" {
+  +_UpdateNewListsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::UpdateNewLists.dart::UpdateNewLists"
+
+class "digitalt_application::AdminPages::UpdateNewLists.dart::_UpdateNewListsState" {
+  -List<BoardList*>* _lists
+  -BoardListObject* _popularBoardList
+  -BoardListObject* _allBoardList
+  -List<BoardListObject*>* _listData
+  -BoardViewController* _boardViewController
+  -DatabaseService* _db
+  -List<dynamic>* _allCases
+  -List<dynamic>* _newCases
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _createListData()
+  -dynamic _fromMapToBoardList()
+  -Future<bool*>* _updatePopularCaseList()
+  -Future<bool*>* _createNewPopularCaseList()
+  +Widget* build()
+  -Widget* _createBoardList()
+  -Widget* _buildBoardItem()
+  -Widget* _showAlertPublishDialog()
+}
+
+"digitalt_application::AdminPages::UpdateNewLists.dart::_UpdateNewListsState" o-- "digitalt_application::Layouts::BoardListObject.dart::BoardListObject*"
+"digitalt_application::AdminPages::UpdateNewLists.dart::_UpdateNewListsState" o-- "boardview::boardview_controller.dart::BoardViewController*"
+"digitalt_application::AdminPages::UpdateNewLists.dart::_UpdateNewListsState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::UpdateNewLists.dart::_UpdateNewListsState"
+
+class "digitalt_application::AdminPages::AddCasePage.dart::MyForm" {
+  +_MyFormState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::AddCasePage.dart::MyForm"
+
+class "digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" {
+  -DatabaseService* _db
+  -GlobalKey<FormState*>* _formKey
+  -TextEditingController* _title
+  -TextEditingController* _introduction
+  -TextEditingController* _textController
+  {static} -List<dynamic>* _authorList
+  -Image* _imageWidget
+  -MediaInfo* _mediaInfo
+  -bool* _addToNewCase
+  -bool* _addToPopularCase
+  -bool* _addCaseItem()
+  -Future<void>* _getImage()
+  +void dispose()
+  +Widget* build()
+  -String* _getDate()
+  -List<Widget*>* _getAuthors()
+  -Widget* _showAlertDialog()
+  -Widget* _showAlertPublishDialog()
+  -Widget* _addRemoveButton()
+}
+
+"digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" o-- "flutter::src::widgets::image.dart::Image*"
+"digitalt_application::AdminPages::AddCasePage.dart::_MyFormState" o-- "image_picker_web::src::Models::Types.dart::MediaInfo*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::AddCasePage.dart::_MyFormState"
+
+class "digitalt_application::AdminPages::EditLockedCases.dart::EditLockedCases" {
+  +_EditLockedCasesState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::AdminPages::EditLockedCases.dart::EditLockedCases"
+
+class "digitalt_application::AdminPages::EditLockedCases.dart::_EditLockedCasesState" {
+  -List<BoardList*>* _lists
+  -BoardListObject* _allBoardList
+  -BoardListObject* _guestBoardList
+  -List<BoardListObject*>* _listData
+  -BoardViewController* _boardViewController
+  -DatabaseService* _db
+  -List<dynamic>* _allCases
+  -List<String*>* _guestList
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _getGuestList()
+  -dynamic _createListData()
+  -dynamic _fromMapToBoardList()
+  -Future<bool*>* _updateGuestList()
+  -Future<bool*>* _createNewGuestList()
+  +Widget* build()
+  -Widget* _createBoardList()
+  -Widget* _buildBoardItem()
+  -Widget* _showAlertPublishDialog()
+}
+
+"digitalt_application::AdminPages::EditLockedCases.dart::_EditLockedCasesState" o-- "digitalt_application::Layouts::BoardListObject.dart::BoardListObject*"
+"digitalt_application::AdminPages::EditLockedCases.dart::_EditLockedCasesState" o-- "boardview::boardview_controller.dart::BoardViewController*"
+"digitalt_application::AdminPages::EditLockedCases.dart::_EditLockedCasesState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::AdminPages::EditLockedCases.dart::_EditLockedCasesState"
+
+class "digitalt_application::Pages::HomePage.dart::HomePage" {
+  +HomePageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::HomePage.dart::HomePage"
+
+class "digitalt_application::Pages::HomePage.dart::HomePageState" {
+  -AuthService* _auth
+  -DatabaseService* _db
+  -List<dynamic>* _newCases
+  -List<dynamic>* _allCases
+  -List<dynamic>* _popularCases
+  -String* _currentUserRole
+  -List<String*>* _guestList
+  -List<String*>* _allCaseList
+  -List<String*>* _searchCaseList
+  -GlobalKey<FormState*>* _formKey
+  +void initState()
+  -dynamic _getUserRole()
+  -dynamic _createStringList()
+  -dynamic _goToSingleCase()
+  -dynamic _getGuestList()
+  -dynamic _setSearchBarList()
+  -dynamic _fetchDataBaseList()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::HomePage.dart::HomePageState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::HomePage.dart::HomePageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::Pages::HomePage.dart::HomePageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::HomePage.dart::HomePageState"
+
+class "digitalt_application::Pages::SettingsPage.dart::SettingsPage" {
+  +_SettingsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::SettingsPage.dart::SettingsPage"
+
+class "digitalt_application::Pages::SettingsPage.dart::_SettingsState" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::SettingsPage.dart::_SettingsState"
+
+class "digitalt_application::Pages::MyArticles.dart::MyArticles" {
+  +_MyArticlesState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::MyArticles.dart::MyArticles"
+
+class "digitalt_application::Pages::MyArticles.dart::_MyArticlesState" {
+  -AuthService* _auth
+  -DatabaseService* _db
+  -BaseUser* _currentUser
+  -List<dynamic>* _allCases
+  -List<dynamic>* _myCases
+  -List<dynamic>* _userMyCases
+  +void initState()
+  -dynamic _fetchDataBaseList()
+  -dynamic _signOut()
+  -dynamic _createMyCaseList()
+  -dynamic _setBaseUser()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::MyArticles.dart::_MyArticlesState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::MyArticles.dart::_MyArticlesState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::Pages::MyArticles.dart::_MyArticlesState" o-- "digitalt_application::models::user.dart::BaseUser*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::MyArticles.dart::_MyArticlesState"
+
+class "digitalt_application::Pages::SingleCasePage.dart::CasePage" {
+  +bool* searchBar
+  +String* image
+  +String* title
+  +List<dynamic>* author
+  +String* publishedDate
+  +String* lastEdited
+  +String* introduction
+  +List<dynamic>* text
+  +_CasePageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::SingleCasePage.dart::CasePage"
+
+class "digitalt_application::Pages::SingleCasePage.dart::_CasePageState" {
+  -DatabaseService* _db
+  -AuthService* _auth
+  -BaseUser* _currentUser
+  -Text* _lastEditedText
+  +bool* isArticleSaved
+  -dynamic _setBaseUser()
+  -dynamic _changeMyCasesList()
+  -bool* _updateMyCasesList()
+  +void initState()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::SingleCasePage.dart::_CasePageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::Pages::SingleCasePage.dart::_CasePageState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::SingleCasePage.dart::_CasePageState" o-- "digitalt_application::models::user.dart::BaseUser*"
+"digitalt_application::Pages::SingleCasePage.dart::_CasePageState" o-- "flutter::src::widgets::text.dart::Text*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::SingleCasePage.dart::_CasePageState"
+
+class "digitalt_application::Pages::EditProfilePage.dart::EditProfilePage" {
+  +String* name
+  +String* email
+  +String* uid
+  +String* phonenumber
+  +_EditProfilePageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::EditProfilePage.dart::EditProfilePage"
+
+class "digitalt_application::Pages::EditProfilePage.dart::_EditProfilePageState" {
+  -DatabaseService* _db
+  -GlobalKey<FormState*>* _formKey
+  -String* _id
+  -TextEditingController* _fullname
+  -TextEditingController* _emailAdress
+  -TextEditingController* _number
+  +void initState()
+  -Future<dynamic>* _setProfileDetails()
+  -bool* _changeProfileData()
+  +void dispose()
+  +Widget* build()
+  -Widget* _showAlertPublishDialog()
+}
+
+"digitalt_application::Pages::EditProfilePage.dart::_EditProfilePageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"digitalt_application::Pages::EditProfilePage.dart::_EditProfilePageState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"digitalt_application::Pages::EditProfilePage.dart::_EditProfilePageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::EditProfilePage.dart::_EditProfilePageState"
+
+class "digitalt_application::Pages::InfoPage.dart::InfoPage" {
+  +List<dynamic>* infoList
+  +List<dynamic>* text
+  +List<dynamic>* author
+  +String* contactPhoto
+  +String* date
+  +String* email
+  +String* textPhoto
+  +String* tlf
+  +String* backgroundPhoto
+  +_InfoPageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::InfoPage.dart::InfoPage"
+
+class "digitalt_application::Pages::InfoPage.dart::_InfoPageState" {
+  +DatabaseService* db
+  +void initState()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::InfoPage.dart::_InfoPageState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::InfoPage.dart::_InfoPageState"
+
+class "digitalt_application::Pages::ProfilePage.dart::ProfilePage" {
+  +_ProfilePageState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::ProfilePage.dart::ProfilePage"
+
+class "digitalt_application::Pages::ProfilePage.dart::_ProfilePageState" {
+  -AuthService* _auth
+  -BaseUser* _currentUser
+  +void initState()
+  -dynamic _setBaseUser()
+  -dynamic _signOut()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::ProfilePage.dart::_ProfilePageState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::ProfilePage.dart::_ProfilePageState" o-- "digitalt_application::models::user.dart::BaseUser*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::ProfilePage.dart::_ProfilePageState"
+
+class "digitalt_application::Pages::SubscriptionPage.dart::SubscriptionPage" {
+  -BaseUser* _currentUser
+  +_SubscriptionPageState* createState()
+}
+
+"digitalt_application::Pages::SubscriptionPage.dart::SubscriptionPage" o-- "digitalt_application::models::user.dart::BaseUser*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::SubscriptionPage.dart::SubscriptionPage"
+
+class "digitalt_application::Pages::SubscriptionPage.dart::_SubscriptionPageState" {
+  -AuthService* _auth
+  -VippsApi* _vippsApi
+  -bool* _isAppInstalled
+  +void initState()
+  -dynamic _appInstalled()
+  -dynamic _getAccessToken()
+  -dynamic _signOut()
+  -dynamic _initiateVipps()
+  -dynamic _webLaunch()
+  -dynamic _capturePayment()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::SubscriptionPage.dart::_SubscriptionPageState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::SubscriptionPage.dart::_SubscriptionPageState" o-- "digitalt_application::Services::VippsApi.dart::VippsApi*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::SubscriptionPage.dart::_SubscriptionPageState"
+
+class "digitalt_application::Pages::DisplayVippsOrder.dart::DisplayVippsOrder" {
+  +dynamic jsonDetailString
+  +String* uid
+  +_DisplayVippsOrderState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "digitalt_application::Pages::DisplayVippsOrder.dart::DisplayVippsOrder"
+
+class "digitalt_application::Pages::DisplayVippsOrder.dart::_DisplayVippsOrderState" {
+  -AuthService* _auth
+  -DatabaseService* _databaseService
+  -String* _amount
+  -String* _transactionId
+  +void initState()
+  -dynamic _setOrderDetails()
+  -dynamic _signOut()
+  +Widget* build()
+}
+
+"digitalt_application::Pages::DisplayVippsOrder.dart::_DisplayVippsOrderState" o-- "digitalt_application::Services::auth.dart::AuthService*"
+"digitalt_application::Pages::DisplayVippsOrder.dart::_DisplayVippsOrderState" o-- "digitalt_application::Services::DataBaseService.dart::DatabaseService*"
+"flutter::src::widgets::framework.dart::State" <|-- "digitalt_application::Pages::DisplayVippsOrder.dart::_DisplayVippsOrderState"
+
+class "digitalt_application::Services::VippsApi.dart::VippsApi" {
+  {static} -String* _base_url
+  {static} -String* _client_id
+  {static} -String* _client_secret
+  {static} -String* _merchantSerialNumber
+  {static} -String* _sub_key
+  -String* _accessToken
+  -String* _orderId
+  +Future<String*>* getAccessToken()
+  +Future<String*>* initiatePayment()
+  +Future<dynamic>* getPaymentDetails()
+  +Future<dynamic>* capturePayment()
+  +Future<dynamic>* cancelPayment()
+  +Future<dynamic>* getOrderStatus()
+  +Future<dynamic>* refundPayment()
+}
+
+class "digitalt_application::Services::auth.dart::AuthService" {
+  -FirebaseAuth* _auth
+  -FirestoreService* _firestoreService
+  -BaseUser* _currentUser
+  +BaseUser* currentUser
+  +Stream<BaseUser*>* user
+  -BaseUser* _userFromFirebaseUser()
+  +dynamic isUserAnonymous()
+  +dynamic getUserUid()
+  +Future<String*>* getUserRole()
+  +Future<BaseUser*>* getFirebaseUser()
+  +Future<dynamic>* signInAnon()
+  +Future<dynamic>* signInWithEmailAndPassword()
+  +Future<dynamic>* signUpWithEmail()
+  +Future<bool*>* isUserLoggedIn()
+  -Future<bool*>* _populateCurrentUser()
+  +Future<dynamic>* signOut()
+}
+
+"digitalt_application::Services::auth.dart::AuthService" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth*"
+"digitalt_application::Services::auth.dart::AuthService" o-- "digitalt_application::Services::firestoreService.dart::FirestoreService*"
+"digitalt_application::Services::auth.dart::AuthService" o-- "digitalt_application::models::user.dart::BaseUser*"
+"digitalt_application::Services::auth.dart::AuthService" o-- "dart::async::Stream<BaseUser*>*"
+
+class "digitalt_application::Services::firestoreService.dart::FirestoreService" {
+  -CollectionReference* _usersCollectionReference
+  +Future<dynamic>* createUser()
+  +Future<BaseUser*>* getUser()
+}
+
+"digitalt_application::Services::firestoreService.dart::FirestoreService" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference*"
+
+class "digitalt_application::Services::dialogService.dart::DialogService" {
+  -GlobalKey<NavigatorState*>* _dialogNavigationKey
+  -dynamic Function(DialogRequest*)* _showDialogListener
+  -Completer<DialogResponse*>* _dialogCompleter
+  +GlobalKey<NavigatorState*>* dialogNavigationKey
+  +void registerDialogListener()
+  +Future<DialogResponse*>* showDialog()
+  +Future<DialogResponse*>* showConfirmationDialog()
+  +void dialogComplete()
+}
+
+"digitalt_application::Services::dialogService.dart::DialogService" o-- "flutter::src::widgets::framework.dart::GlobalKey<NavigatorState*>*"
+"digitalt_application::Services::dialogService.dart::DialogService" o-- "null::dynamic Function(DialogRequest*)*"
+"digitalt_application::Services::dialogService.dart::DialogService" o-- "dart::async::Completer<DialogResponse*>*"
+
+class "digitalt_application::Services::DataBaseService.dart::DatabaseService" {
+  +String* uid
+  -CollectionReference* _userCollection
+  +Future<dynamic>* updateUserData()
+  +Future<dynamic>* updateMyCasesData()
+  +Future<dynamic>* updateCaseItemData()
+  +Future<dynamic>* addCaseItem()
+  +Future<dynamic>* getCaseItems()
+  +Future<dynamic>* updateInfoPageContent()
+  +Future<dynamic>* getInfoPageContent()
+  +Future<dynamic>* updateCaseByFolder()
+  +Future<dynamic>* updateCaseItemByFolder()
+  +Future<dynamic>* updateFolder()
+  +Future<dynamic>* updateGuestList()
+  +Future<dynamic>* getGuestListContent()
+  +Future<Uri*>* uploadFile()
+  +Future<String*>* downloadUrl()
+  +Future<dynamic>* updateSubscriptionData()
+}
+
+"digitalt_application::Services::DataBaseService.dart::DatabaseService" o-- "cloud_firestore::cloud_firestore.dart::CollectionReference*"
+
+
+@enduml
