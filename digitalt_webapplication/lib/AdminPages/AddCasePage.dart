@@ -242,10 +242,18 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
-                    FloatingActionButton(
-                      heroTag: 'filebutton',
-                      onPressed: getFile,
-                      child: Icon(Icons.file_upload),
+                    Row(
+                      children: [
+                        FloatingActionButton(
+                          heroTag: 'filebutton',
+                          onPressed: getFile,
+                          child: Icon(Icons.file_upload),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text('Last opp tekst fil av typen (.txt)')
+                      ],
                     ),
                     SizedBox(
                       height: 20,
