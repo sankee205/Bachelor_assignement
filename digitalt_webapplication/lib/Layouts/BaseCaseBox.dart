@@ -7,10 +7,15 @@ import 'package:provider/provider.dart';
 ///before entering the whole case
 class BaseCaseBox extends StatefulWidget {
   //takes in the object caseITem and builds the box from image and title
+  final bool guestCaseItem;
   final String image;
   final String title;
 
-  const BaseCaseBox({Key key, @required this.image, @required this.title})
+  const BaseCaseBox(
+      {Key key,
+      @required this.image,
+      @required this.title,
+      @required this.guestCaseItem})
       : super(key: key);
 
   @override
@@ -23,7 +28,6 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) => GridTile(
         footer: Container(
-          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
           decoration:
               BoxDecoration(borderRadius: BorderRadius.circular(0), boxShadow: [
             BoxShadow(
@@ -31,8 +35,7 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
                     ? Colors.grey.shade200
                     : Colors.grey.shade900,
                 blurRadius: 0,
-                offset: Offset(0, 3),
-                spreadRadius: 5)
+                spreadRadius: 1)
           ]),
           //here comes the Text of the CaseBox
           child: ListTile(
@@ -45,6 +48,22 @@ class _BaseCaseBoxState extends State<BaseCaseBox> {
             ),
           ),
         ),
+        header: widget.guestCaseItem
+            ? SizedBox()
+            : Row(
+                children: [
+                  Container(
+                    color: Colors.red,
+                    width: 40,
+                    alignment: Alignment.centerRight,
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                  ),
+                ],
+              ),
         //this is the Image of the CaseBox
         child: Container(
           decoration: BoxDecoration(

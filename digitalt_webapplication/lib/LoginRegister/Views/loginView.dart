@@ -7,7 +7,6 @@ import 'package:digitalt_application/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
-import 'package:digitalt_application/Pages/VippsLoginPage.dart';
 
 class LoginView extends StatefulWidget {
   final Function toggleView;
@@ -121,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                           textColor: Colors.white,
                         ),
                         SizedBox(height: 20),
-                        MaterialButton(
+                        /*MaterialButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -131,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                             child: Image.asset(
                               'vipps/login_image.png',
                               width: 200,
-                            )),
+                            )),*/
                         verticalSpaceSmall,
                         MaterialButton(
                           child: Text('Fortsett som gjest'),

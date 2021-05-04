@@ -31,13 +31,15 @@ dependencies:
   carousel_slider: ^3.0.0
   flutter_staggered_grid_view: ^0.3.4
   responsive_grid: ^1.2.1+1
-  #image_form_field: ^0.1.0
   image_picker_web: any
   syncfusion_flutter_pdf: ^18.4.48-beta
   file_picker: ^3.0.0
   easy_rich_text: ^0.5.4
   mime_type: ^1.0.0
   universal_html: ^2.0.4
+  universal_io: ^2.0.4
+  dcdg: ^3.0.0
+
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^7.1.1
@@ -48,15 +50,16 @@ dependencies:
   cloud_firestore: ^1.0.1
   firebase_core: ^1.0.1
   firebase_storage: ^8.0.0
-  http: ^0.13.0
+  http: ^0.13.1
   boardview: ^0.2.0
-
+  searchfield: ^0.5.1
   google_sign_in: ^5.0.0
   font_awesome_flutter: ^8.11.0
   google_fonts: ^2.0.0
   provider: ^5.0.0
   stacked: ^2.0.0
-  searchfield: ^0.5.1
+  url_launcher: ^6.0.3
+
 
   shared_preferences: ^2.0.5
 

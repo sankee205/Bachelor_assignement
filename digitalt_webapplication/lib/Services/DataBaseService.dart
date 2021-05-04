@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:digitalt_application/models/subscription.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
@@ -27,6 +28,14 @@ class DatabaseService {
 
   Future updateMyCasesData(String id, List myCases) async {
     return await _userCollection.doc(id).update({'myCases': myCases});
+  }
+
+  Future setUserRole(String id, String role) async {
+    if (role != 'Admin') {
+      return await _userCollection.doc(id).update({'userRole': role});
+    } else {
+      return null;
+    }
   }
 
   //------------------case item methods-----------------------------------------
@@ -237,5 +246,12 @@ class DatabaseService {
         .ref('images')
         .child(fileName)
         .getDownloadURL();
+  }
+
+  //------------------------------Subscription Methods--------------------------
+  Future updateSubscriptionData(String id, Subscription mySubscription) async {
+    return await _userCollection.doc(id).update({
+      'mySubscription': mySubscription.toJson(),
+    });
   }
 }

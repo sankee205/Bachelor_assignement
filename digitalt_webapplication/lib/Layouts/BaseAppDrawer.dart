@@ -3,11 +3,10 @@ import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
+import 'package:digitalt_application/Pages/SubscriptionPage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
-import 'package:digitalt_application/Services/firestoreService.dart';
 import 'package:digitalt_application/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,20 +38,27 @@ String _backgroundPhoto = '';
 
 class _BaseAppDrawerState extends State<BaseAppDrawer> {
   String _currentUserRole = 'User';
+  BaseUser _currentUser;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _getInfo();
-    _getUserRole();
+    _setBaseUser();
   }
 
-  _getUserRole() async {
-    dynamic firebaseUserRole = await _auth.getUserRole();
-    if (firebaseUserRole != null) {
-      setState(() {
-        _currentUserRole = firebaseUserRole;
-      });
+  _setBaseUser() async {
+    if (!_auth.isUserAnonymous()) {
+      var user = await _auth.getFirebaseUser();
+      if (user != null) {
+        setState(() {
+          _currentUser = user;
+          _currentUserRole = user.userRole;
+        });
+      } else {
+        print('Base user is null');
+      }
     }
   }
 
@@ -136,6 +142,19 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   MaterialPageRoute(builder: (context) => SettingsPage()));
             },
           ),
+          _auth.isUserAnonymous()
+              ? SizedBox()
+              : ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Abonnement'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SubscriptionPage(_currentUser)));
+                  },
+                ),
           _currentUserRole == 'Admin'
               ? ListTile(
                   leading: Icon(Icons.admin_panel_settings),
