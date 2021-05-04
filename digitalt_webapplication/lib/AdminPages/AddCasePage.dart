@@ -2,6 +2,7 @@ import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
+import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:intl/intl.dart';
 
 import 'package:universal_html/html.dart' as html;
@@ -241,6 +242,14 @@ class _MyFormState extends State<MyForm> {
                     SizedBox(
                       height: 40,
                     ),
+                    FloatingActionButton(
+                      heroTag: 'filebutton',
+                      onPressed: getFile,
+                      child: Icon(Icons.file_upload),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       'Description',
                       style:
@@ -307,6 +316,9 @@ class _MyFormState extends State<MyForm> {
                         child: Text('Submit'),
                         color: Colors.green,
                       ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                   ],
                 ),
@@ -454,5 +466,15 @@ class _MyFormState extends State<MyForm> {
         ),
       ),
     );
+  }
+
+  Future getFile() async {
+    FilePickerCross myFile = await FilePickerCross.importFromStorage(
+        type: FileTypeCross
+            .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
+        fileExtension:
+            'txt, md' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
+        );
+    _textController.text = myFile.toString();
   }
 }
