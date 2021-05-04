@@ -103,7 +103,8 @@ class AuthService {
               orderId: '',
               status: 'nonActive',
               timeStamp: '',
-              transactionText: ''));
+              transactionText: '',
+              expiredDate: ''));
 
       await _firestoreService.createUser(_currentUser);
 

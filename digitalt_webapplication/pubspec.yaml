@@ -33,12 +33,14 @@ dependencies:
   responsive_grid: ^1.2.1+1
   image_picker_web: any
   syncfusion_flutter_pdf: ^18.4.48-beta
-  file_picker: ^3.0.0
+  file_picker_cross: ^4.3.2
   easy_rich_text: ^0.5.4
   mime_type: ^1.0.0
   universal_html: ^2.0.4
   universal_io: ^2.0.4
   dcdg: ^3.0.0
+  jiffy: ^4.1.0
+
 
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
