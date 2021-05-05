@@ -16,6 +16,7 @@ class VippsApi {
   String _orderId;
 
   Future<String> getAccessToken() async {
+    http.ClientException responseError;
     http.Response response = await http.post(
       Uri.https(_base_url, "accessToken/get"),
       headers: <String, String>{
@@ -24,18 +25,25 @@ class VippsApi {
         "client_secret": _client_secret,
         "Ocp-Apim-Subscription-Key": _sub_key,
       },
-    );
-    final body = json.decode(response.body);
-    switch (response.statusCode) {
-      case 200:
-        {
-          final String token = body['access_token'];
-          _accessToken = token;
-          return token;
-        }
-        break;
+    ).onError((error, stackTrace) {
+      responseError = error;
+      return null;
+    });
+    if (response == null) {
+      return responseError.message;
+    } else {
+      final body = json.decode(response.body);
+      switch (response.statusCode) {
+        case 200:
+          {
+            final String token = body['access_token'];
+            _accessToken = token;
+            return token;
+          }
+          break;
+      }
+      return null;
     }
-    return null;
   }
 
   Future<String> initiatePayment(

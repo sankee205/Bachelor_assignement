@@ -30,6 +30,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   String _month = '';
   String _year = '';
+  String error = '';
 
   @override
   void initState() {
@@ -54,8 +55,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   _getAccessToken() async {
     var token = await _vippsApi.getAccessToken();
-    if (token != null) {
-      print('_accesstoken recieved');
+    if (token.contains('error')) {
+      setState(() {
+        error = token;
+      });
     }
   }
 
@@ -374,6 +377,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                   ),
                                 ],
                               ),
+                              Text(
+                                error,
+                                style: TextStyle(color: Colors.red),
+                              )
                             ],
                           )
                         : Column(
