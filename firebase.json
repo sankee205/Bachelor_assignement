@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "site": "digitaltweb",
-    "public": "digitalt_webapplication/build",
+    "site": "digi-talt",
+    "public": "digitalt_webapplication/build/web",
     "ignore": [
       "firebase.json",
       "**/.*",
