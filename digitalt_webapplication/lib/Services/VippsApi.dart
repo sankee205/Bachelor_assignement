@@ -16,20 +16,28 @@ class VippsApi {
   String _orderId;
 
   Future<String> getAccessToken() async {
+    StackTrace stacktraceError;
     http.ClientException responseError;
     http.Response response = await http.post(
       Uri.https(_base_url, "accessToken/get"),
       headers: <String, String>{
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         "client_id": _client_id,
         "client_secret": _client_secret,
         "Ocp-Apim-Subscription-Key": _sub_key,
       },
     ).onError((error, stackTrace) {
+      stacktraceError = stackTrace;
       responseError = error;
       return null;
     });
     if (response == null) {
+      print(responseError.message);
+      print(responseError.uri);
+      print('');
+      print(stacktraceError.toString());
+
       return responseError.message;
     } else {
       final body = json.decode(response.body);
