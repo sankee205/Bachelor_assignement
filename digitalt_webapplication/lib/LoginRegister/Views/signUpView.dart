@@ -1,14 +1,17 @@
 import 'package:digitalt_application/LoginRegister/Model/signUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 
+import '../locator.dart';
 import '../uiHelpers.dart';
 import '../Widgets/busyButton.dart';
-import '../Widgets/expansionList.dart';
 import '../Widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class SignUpView extends StatelessWidget {
+  final NavigationService _navigationService = locator<NavigationService>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final fullNameController = TextEditingController();
@@ -29,8 +32,7 @@ class SignUpView extends StatelessWidget {
               MaterialButton(
                   child: Text('Logg inn'),
                   onPressed: () {
-                    Navigator.pop(context,
-                        MaterialPageRoute(builder: (context) => LoginView()));
+                    _navigationService.navigateTo(LoginViewRoute);
                   }),
             ],
           ),

@@ -2,6 +2,9 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/EditProfilePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
@@ -16,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final AuthService _auth = AuthService();
+  final NavigationService _navigationService = locator<NavigationService>();
   BaseUser _currentUser;
 
   @override
@@ -101,10 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ElevatedButton(
                               onPressed: () {
                                 _signOut();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginView()));
+                                _navigationService.navigateTo(LoginViewRoute);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

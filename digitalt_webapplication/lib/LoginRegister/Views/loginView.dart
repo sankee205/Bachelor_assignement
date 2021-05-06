@@ -1,5 +1,7 @@
 import 'package:digitalt_application/LoginRegister/Model/loginViewModel.dart';
 import 'package:digitalt_application/LoginRegister/Views/signUpView.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/LoginRegister/uiHelpers.dart';
 import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
@@ -7,6 +9,8 @@ import 'package:digitalt_application/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stacked/stacked.dart';
+
+import '../locator.dart';
 
 class LoginView extends StatefulWidget {
   final Function toggleView;
@@ -17,8 +21,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  @override
-  final emailController = TextEditingController();
+  final NavigationService _navigationService = locator<NavigationService>();
   final passwordController = TextEditingController();
   final Color logoGreen = Color(0xff25bcbb);
 
@@ -41,10 +44,7 @@ class _LoginViewState extends State<LoginView> {
                 MaterialButton(
                     child: Text('Registrer deg'),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpView()));
+                      _navigationService.navigateTo(SignUpViewRoute);
                     }),
               ],
             ),
@@ -144,10 +144,7 @@ class _LoginViewState extends State<LoginView> {
                                   print('error signing in');
                                 } else {
                                   print('signed in');
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage()));
+                                  _navigationService.navigateTo(HomePageRoute);
                                 }
                               },
                             ),

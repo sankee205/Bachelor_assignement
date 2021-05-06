@@ -3,6 +3,9 @@ import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Services/auth.dart';
@@ -19,6 +22,7 @@ class MyArticles extends StatefulWidget {
 
 class _MyArticlesState extends State<MyArticles> {
   final AuthService _auth = AuthService();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   final DatabaseService _db = DatabaseService();
   BaseUser _currentUser = BaseUser();
@@ -133,10 +137,7 @@ class _MyArticlesState extends State<MyArticles> {
                             ElevatedButton(
                               onPressed: () {
                                 _signOut();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginView()));
+                                _navigationService.navigateTo(LoginViewRoute);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
