@@ -1,6 +1,9 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:digitalt_application/Pages/SubscriptionPage.dart';
@@ -24,7 +27,7 @@ class BaseAppDrawer extends StatefulWidget {
 }
 
 final AuthService _auth = AuthService();
-
+final NavigationService _navigationService = locator<NavigationService>();
 final DatabaseService _db = DatabaseService();
 List _infoList = [];
 List _text = [];
@@ -171,8 +174,9 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   title: Text('Logg inn'),
                   onTap: () {
                     _signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginView()));
+                    _navigationService.navigateTo(LoginViewRoute);
+                    /*Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginView()));*/
                   },
                 )
               : ListTile(
