@@ -171,14 +171,22 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         ? Column(
                             children: [
                               SizedBox(
-                                height: 10,
+                                height: 20,
                               ),
-                              Text(
-                                'Abonnement',
-                                style: TextStyle(fontSize: 30),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Velg Abonnement Og Betal Med ',
+                                      style: TextStyle(fontSize: 30),
+                                    ),
+                                    Image.asset('vipps/vippsLogo.png')
+                                  ],
+                                ),
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 20,
                               ),
                               ResponsiveGridRow(
                                 children: [
@@ -186,194 +194,224 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     xl: 6,
                                     lg: 6,
                                     xs: 12,
-                                    child: GestureDetector(
-                                      child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          width: 300,
-                                          child: Material(
-                                            color: Colors.blueAccent,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 0),
-                                                  color: Colors.greenAccent,
-                                                  height: 75,
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Abonnement 1',
-                                                      style: TextStyle(
-                                                          fontSize: 25,
-                                                          color: theme
-                                                                  .getState()
-                                                              ? Colors.black
-                                                              : Colors.white),
-                                                    ),
+                                    child: Container(
+                                        margin: EdgeInsets.all(5),
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Material(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 5, 10, 0),
+                                                color: Colors.redAccent,
+                                                height: 75,
+                                                child: Center(
+                                                  child: Text(
+                                                    'ET ÅR',
+                                                    style: TextStyle(
+                                                        fontSize: 25,
+                                                        color: theme.getState()
+                                                            ? Colors.black
+                                                            : Colors.white),
                                                   ),
                                                 ),
-                                                Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 0, 10, 5),
-                                                  color: theme.getState() ==
-                                                          false
-                                                      ? Colors.white
-                                                      : Colors.grey.shade800,
-                                                  height: 200,
-                                                  child: Center(
-                                                      child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Text(
-                                                        'Et års abonnement',
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 0, 10, 0),
+                                                color: theme.getState() == false
+                                                    ? null
+                                                    : Colors.grey.shade800,
+                                                height: 200,
+                                                child: Center(
+                                                    child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Text(
+                                                      _displayAmount(_year) +
+                                                          'kr',
+                                                      style: TextStyle(
+                                                          color: theme
+                                                                  .getState()
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                          fontSize: 30),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    FlatButton(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      height: 50,
+                                                      minWidth: 200,
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _type = 1;
+                                                        });
+                                                        _initiateVipps(_year);
+                                                      },
+                                                      child: Text(
+                                                        'KJØP NÅ',
                                                         style: TextStyle(
-                                                            color: theme
-                                                                    .getState()
-                                                                ? Colors.white
-                                                                : Colors.black),
+                                                            color: Colors.white,
+                                                            fontSize: 17),
                                                       ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Text(
-                                                        'Pris: ' +
-                                                            _displayAmount(
-                                                                _year) +
-                                                            'kr',
-                                                        style: TextStyle(
-                                                            color: theme
-                                                                    .getState()
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      ),
-                                                    ],
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                      onTap: () {
-                                        setState(() {
-                                          _type = 1;
-                                        });
-                                        _initiateVipps(_year);
-                                      },
-                                    ),
+                                                      color: Colors.deepOrange,
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
                                   ),
                                   ResponsiveGridCol(
                                     xl: 6,
                                     lg: 6,
                                     xs: 12,
-                                    child: GestureDetector(
-                                      child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          width: 300,
-                                          child: Material(
-                                            color: Colors.blueAccent,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 0),
-                                                  color: Colors.greenAccent,
-                                                  height: 75,
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Abonnement 2',
-                                                      style: TextStyle(
-                                                          fontSize: 25,
-                                                          color: theme
-                                                                  .getState()
-                                                              ? Colors.black
-                                                              : Colors.white),
-                                                    ),
+                                    child: Container(
+                                        margin: EdgeInsets.all(5),
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: 5,
+                                              blurRadius: 7,
+                                              offset: Offset(0,
+                                                  3), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Material(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 5, 10, 0),
+                                                color: Colors.redAccent,
+                                                height: 75,
+                                                child: Center(
+                                                  child: Text(
+                                                    'PRØV EN MÅNED',
+                                                    style: TextStyle(
+                                                        fontSize: 25,
+                                                        color: theme.getState()
+                                                            ? Colors.black
+                                                            : Colors.white),
                                                   ),
                                                 ),
-                                                Container(
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      10, 0, 10, 5),
-                                                  color: theme.getState() ==
-                                                          false
-                                                      ? Colors.white
-                                                      : Colors.grey.shade800,
-                                                  height: 200,
-                                                  child: Center(
-                                                      child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Text(
-                                                        'En måned, prøve abonemment',
-                                                        style: TextStyle(
-                                                            color: theme
-                                                                    .getState()
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Text(
-                                                        'Pris: ' +
-                                                            _displayAmount(
-                                                                _month) +
-                                                            'kr',
-                                                        style: TextStyle(
-                                                            color: theme
-                                                                    .getState()
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      widget
-                                                              ._currentUser
-                                                              .mySubscription
-                                                              .freeMonthUsed
-                                                          ? Text(
-                                                              'Du har allerede brukt din prøve måned',
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    10, 0, 10, 0),
+                                                color: theme.getState() == false
+                                                    ? null
+                                                    : Colors.grey.shade800,
+                                                height: 200,
+                                                child: Center(
+                                                    child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Text(
+                                                      _displayAmount(_month) +
+                                                          'kr',
+                                                      style: TextStyle(
+                                                          color: theme
+                                                                  .getState()
+                                                              ? Colors.white
+                                                              : Colors.black,
+                                                          fontSize: 30),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    widget
+                                                            ._currentUser
+                                                            .mySubscription
+                                                            .freeMonthUsed
+                                                        ? Text(
+                                                            'Du har allerede brukt din prøve måned',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red,
+                                                                fontSize: 18),
+                                                          )
+                                                        : FlatButton(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            height: 50,
+                                                            minWidth: 200,
+                                                            onPressed: () {
+                                                              if (widget
+                                                                      ._currentUser
+                                                                      .mySubscription
+                                                                      .freeMonthUsed !=
+                                                                  true) {
+                                                                setState(() {
+                                                                  _type = 2;
+                                                                });
+                                                                _initiateVipps(
+                                                                    _month);
+                                                              } else {}
+                                                            },
+                                                            child: Text(
+                                                              'KJØP NÅ',
                                                               style: TextStyle(
                                                                   color: Colors
-                                                                      .red,
-                                                                  fontSize: 18),
-                                                            )
-                                                          : SizedBox(),
-                                                    ],
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                      onTap: () {
-                                        if (widget._currentUser.mySubscription
-                                                .freeMonthUsed !=
-                                            true) {
-                                          setState(() {
-                                            _type = 2;
-                                          });
-                                          _initiateVipps(_month);
-                                        } else {}
-                                      },
-                                    ),
+                                                                      .white,
+                                                                  fontSize: 17),
+                                                            ),
+                                                            color: Colors
+                                                                .deepOrange,
+                                                          ),
+                                                  ],
+                                                )),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        )),
                                   ),
                                 ],
                               ),
@@ -386,31 +424,37 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         : Column(
                             children: [
                               SizedBox(
-                                height: 20,
-                              ),
-                              Text('Ditt Abonnement'),
-                              SizedBox(
-                                height: 20,
+                                height: 40,
                               ),
                               Container(
                                   margin: EdgeInsets.all(5),
                                   width: 300,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
                                   child: Material(
-                                    color: Colors.blueAccent,
                                     borderRadius: BorderRadius.circular(15),
                                     child: Column(
                                       children: [
                                         SizedBox(
-                                          height: 10,
+                                          height: 5,
                                         ),
                                         Container(
                                           margin:
                                               EdgeInsets.fromLTRB(10, 5, 10, 0),
-                                          color: Colors.greenAccent,
+                                          color: Colors.redAccent,
                                           height: 75,
                                           child: Center(
                                             child: Text(
-                                              'Abonnement',
+                                              'Ditt Abonnement',
                                               style: TextStyle(
                                                   fontSize: 25,
                                                   color: theme.getState()
@@ -421,9 +465,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                         ),
                                         Container(
                                           margin:
-                                              EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                              EdgeInsets.fromLTRB(10, 0, 10, 0),
                                           color: theme.getState() == false
-                                              ? Colors.white
+                                              ? null
                                               : Colors.grey.shade800,
                                           height: 200,
                                           child: Center(
@@ -482,7 +526,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     ),
                                   )),
                               SizedBox(
-                                height: 20,
+                                height: 40,
                               ),
                             ],
                           ),

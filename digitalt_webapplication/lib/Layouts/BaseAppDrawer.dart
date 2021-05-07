@@ -1,5 +1,4 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
-import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
 import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
@@ -139,7 +138,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Instillinger'),
+            title: Text('Innstillinger'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsPage()));

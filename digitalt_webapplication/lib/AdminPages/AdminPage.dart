@@ -34,6 +34,7 @@ class _AdminPageState extends State<AdminPage> {
   List _allCases = [];
   List _popularList = [];
   List _newList = [];
+  List<String> _guestList = [];
 
   //a list with only string objects for the search bar
   List<String> _allCaseList = [];
@@ -47,6 +48,7 @@ class _AdminPageState extends State<AdminPage> {
     _fetchDataBaseList('PopularCases');
     _fetchDataBaseList('AllCases');
     _fetchDataBaseList('NewCases');
+    _getGuestList();
   }
 
   /// fetches the list from firebase
@@ -79,6 +81,22 @@ class _AdminPageState extends State<AdminPage> {
     }
   }
 
+  _getGuestList() async {
+    List<String> firebaseList = [];
+    List resultant = await _db.getGuestListContent();
+    if (resultant != null) {
+      for (int i = 0; i < resultant.length; i++) {
+        var object = resultant[i];
+        firebaseList.add(object['Title'].toString());
+      }
+      setState(() {
+        _guestList = firebaseList;
+      });
+    } else {
+      print('resultant is null');
+    }
+  }
+
   ///creates a stringlist for the searchfield
   _createStringList() {
     _allCaseList.clear();
@@ -104,6 +122,7 @@ class _AdminPageState extends State<AdminPage> {
               builder: (context) => UpdateCasePage(
                   popularList: _popularList,
                   newList: _newList,
+                  guestList: _guestList,
                   caseTitle: caseToEdit['title'],
                   caseIntroduction: caseToEdit['introduction'],
                   caseText: caseToEdit['text'],

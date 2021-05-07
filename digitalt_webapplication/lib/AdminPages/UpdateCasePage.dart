@@ -19,6 +19,7 @@ import '../Layouts/BaseAppDrawer.dart';
 class UpdateCasePage extends StatefulWidget {
   final List popularList;
   final List newList;
+  final List<String> guestList;
   final String caseTitle;
   final String caseImageUrl;
   final String caseIntroduction;
@@ -31,6 +32,7 @@ class UpdateCasePage extends StatefulWidget {
       {Key key,
       @required this.popularList,
       @required this.newList,
+      @required this.guestList,
       @required this.caseTitle,
       @required this.caseIntroduction,
       @required this.caseText,
@@ -84,6 +86,43 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         });
       }
     }
+    for (int i = 0; i < widget.guestList.length; i++) {
+      var someCase = widget.guestList[i];
+      if (someCase == widget.caseTitle) {}
+    }
+  }
+
+  uploadNewPhoto() async {
+    if (_mediaInfo != null) {
+      await _db.uploadFile(_mediaInfo).then((value) {
+        String imageUri = value.toString();
+        if (imageUri != null) {
+          setState(() {
+            _imageUrl = imageUri;
+          });
+        } else {
+          print('imageUri is null');
+        }
+      });
+    }
+  }
+
+  /// creates new guestlist from edit stringlist by the admin user
+  Future<bool> _createNewGuestList(List<String> newList) async {
+    List<Map<String, dynamic>> listToFirebase = [];
+    for (int i = 0; i < newList.length; i++) {
+      if (newList[i] != widget.caseTitle) {
+        listToFirebase.add({'Title': newList[i]});
+      }
+    }
+    listToFirebase.add({'Title': _title.text});
+
+    var result = await _db.updateGuestList(listToFirebase);
+    if (result != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ///this method will set the caseitems in page from input fields to the widget
@@ -103,23 +142,16 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   ///this methods will update the case in firebase
   bool _updateCaseItem() {
     bool success = true;
-    if (_mediaInfo == null) {
-      _updateCaseByFolder('AllCases', _id);
-      if (_newCaseId != null) {
-        _updateCaseByFolder('NewCases', _newCaseId);
-      }
-      if (_popularCaseId != null) {
-        _updateCaseByFolder('PopularCases', _popularCaseId);
-      }
-    } else {
-      _db.uploadFile(_mediaInfo).then((value) {
-        String imageUri = value.toString();
-        if (imageUri != null) {
-        } else {
-          print('imageUri is null');
-          success = false;
-        }
-      });
+
+    _updateCaseByFolder('AllCases', _id);
+    if (_newCaseId != null) {
+      _updateCaseByFolder('NewCases', _newCaseId);
+    }
+    if (_popularCaseId != null) {
+      _updateCaseByFolder('PopularCases', _popularCaseId);
+    }
+    if (_title.text != widget.caseTitle) {
+      _createNewGuestList(widget.guestList);
     }
     return success;
   }
@@ -151,6 +183,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         );
       });
     }
+    await uploadNewPhoto();
   }
 
   @override
