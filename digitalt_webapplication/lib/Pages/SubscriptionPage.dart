@@ -178,10 +178,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Velg Abonnement Og Betal Med ',
+                                      'VELG ABONNEMENT OG BETAL MED ',
                                       style: TextStyle(fontSize: 30),
                                     ),
-                                    Image.asset('vipps/vippsLogo.png')
+                                    Image(
+                                      image: AssetImage('vipps/vippsLogo.png'),
+                                      width: 100,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -224,7 +227,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                 height: 75,
                                                 child: Center(
                                                   child: Text(
-                                                    'ET ÅR',
+                                                    '1 ÅR',
                                                     style: TextStyle(
                                                         fontSize: 25,
                                                         color: theme.getState()
@@ -325,7 +328,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                                 height: 75,
                                                 child: Center(
                                                   child: Text(
-                                                    'PRØV EN MÅNED',
+                                                    'PRØV 1 MÅNED',
                                                     style: TextStyle(
                                                         fontSize: 25,
                                                         color: theme.getState()
