@@ -104,7 +104,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.info),
-            title: Text('About'),
+            title: Text('Om Oss'),
             onTap: () {
               Navigator.push(
                   context,
@@ -123,7 +123,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text('Hjem'),
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -131,7 +131,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text('Profile'),
+            title: Text('Min Profil'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ProfilePage()));
@@ -139,7 +139,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text('Instillinger'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsPage()));

@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -217,7 +212,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                   children: [
                     Center(
                       child: Text(
-                        'Add Article',
+                        'Rediger Eksisterende Artikkel',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -237,7 +232,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     ),
 
                     Text(
-                      'Title',
+                      'Tittel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -250,9 +245,10 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       child: TextFormField(
                         controller: _title,
                         decoration:
-                            InputDecoration(hintText: 'Enter your Title'),
+                            InputDecoration(hintText: 'Skriv inn ny tittel'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -261,7 +257,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       height: 40,
                     ),
                     Text(
-                      'Introduction',
+                      'Ingress',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -273,10 +269,11 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
                         controller: _introduction,
-                        decoration: InputDecoration(
-                            hintText: 'Enter your Introduction'),
+                        decoration:
+                            InputDecoration(hintText: 'Skriv in new ingress'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -285,7 +282,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       height: 40,
                     ),
                     Text(
-                      'Author',
+                      'Forfatter/ Forfattere',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -300,7 +297,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Row(
                       children: [
                         Text(
-                          'Date',
+                          'Dato',
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 16),
                         ),
@@ -316,7 +313,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     ),
 
                     Text(
-                      'Description',
+                      'Hoveddel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -333,7 +330,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Submit'),
+                        child: Text('Publiser'),
                         color: Colors.green,
                       ),
                     ),
