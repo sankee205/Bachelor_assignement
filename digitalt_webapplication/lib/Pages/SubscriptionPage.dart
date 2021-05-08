@@ -183,7 +183,53 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                     ),
                                     Image(
                                       image: AssetImage(
+                                          'assets/assets/vipps/vippsLogo.png'),
+                                      width: 100,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'VELG ABONNEMENT OG BETAL MED ',
+                                      style: TextStyle(fontSize: 30),
+                                    ),
+                                    Image(
+                                      image: AssetImage(
                                           'assets/vipps/vippsLogo.png'),
+                                      width: 100,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'VELG ABONNEMENT OG BETAL MED ',
+                                      style: TextStyle(fontSize: 30),
+                                    ),
+                                    Image(
+                                      image: AssetImage('vipps/vippsLogo.png'),
+                                      width: 100,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'VELG ABONNEMENT OG BETAL MED ',
+                                      style: TextStyle(fontSize: 30),
+                                    ),
+                                    Image(
+                                      image: AssetImage('vippsLogo.png'),
                                       width: 100,
                                     ),
                                   ],
