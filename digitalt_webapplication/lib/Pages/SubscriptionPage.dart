@@ -182,7 +182,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                       style: TextStyle(fontSize: 30),
                                     ),
                                     Image(
-                                      image: AssetImage('vipps/vippsLogo.png'),
+                                      image: AssetImage(
+                                          'assets/vipps/vippsLogo.png'),
                                       width: 100,
                                     ),
                                   ],
