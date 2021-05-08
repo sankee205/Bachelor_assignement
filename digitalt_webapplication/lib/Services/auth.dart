@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AppManagement/StorageManager.dart';
 import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:digitalt_application/models/subscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +14,6 @@ class AuthService {
 
   BaseUser _currentUser;
   BaseUser get currentUser => _currentUser;
-
-  //create user object based on FirebaseUser
-  BaseUser _userFromFirebaseUser(User user) {
-    return user != null ? BaseUser(uid: user.uid) : null;
-  }
 
   isUserAnonymous() {
     return _auth.currentUser.isAnonymous;
@@ -43,11 +39,6 @@ class AuthService {
     return await _firestoreService.getUser(_auth.currentUser.uid);
   }
 
-  //auth change user stream
-  Stream<BaseUser> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseUser);
-  }
-
   //Sign in anonymous
   Future signInAnon() async {
     try {
@@ -67,7 +58,7 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      //await _populateCurrentUser(result.user);
+      await _populateCurrentUser(result.user);
       return user;
     } catch (e) {
       print(e.toString());
@@ -107,6 +98,7 @@ class AuthService {
               expiredDate: ''));
 
       await _firestoreService.createUser(_currentUser);
+      StorageManager.saveData('uid', authResult.user.uid);
 
       return authResult.user != null;
     } catch (e) {
@@ -116,10 +108,21 @@ class AuthService {
 
   //checks if the user is logged inn
   Future<bool> isUserLoggedIn() async {
-    _auth.authStateChanges().listen((User user) {});
     var firebaseUser = _auth.currentUser;
     if (firebaseUser == null) {
-      return false;
+      bool user;
+      await StorageManager.readData('uid').then((value) async {
+        print('userid');
+        print(value);
+        if (value != null) {
+          _currentUser = await _firestoreService.getUser(value);
+          user = true;
+        } else {
+          user = false;
+        }
+      });
+      print(user);
+      return user;
     } else {
       return await _populateCurrentUser(firebaseUser);
     }
@@ -138,7 +141,9 @@ class AuthService {
             userRole: 'Guest');
         return true;
       } else {
+        print('user is not anonym');
         _currentUser = await _firestoreService.getUser(user.uid);
+        StorageManager.saveData('uid', user.uid);
         return true;
       }
     } else {
@@ -149,6 +154,7 @@ class AuthService {
   //signs out the user
   Future signOut() async {
     try {
+      StorageManager.deleteData('uid');
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

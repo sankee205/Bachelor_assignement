@@ -24,10 +24,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
     default:
       return MaterialPageRoute(
-          builder: (_) => Scaffold(
-                body: Center(
-                    child: Text('No route defined for ${settings.name}')),
-              ));
+        builder: (_) => Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(
+                  width: 300,
+                  height: 100,
+                ),
+                CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor: AlwaysStoppedAnimation(
+                    Color(0xff19c7c1),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
   }
 }
 

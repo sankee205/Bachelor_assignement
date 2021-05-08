@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
-import 'package:digitalt_application/Layouts/BaseCaseItem.dart';
 import 'package:digitalt_application/Layouts/BaseTextFields.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
-import 'package:easy_rich_text/easy_rich_text.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path/path.dart' as Path;
 
@@ -24,6 +19,7 @@ import '../Layouts/BaseAppDrawer.dart';
 class UpdateCasePage extends StatefulWidget {
   final List popularList;
   final List newList;
+  final List<String> guestList;
   final String caseTitle;
   final String caseImageUrl;
   final String caseIntroduction;
@@ -36,6 +32,7 @@ class UpdateCasePage extends StatefulWidget {
       {Key key,
       @required this.popularList,
       @required this.newList,
+      @required this.guestList,
       @required this.caseTitle,
       @required this.caseIntroduction,
       @required this.caseText,
@@ -89,6 +86,43 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         });
       }
     }
+    for (int i = 0; i < widget.guestList.length; i++) {
+      var someCase = widget.guestList[i];
+      if (someCase == widget.caseTitle) {}
+    }
+  }
+
+  uploadNewPhoto() async {
+    if (_mediaInfo != null) {
+      await _db.uploadFile(_mediaInfo).then((value) {
+        String imageUri = value.toString();
+        if (imageUri != null) {
+          setState(() {
+            _imageUrl = imageUri;
+          });
+        } else {
+          print('imageUri is null');
+        }
+      });
+    }
+  }
+
+  /// creates new guestlist from edit stringlist by the admin user
+  Future<bool> _createNewGuestList(List<String> newList) async {
+    List<Map<String, dynamic>> listToFirebase = [];
+    for (int i = 0; i < newList.length; i++) {
+      if (newList[i] != widget.caseTitle) {
+        listToFirebase.add({'Title': newList[i]});
+      }
+    }
+    listToFirebase.add({'Title': _title.text});
+
+    var result = await _db.updateGuestList(listToFirebase);
+    if (result != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   ///this method will set the caseitems in page from input fields to the widget
@@ -108,23 +142,16 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
   ///this methods will update the case in firebase
   bool _updateCaseItem() {
     bool success = true;
-    if (_mediaInfo == null) {
-      _updateCaseByFolder('AllCases', _id);
-      if (_newCaseId != null) {
-        _updateCaseByFolder('NewCases', _newCaseId);
-      }
-      if (_popularCaseId != null) {
-        _updateCaseByFolder('PopularCases', _popularCaseId);
-      }
-    } else {
-      _db.uploadFile(_mediaInfo).then((value) {
-        String imageUri = value.toString();
-        if (imageUri != null) {
-        } else {
-          print('imageUri is null');
-          success = false;
-        }
-      });
+
+    _updateCaseByFolder('AllCases', _id);
+    if (_newCaseId != null) {
+      _updateCaseByFolder('NewCases', _newCaseId);
+    }
+    if (_popularCaseId != null) {
+      _updateCaseByFolder('PopularCases', _popularCaseId);
+    }
+    if (_title.text != widget.caseTitle) {
+      _createNewGuestList(widget.guestList);
     }
     return success;
   }
@@ -156,6 +183,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
         );
       });
     }
+    await uploadNewPhoto();
   }
 
   @override
@@ -217,7 +245,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                   children: [
                     Center(
                       child: Text(
-                        'Add Article',
+                        'Rediger Eksisterende Artikkel',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -237,7 +265,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     ),
 
                     Text(
-                      'Title',
+                      'Tittel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -250,9 +278,10 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       child: TextFormField(
                         controller: _title,
                         decoration:
-                            InputDecoration(hintText: 'Enter your Title'),
+                            InputDecoration(hintText: 'Skriv inn ny tittel'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -261,7 +290,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       height: 40,
                     ),
                     Text(
-                      'Introduction',
+                      'Ingress',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -273,10 +302,11 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
                         controller: _introduction,
-                        decoration: InputDecoration(
-                            hintText: 'Enter your Introduction'),
+                        decoration:
+                            InputDecoration(hintText: 'Skriv in new ingress'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -285,7 +315,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                       height: 40,
                     ),
                     Text(
-                      'Author',
+                      'Forfatter/ Forfattere',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -300,7 +330,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     Row(
                       children: [
                         Text(
-                          'Date',
+                          'Dato',
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 16),
                         ),
@@ -316,7 +346,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     ),
 
                     Text(
-                      'Description',
+                      'Hoveddel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -333,7 +363,7 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Submit'),
+                        child: Text('Publiser'),
                         color: Colors.green,
                       ),
                     ),

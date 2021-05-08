@@ -6,6 +6,7 @@ import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
 import 'package:digitalt_application/Layouts/BaseSearch.dart';
 import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
 import 'package:flutter/material.dart';
@@ -406,6 +407,9 @@ class HomePageState extends State<HomePage> {
             onTap: () {
               if (_guestList.contains(caseObject['title'])) {
                 _goToCasePage(caseObject);
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()));
               }
             },
             child: alllist

@@ -191,7 +191,8 @@ class _CasePageState extends State<CasePage> {
                                 children: [
                                   ResponsiveGridCol(
                                     lg: 4,
-                                    xs: 4,
+                                    md: 4,
+                                    xs: 12,
                                     child: Row(
                                       children: [
                                         Icon(Icons.person),
@@ -222,7 +223,8 @@ class _CasePageState extends State<CasePage> {
                                   ),
                                   ResponsiveGridCol(
                                     lg: 4,
-                                    xs: 4,
+                                    md: 4,
+                                    xs: 12,
                                     child: Row(
                                       children: [
                                         Icon(Icons.date_range),
@@ -232,7 +234,8 @@ class _CasePageState extends State<CasePage> {
                                   ),
                                   ResponsiveGridCol(
                                     lg: 4,
-                                    xs: 4,
+                                    md: 4,
+                                    xs: 12,
                                     child: isArticleSaved == null
                                         ? SizedBox()
                                         : Row(children: [
@@ -295,8 +298,7 @@ class _CasePageState extends State<CasePage> {
                             ),
                             Center(
                               child: _lastEditedText == null
-                                  ? Text(
-                                      'Denne artikkelen har aldri blitt endret')
+                                  ? SizedBox()
                                   : _lastEditedText,
                             ),
                             SizedBox(
