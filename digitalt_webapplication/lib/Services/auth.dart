@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AppManagement/StorageManager.dart';
 import 'package:digitalt_application/LoginRegister/locator.dart';
 import 'package:digitalt_application/models/subscription.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +14,6 @@ class AuthService {
 
   BaseUser _currentUser;
   BaseUser get currentUser => _currentUser;
-
-  //create user object based on FirebaseUser
-  BaseUser _userFromFirebaseUser(User user) {
-    return user != null ? BaseUser(uid: user.uid) : null;
-  }
 
   isUserAnonymous() {
     return _auth.currentUser.isAnonymous;
@@ -41,11 +37,6 @@ class AuthService {
   //returns the firebase baseuser
   Future<BaseUser> getFirebaseUser() async {
     return await _firestoreService.getUser(_auth.currentUser.uid);
-  }
-
-  //auth change user stream
-  Stream<BaseUser> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   //Sign in anonymous
@@ -116,10 +107,19 @@ class AuthService {
 
   //checks if the user is logged inn
   Future<bool> isUserLoggedIn() async {
-    _auth.authStateChanges().listen((User user) {});
     var firebaseUser = _auth.currentUser;
     if (firebaseUser == null) {
-      return false;
+      bool user;
+      await StorageManager.readData('uid').then((value) async {
+        if (value != null) {
+          _currentUser = await _firestoreService.getUser(value);
+          user = true;
+        } else {
+          user = false;
+        }
+      });
+      print(user);
+      return user;
     } else {
       return await _populateCurrentUser(firebaseUser);
     }
@@ -139,6 +139,7 @@ class AuthService {
         return true;
       } else {
         _currentUser = await _firestoreService.getUser(user.uid);
+        StorageManager.saveData('uid', user.uid);
         return true;
       }
     } else {
