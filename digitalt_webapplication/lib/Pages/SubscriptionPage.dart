@@ -179,12 +179,21 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                                   children: [
                                     Text(
                                       'VELG ABONNEMENT OG BETAL MED ',
-                                      style: TextStyle(fontSize: 30),
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width <
+                                                  700
+                                              ? 15
+                                              : 30),
                                     ),
                                     Image(
                                       image: AssetImage(
                                           'assets/vipps/vippsLogo.png'),
-                                      width: 100,
+                                      width: MediaQuery.of(context).size.width <
+                                              700
+                                          ? 50
+                                          : 100,
                                     ),
                                   ],
                                 ),
