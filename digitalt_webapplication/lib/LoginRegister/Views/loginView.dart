@@ -1,5 +1,4 @@
 import 'package:digitalt_application/LoginRegister/Model/loginViewModel.dart';
-import 'package:digitalt_application/LoginRegister/Views/signUpView.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
 import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/LoginRegister/uiHelpers.dart';

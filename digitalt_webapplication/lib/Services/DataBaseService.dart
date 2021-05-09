@@ -130,6 +130,27 @@ class DatabaseService {
     return infoList;
   }
 
+  //--------------------------GDPR methods--------------------------------------
+  Future updateGdprContent(String text, String date) async {
+    return await FirebaseFirestore.instance
+        .collection('GDPR')
+        .doc('GGR6mGOSrcVFjhug1gpi')
+        .set({
+      'text': text,
+      'date': date,
+    });
+  }
+
+  Future getGdprContent() async {
+    List infoList = [];
+    await FirebaseFirestore.instance.collection('GDPR').get().then((value) => {
+          value.docs.forEach((element) {
+            infoList.add(element);
+          })
+        });
+    return infoList;
+  }
+
   //--------------------------folder methods------------------------------------
 
   Future updateCaseByFolder(
