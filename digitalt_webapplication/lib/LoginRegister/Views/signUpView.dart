@@ -1,6 +1,7 @@
 import 'package:digitalt_application/LoginRegister/Model/signUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
 import 'package:digitalt_application/LoginRegister/routeNames.dart';
+import 'package:digitalt_application/Pages/PrivacyPolicyPage.dart';
 
 import '../locator.dart';
 import '../uiHelpers.dart';
@@ -9,14 +10,28 @@ import '../Widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class SignUpView extends StatelessWidget {
-  final NavigationService _navigationService = locator<NavigationService>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final fullNameController = TextEditingController();
-  final phonenumberController = TextEditingController();
+class SignUpView extends StatefulWidget {
   final Function toggleView;
   SignUpView({this.toggleView});
+
+  @override
+  _SignUpViewState createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  final emailController = TextEditingController();
+
+  final passwordController = TextEditingController();
+
+  final fullNameController = TextEditingController();
+
+  final phonenumberController = TextEditingController();
+
+  bool agreedToSecurityTerms = false;
+
+  String needToAgree = '';
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +92,41 @@ class SignUpView extends StatelessWidget {
                       ),
                       verticalSpaceSmall,
                       Row(
+                        children: [
+                          Text('Jeg godkjenner sikkerhetsvilkårene '),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Checkbox(
+                            value: agreedToSecurityTerms,
+                            checkColor: Colors.green,
+                            onChanged: (bool value) {
+                              setState(() {
+                                agreedToSecurityTerms = value;
+                                if (value) {
+                                  needToAgree = '';
+                                }
+                              });
+                            },
+                          ),
+                          SizedBox(),
+                          MaterialButton(
+                            child: Text('Les sikkerhetserklæring her'),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PrivacyPolicyPage()));
+                            },
+                          ),
+                        ],
+                      ),
+                      Text(
+                        needToAgree,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -84,12 +134,19 @@ class SignUpView extends StatelessWidget {
                             title: 'Registrer deg',
                             busy: model.busy,
                             onPressed: () {
-                              model.setSelectedRole('User');
-                              model.signUp(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  phonenumber: phonenumberController.text,
-                                  fullName: fullNameController.text);
+                              if (agreedToSecurityTerms) {
+                                model.setSelectedRole('User');
+                                model.signUp(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    phonenumber: phonenumberController.text,
+                                    fullName: fullNameController.text);
+                              } else {
+                                setState(() {
+                                  needToAgree =
+                                      'Du må godkjenne sikkerthetsvilkårene';
+                                });
+                              }
                             },
                           )
                         ],
