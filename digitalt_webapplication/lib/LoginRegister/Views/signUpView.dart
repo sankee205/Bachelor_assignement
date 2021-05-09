@@ -96,7 +96,7 @@ class _SignUpViewState extends State<SignUpView> {
                       verticalSpaceSmall,
                       Row(
                         children: [
-                          Text('Jeg godkjenner sikkerhetsvilkårene '),
+                          Text('Jeg godkjenner personvernerklæringene '),
                           SizedBox(
                             width: 20,
                           ),
@@ -114,7 +114,7 @@ class _SignUpViewState extends State<SignUpView> {
                           ),
                           SizedBox(),
                           MaterialButton(
-                            child: Text('Les sikkerhetserklæring her'),
+                            child: Text('Les personvernerklæring her'),
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -144,7 +144,7 @@ class _SignUpViewState extends State<SignUpView> {
                               } else {
                                 setState(() {
                                   needToAgree =
-                                      'Du må godkjenne sikkerthetsvilkårene';
+                                      'Du må godkjenne personvernerklæring';
                                 });
                               }
                             },
