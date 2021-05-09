@@ -27,6 +27,8 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   //get the database service
   final DatabaseService _db = DatabaseService();
 
@@ -316,15 +318,21 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Center(
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Publiser'),
-                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Publiser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: logoGreen),
                       ),
                     ),
                     SizedBox(

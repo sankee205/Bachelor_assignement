@@ -130,7 +130,7 @@ class DatabaseService {
     return infoList;
   }
 
-  //--------------------------GDPR methods--------------------------------------
+  //--------------------------Terms methods--------------------------------------
   Future updateGdprContent(String text, String date) async {
     return await FirebaseFirestore.instance
         .collection('GDPR')
@@ -148,6 +148,29 @@ class DatabaseService {
             infoList.add(element);
           })
         });
+    return infoList;
+  }
+
+  Future updateUserTermsContent(String text, String date) async {
+    return await FirebaseFirestore.instance
+        .collection('UserTerms')
+        .doc('rEjKUjviUjXpVCme4ljJ')
+        .set({
+      'text': text,
+      'date': date,
+    });
+  }
+
+  Future getUserTermsContent() async {
+    List infoList = [];
+    await FirebaseFirestore.instance
+        .collection('UserTerms')
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) {
+                infoList.add(element);
+              })
+            });
     return infoList;
   }
 

@@ -1,5 +1,6 @@
 import 'package:digitalt_application/AdminPages/EditLockedCases.dart';
 import 'package:digitalt_application/AdminPages/EditPrivacyPolicy.dart';
+import 'package:digitalt_application/AdminPages/EditUserTerms.dart';
 import 'package:digitalt_application/AdminPages/UpdateNewLists.dart';
 import 'package:digitalt_application/AdminPages/UpdateCasePage.dart';
 import 'package:digitalt_application/AdminPages/UpdateInfoPage.dart';
@@ -433,7 +434,34 @@ class _AdminPageState extends State<AdminPage> {
                                   Icons.security,
                                   size: 50,
                                 ),
-                                Text('Rediger Sikkerhetserklæring')
+                                Text('Rediger BrukerVilkår')
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 12,
+                        md: 12,
+                        xs: 12,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditUserTerms()));
+                          },
+                          child: Container(
+                            color: Colors.grey,
+                            margin: EdgeInsets.all(5),
+                            height: 120,
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.privacy_tip,
+                                  size: 50,
+                                ),
+                                Text('Rediger Personvernerklæring')
                               ],
                             ),
                           ),

@@ -46,6 +46,8 @@ class UpdateCasePage extends StatefulWidget {
 }
 
 class _UpdateCasePageState extends State<UpdateCasePage> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _id;
@@ -356,15 +358,21 @@ class _UpdateCasePageState extends State<UpdateCasePage> {
                     ),
 
                     Center(
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Publiser'),
-                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Publiser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: logoGreen),
                       ),
                     ),
                   ],

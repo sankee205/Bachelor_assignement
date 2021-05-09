@@ -14,12 +14,12 @@ import '../Layouts/BaseAppDrawer.dart';
 ///this is the add case page. in this page, users with admin access
 ///can add new articles to the server
 ///
-class EditPrivacyPolicy extends StatefulWidget {
+class EditUserTerms extends StatefulWidget {
   @override
-  _EditPrivacyPolicyState createState() => _EditPrivacyPolicyState();
+  _EditUserTermsState createState() => _EditUserTermsState();
 }
 
-class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
+class _EditUserTermsState extends State<EditUserTerms> {
   final Color logoGreen = Color(0xff25bcbb);
 
   //get the database service
@@ -31,7 +31,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
 
   bool _updateGdpr() {
     bool success = true;
-    var result = _db.updateGdprContent(_textController.text, _getDate());
+    var result = _db.updateUserTermsContent(_textController.text, _getDate());
     print(result);
     if (result != null) {
       success = true;
@@ -43,7 +43,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
   }
 
   _getGdpr() async {
-    List resultList = await _db.getGdprContent();
+    List resultList = await _db.getUserTermsContent();
     var result = resultList[0];
     setState(() {
       _textController.text = result['text'];
@@ -106,7 +106,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
                   children: [
                     Center(
                       child: Text(
-                        'Rediger Brukervilkår (GDPR)',
+                        'Rediger Personvernerklæring (GDPR)',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -220,7 +220,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
     AlertDialog alert = AlertDialog(
       title: Text("Publisering av endringer"),
       content: Text(
-          "Er du sikker på at du vil publisere endringene på Brukervilkår?"),
+          "Er du sikker på at du vil publisere endringene på Personvernerklæring?"),
       actions: [
         cancelButton,
         continueButton,
