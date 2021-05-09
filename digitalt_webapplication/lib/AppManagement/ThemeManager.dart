@@ -39,7 +39,7 @@ class ThemeNotifier with ChangeNotifier {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: Colors.red, unselectedItemColor: Colors.grey),
     floatingActionButtonTheme:
-        FloatingActionButtonThemeData(backgroundColor: Colors.blue),
+        FloatingActionButtonThemeData(backgroundColor: Color(0xff25bcbb)),
   );
 
   ThemeData _themeData;

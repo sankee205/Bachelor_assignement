@@ -18,6 +18,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final AuthService _auth = AuthService();
   final NavigationService _navigationService = locator<NavigationService>();
   BaseUser _currentUser;
@@ -111,6 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text('Logg inn'),
                               ),
+                              style:
+                                  ElevatedButton.styleFrom(primary: logoGreen),
                             ),
                             SizedBox(
                               height: 10,
@@ -241,23 +245,26 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 30,
                             ),
                             ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditProfilePage(
-                                        email: _currentUser.email,
-                                        name: _currentUser.fullName,
-                                        phonenumber: _currentUser.phonenumber,
-                                        uid: _currentUser.uid,
-                                      ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditProfilePage(
+                                      email: _currentUser.email,
+                                      name: _currentUser.fullName,
+                                      phonenumber: _currentUser.phonenumber,
+                                      uid: _currentUser.uid,
                                     ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('Rediger'),
-                                )),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Rediger'),
+                              ),
+                              style:
+                                  ElevatedButton.styleFrom(primary: logoGreen),
+                            ),
                             SizedBox(
                               height: 30,
                             ),

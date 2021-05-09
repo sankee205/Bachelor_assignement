@@ -19,6 +19,8 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final NavigationService _navigationService = locator<NavigationService>();
 
   final emailController = TextEditingController();
@@ -99,7 +101,7 @@ class _SignUpViewState extends State<SignUpView> {
                           ),
                           Checkbox(
                             value: agreedToSecurityTerms,
-                            checkColor: Colors.green,
+                            activeColor: Colors.red,
                             onChanged: (bool value) {
                               setState(() {
                                 agreedToSecurityTerms = value;
@@ -130,9 +132,7 @@ class _SignUpViewState extends State<SignUpView> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          BusyButton(
-                            title: 'Registrer deg',
-                            busy: model.busy,
+                          ElevatedButton(
                             onPressed: () {
                               if (agreedToSecurityTerms) {
                                 model.setSelectedRole('User');
@@ -148,7 +148,15 @@ class _SignUpViewState extends State<SignUpView> {
                                 });
                               }
                             },
-                          )
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Registrer deg',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(primary: logoGreen),
+                          ),
                         ],
                       )
                     ],

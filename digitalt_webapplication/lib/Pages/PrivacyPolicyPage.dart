@@ -88,7 +88,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                           SizedBox(
                             height: 40,
                           ),
-                          Text('Sikkerhetserklæring',
+                          Text('Personvernerklæring',
                               style: TextStyle(
                                   fontSize:
                                       MediaQuery.of(context).size.width < 400
