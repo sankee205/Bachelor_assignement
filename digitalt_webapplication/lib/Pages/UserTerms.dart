@@ -11,18 +11,18 @@ import 'package:provider/provider.dart';
  * this is the settings page
  * here you can change the theme to dark or light mode
  */
-class PrivacyPolicyPage extends StatefulWidget {
+class UserTermsPage extends StatefulWidget {
   @override
-  _PrivacyPolicyPageState createState() => _PrivacyPolicyPageState();
+  _UserTermsPageState createState() => _UserTermsPageState();
 }
 
-class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
+class _UserTermsPageState extends State<UserTermsPage> {
   final DatabaseService _db = DatabaseService();
   String _text = '';
   String _date = '';
 
   _getGdpr() async {
-    List resultList = await _db.getGdprContent();
+    List resultList = await _db.getUserTermsContent();
     var result = resultList[0];
     setState(() {
       _text = result['text'];
@@ -88,7 +88,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                           SizedBox(
                             height: 40,
                           ),
-                          Text('Brukervilkår',
+                          Text('Personvernerklæring',
                               style: TextStyle(
                                   fontSize:
                                       MediaQuery.of(context).size.width < 400

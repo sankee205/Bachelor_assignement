@@ -3,6 +3,7 @@ import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Pages/PrivacyPolicyPage.dart';
+import 'package:digitalt_application/Pages/UserTerms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,13 +86,25 @@ class _SettingsState extends State<SettingsPage> {
                             height: 20,
                           ),
                           MaterialButton(
-                            child: Text('Les Personvernerklæring'),
+                            child: Text('Les Brukervilkår'),
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           PrivacyPolicyPage()));
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          MaterialButton(
+                            child: Text('Les Personvernerklæring'),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserTermsPage()));
                             },
                           ),
                         ],

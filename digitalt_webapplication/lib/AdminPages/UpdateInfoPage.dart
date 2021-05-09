@@ -27,6 +27,8 @@ class UpdateInfoPage extends StatefulWidget {
 }
 
 class _UpdateInfoPageState extends State<UpdateInfoPage> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _contactUrl;
@@ -65,14 +67,28 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
       _textList = result['text'];
       _authorList = result['author'];
       _contactUrl = result['contactPhoto'];
-      _contactPhoto = Image.network(_contactUrl);
+      _contactPhoto = Image(
+        width: 500,
+        image: NetworkImage(_contactUrl),
+        fit: BoxFit.fitWidth,
+      );
       _date = result['date'];
       _email.text = result['email'];
       _textUrl = result['textPhoto'];
-      _textPhoto = Image.network(_textUrl);
+      _textPhoto = Image(
+        width: 500,
+        image: NetworkImage(_textUrl),
+        fit: BoxFit.fitWidth,
+      );
+      ;
       _tlf.text = result['tlf'];
       _backgroundUrl = result['backgroundPhoto'];
-      _backgroundPhoto = Image.network(_backgroundUrl);
+      _backgroundPhoto = Image(
+        width: 500,
+        image: NetworkImage(_backgroundUrl),
+        fit: BoxFit.fitWidth,
+      );
+      ;
     });
   }
 
@@ -458,15 +474,21 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       height: 40,
                     ),
                     Center(
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Publiser'),
-                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Publiser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: logoGreen),
                       ),
                     )
                   ],

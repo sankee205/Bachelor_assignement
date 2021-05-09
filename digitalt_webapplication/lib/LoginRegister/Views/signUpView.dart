@@ -2,6 +2,7 @@ import 'package:digitalt_application/LoginRegister/Model/signUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
 import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/PrivacyPolicyPage.dart';
+import 'package:digitalt_application/Pages/UserTerms.dart';
 
 import '../locator.dart';
 import '../uiHelpers.dart';
@@ -118,8 +119,7 @@ class _SignUpViewState extends State<SignUpView> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          PrivacyPolicyPage()));
+                                      builder: (context) => UserTermsPage()));
                             },
                           ),
                         ],

@@ -21,6 +21,8 @@ class EditLockedCases extends StatefulWidget {
 }
 
 class _EditLockedCasesState extends State<EditLockedCases> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   List<BoardList> _lists = [];
   BoardListObject _allBoardList;
   BoardListObject _guestBoardList;
@@ -195,12 +197,18 @@ class _EditLockedCasesState extends State<EditLockedCases> {
               height: 20,
             ),
             Center(
-              child: FlatButton(
+              child: ElevatedButton(
                 onPressed: () {
                   _showAlertPublishDialog(context);
                 },
-                child: Text('Submit'),
-                color: Colors.green,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Publiser',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(primary: logoGreen),
               ),
             ),
             SizedBox(
