@@ -434,7 +434,7 @@ class _AdminPageState extends State<AdminPage> {
                                   Icons.security,
                                   size: 50,
                                 ),
-                                Text('Rediger BrukerVilkår')
+                                Text('Rediger Bruksvilkår')
                               ],
                             ),
                           ),
