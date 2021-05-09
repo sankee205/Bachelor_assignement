@@ -31,6 +31,8 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _id;
@@ -79,7 +81,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: BaseAppBar(
         title: Text(
           'DIGI-TALT.NO',
@@ -114,119 +115,133 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
       //creates the menu in the appbar(drawer)
       drawer: BaseAppDrawer(),
+
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            color: Colors.white,
-            width: 800,
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        'Rediger din Brukerinformasjon',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 25),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
+        child: Container(
+          child: Center(
+            child: Container(
+              width: 400,
+              child: Material(
+                child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Rediger din Brukerinformasjon',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 25),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
 
-                    Text(
-                      'Name',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    // name textfield
-                    Padding(
-                      padding: const EdgeInsets.only(right: 32.0),
-                      child: TextFormField(
-                        controller: _fullname,
-                        validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Text(
-                      'Email',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                        Text(
+                          'Name',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        // name textfield
+                        Padding(
+                          padding: const EdgeInsets.only(right: 32.0),
+                          child: TextFormField(
+                            controller: _fullname,
+                            validator: (v) {
+                              if (v.trim().isEmpty)
+                                return 'Please enter something';
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Text(
+                          'Email',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 32.0),
-                      child: TextFormField(
-                        controller: _emailAdress,
-                        validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Text(
-                      'Telefon nummer',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 32.0),
+                          child: TextFormField(
+                            controller: _emailAdress,
+                            validator: (v) {
+                              if (v.trim().isEmpty)
+                                return 'Please enter something';
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Text(
+                          'Telefon nummer',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(right: 32.0),
-                      child: TextFormField(
-                        controller: _number,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                          LengthLimitingTextInputFormatter(8),
-                        ],
-                        validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 32.0),
+                          child: TextFormField(
+                            controller: _number,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]')),
+                              LengthLimitingTextInputFormatter(8),
+                            ],
+                            validator: (v) {
+                              if (v.trim().isEmpty)
+                                return 'Please enter something';
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
 
-                    SizedBox(
-                      height: 40,
-                    ),
+                        SizedBox(
+                          height: 40,
+                        ),
 
-                    Center(
-                      child: FlatButton(
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            _showAlertPublishDialog(context);
-                          }
-                        },
-                        child: Text('Submit'),
-                        color: Colors.green,
-                      ),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                _showAlertPublishDialog(context);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Lagre endringer',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(primary: logoGreen),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

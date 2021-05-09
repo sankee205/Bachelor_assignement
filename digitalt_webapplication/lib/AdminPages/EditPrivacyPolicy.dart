@@ -104,7 +104,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
                   children: [
                     Center(
                       child: Text(
-                        'Rediger Sikerhetserklæring (GDPR)',
+                        'Rediger Personvernerklæring (GDPR)',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -212,7 +212,7 @@ class _EditPrivacyPolicyState extends State<EditPrivacyPolicy> {
     AlertDialog alert = AlertDialog(
       title: Text("Publisering av endringer"),
       content: Text(
-          "Er du sikker på at du vil publisere endringene på sikkerhetserklæringen?"),
+          "Er du sikker på at du vil publisere endringene på Personvernerklæring?"),
       actions: [
         cancelButton,
         continueButton,

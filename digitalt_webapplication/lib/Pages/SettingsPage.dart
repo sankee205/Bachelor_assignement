@@ -85,7 +85,7 @@ class _SettingsState extends State<SettingsPage> {
                             height: 20,
                           ),
                           MaterialButton(
-                            child: Text('Les Sikkerhetserklæring'),
+                            child: Text('Les Personvernerklæring'),
                             onPressed: () {
                               Navigator.push(
                                   context,

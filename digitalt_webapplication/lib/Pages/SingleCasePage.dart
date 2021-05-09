@@ -185,77 +185,82 @@ class _CasePageState extends State<CasePage> {
                             SizedBox(
                               height: 10,
                             ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                              child: ResponsiveGridRow(
-                                children: [
-                                  ResponsiveGridCol(
-                                    lg: 4,
-                                    md: 4,
-                                    xs: 12,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.person),
-                                        Container(
-                                          width: 100,
-                                          margin: EdgeInsets.all(10),
-                                          child: ResponsiveGridRow(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children:
-                                                widget.author.map((author) {
-                                              return ResponsiveGridCol(
-                                                  xl: 12,
-                                                  md: 12,
-                                                  xs: 12,
-                                                  child: Container(
-                                                    child: Text(
-                                                      author,
-                                                      style: TextStyle(
-                                                          fontSize: 10),
-                                                    ),
-                                                  ));
-                                            }).toList(),
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: ResponsiveGridRow(
+                                  children: [
+                                    ResponsiveGridCol(
+                                      lg: 4,
+                                      md: 6,
+                                      sm: 6,
+                                      xs: 12,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.person),
+                                          Container(
+                                            width: 200,
+                                            margin: EdgeInsets.all(10),
+                                            child: ResponsiveGridRow(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children:
+                                                  widget.author.map((author) {
+                                                return ResponsiveGridCol(
+                                                    xl: 12,
+                                                    md: 12,
+                                                    xs: 12,
+                                                    child: Container(
+                                                      child: Text(
+                                                        author,
+                                                        style: TextStyle(
+                                                            fontSize: 10),
+                                                      ),
+                                                    ));
+                                              }).toList(),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  ResponsiveGridCol(
-                                    lg: 4,
-                                    md: 4,
-                                    xs: 12,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.date_range),
-                                        Text(widget.publishedDate),
-                                      ],
+                                    ResponsiveGridCol(
+                                      lg: 4,
+                                      md: 6,
+                                      sm: 6,
+                                      xs: 12,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.date_range),
+                                          Text(widget.publishedDate),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  ResponsiveGridCol(
-                                    lg: 4,
-                                    md: 4,
-                                    xs: 12,
-                                    child: isArticleSaved == null
-                                        ? SizedBox()
-                                        : Row(children: [
-                                            Text('Lagre Artikkel'),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Checkbox(
-                                              value: isArticleSaved,
-                                              activeColor: Colors.red,
-                                              onChanged: (bool newValue) {
-                                                _changeMyCasesList(newValue);
-                                                setState(() {
-                                                  isArticleSaved = newValue;
-                                                });
-                                              },
-                                            ),
-                                          ]),
-                                  ),
-                                ],
+                                    ResponsiveGridCol(
+                                      lg: 4,
+                                      md: 6,
+                                      sm: 6,
+                                      xs: 12,
+                                      child: isArticleSaved == null
+                                          ? SizedBox()
+                                          : Row(children: [
+                                              Text('Lagre Artikkel'),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Checkbox(
+                                                value: isArticleSaved,
+                                                activeColor: Colors.red,
+                                                onChanged: (bool newValue) {
+                                                  _changeMyCasesList(newValue);
+                                                  setState(() {
+                                                    isArticleSaved = newValue;
+                                                  });
+                                                },
+                                              ),
+                                            ]),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             //in this row you find author and published date

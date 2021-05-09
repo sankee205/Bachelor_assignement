@@ -21,6 +21,8 @@ class MyArticles extends StatefulWidget {
 }
 
 class _MyArticlesState extends State<MyArticles> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final AuthService _auth = AuthService();
   final NavigationService _navigationService = locator<NavigationService>();
 
@@ -143,6 +145,8 @@ class _MyArticlesState extends State<MyArticles> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text('Logg inn'),
                               ),
+                              style:
+                                  ElevatedButton.styleFrom(primary: logoGreen),
                             ),
                             SizedBox(
                               height: 10,
