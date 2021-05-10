@@ -1,3 +1,4 @@
+import 'package:digitalt_application/AppManagement/ThemeManager.dart';
 import 'package:digitalt_application/Layouts/BaseAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseAppDrawer.dart';
 import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
@@ -12,6 +13,7 @@ import 'package:digitalt_application/Services/auth.dart';
 import 'package:digitalt_application/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 /// this page will display the user profile
@@ -94,124 +96,128 @@ class _MyArticlesState extends State<MyArticles> {
   @override
   Widget build(BuildContext context) {
     _createMyCaseList();
-    return Scaffold(
-      //this is the appbar for the home page
-      appBar: BaseAppBar(
-        title: Text(
-          'DIGI-TALT.NO',
-          style: TextStyle(color: Colors.white),
-        ),
-        appBar: AppBar(),
-        widgets: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(30.0),
-            child: Container(
-              width: 36,
-              height: 30,
-              decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular((20))),
-            ),
+    return Consumer<ThemeNotifier>(
+      builder: (context, theme, child) => Scaffold(
+        //this is the appbar for the home page
+        appBar: BaseAppBar(
+          title: Text(
+            'DIGI-TALT.NO',
+            style: TextStyle(color: Colors.white),
           ),
-        ],
-      ),
-      bottomNavigationBar: BaseBottomAppBar(),
+          appBar: AppBar(),
+          widgets: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(30.0),
+              child: Container(
+                width: 36,
+                height: 30,
+                decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular((20))),
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: BaseBottomAppBar(),
 
-      //creates the menu in the appbar(drawer)
-      drawer: BaseAppDrawer(),
+        //creates the menu in the appbar(drawer)
+        drawer: BaseAppDrawer(),
 
-      //here comes the body of the home page
-      body: SingleChildScrollView(
-        child: Container(
-          child: Center(
-            child: Container(
-                width: 800,
-                child: Material(
-                  child: _auth.isUserAnonymous()
-                      ? Column(
-                          children: [
-                            SizedBox(height: 50),
-                            Text(
-                                'Du kan ikke lagre noen artikler når du ikke er innlogget'),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                _signOut();
-                                _navigationService.navigateTo(LoginViewRoute);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text('Logg inn'),
+        //here comes the body of the home page
+        body: SingleChildScrollView(
+          child: Container(
+            child: Center(
+              child: Container(
+                  width: 800,
+                  child: Material(
+                    child: _auth.isUserAnonymous()
+                        ? Column(
+                            children: [
+                              SizedBox(height: 50),
+                              Text(
+                                  'Du kan ikke lagre noen artikler når du ikke er innlogget'),
+                              SizedBox(
+                                height: 40,
                               ),
-                              style:
-                                  ElevatedButton.styleFrom(primary: logoGreen),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            )
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              'Dine Lagrede Artikler',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ResponsiveGridRow(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: _myCases.map((caseObject) {
-                                return ResponsiveGridCol(
-                                    lg: 6,
-                                    md: 6,
-                                    xs: 6,
-                                    child: Container(
-                                        margin: EdgeInsets.all(5),
-                                        height: 250,
-                                        child: GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CasePage(
-                                                            image: caseObject[
-                                                                'image'],
-                                                            title: caseObject[
-                                                                'title'],
-                                                            author: caseObject[
-                                                                'author'],
-                                                            publishedDate:
-                                                                caseObject[
-                                                                    'publishedDate'],
-                                                            introduction:
-                                                                caseObject[
-                                                                    'introduction'],
-                                                            text: caseObject[
-                                                                'text'],
-                                                            lastEdited:
-                                                                caseObject[
-                                                                    'lastEdited'],
-                                                            searchBar: false,
-                                                          )));
-                                            },
-                                            child: BaseCaseBox(
-                                              image: caseObject['image'],
-                                              title: caseObject['title'],
-                                              guestCaseItem: true,
-                                            ))));
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                )),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _signOut();
+                                  _navigationService.navigateTo(LoginViewRoute);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text('Logg inn'),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    primary:
+                                        theme.state ? Colors.red : logoGreen),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              )
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Dine Lagrede Artikler',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ResponsiveGridRow(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: _myCases.map((caseObject) {
+                                  return ResponsiveGridCol(
+                                      lg: 6,
+                                      md: 6,
+                                      xs: 6,
+                                      child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          height: 250,
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CasePage(
+                                                              image: caseObject[
+                                                                  'image'],
+                                                              title: caseObject[
+                                                                  'title'],
+                                                              author:
+                                                                  caseObject[
+                                                                      'author'],
+                                                              publishedDate:
+                                                                  caseObject[
+                                                                      'publishedDate'],
+                                                              introduction:
+                                                                  caseObject[
+                                                                      'introduction'],
+                                                              text: caseObject[
+                                                                  'text'],
+                                                              lastEdited:
+                                                                  caseObject[
+                                                                      'lastEdited'],
+                                                              searchBar: false,
+                                                            )));
+                                              },
+                                              child: BaseCaseBox(
+                                                image: caseObject['image'],
+                                                title: caseObject['title'],
+                                                guestCaseItem: true,
+                                              ))));
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                  )),
+            ),
           ),
         ),
       ),

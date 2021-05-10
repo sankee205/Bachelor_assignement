@@ -38,6 +38,10 @@ class DatabaseService {
     }
   }
 
+  Future deleteUser(String id) async {
+    return await _userCollection.doc(id).delete();
+  }
+
   //------------------case item methods-----------------------------------------
   Future updateCaseItemData(String id, String image, String title, List author,
       String publishedDate, String introduction, List text) async {

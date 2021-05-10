@@ -24,6 +24,15 @@ class AuthService {
     return _auth.currentUser.uid;
   }
 
+  deleteUser() async {
+    User user = _auth.currentUser;
+    if (user != null) {
+      await user.delete();
+    } else {
+      print('user is null');
+    }
+  }
+
   //returns the user role
   Future<String> getUserRole() async {
     if (_auth.currentUser.isAnonymous) {
