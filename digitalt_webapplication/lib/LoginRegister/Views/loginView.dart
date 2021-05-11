@@ -4,11 +4,9 @@ import 'package:digitalt_application/LoginRegister/Widgets/inputField.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
 import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/LoginRegister/uiHelpers.dart';
-import 'package:digitalt_application/Pages/HomePage.dart';
 import 'package:digitalt_application/Services/auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
@@ -71,13 +69,13 @@ class _LoginViewState extends State<LoginView> {
                                 Text(
                                   'Logg inn her for å se alt av innhold hos DIGI-TALT.NO',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.openSans(fontSize: 28),
+                                  style: TextStyle(fontSize: 28),
                                 ),
                                 SizedBox(height: 20),
                                 Text(
                                   'Skriv inn e-post og passord her for å lese saker hos DIGI-TALT.NO',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.openSans(fontSize: 14),
+                                  style: TextStyle(fontSize: 14),
                                 ),
                                 verticalSpaceMedium,
                                 InputField(
@@ -160,8 +158,7 @@ class _LoginViewState extends State<LoginView> {
       children: <Widget>[
         Text('DIGI-TALT.NO',
             textAlign: TextAlign.center,
-            style: GoogleFonts.openSans(
-                fontSize: 20, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       ],
     );
   }
