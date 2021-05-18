@@ -102,6 +102,14 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Hjem'),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.info),
             title: Text('Om Oss'),
             onTap: () {
@@ -118,14 +126,6 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                           textPhoto: _textPhoto,
                           backgroundPhoto: _backgroundPhoto,
                           tlf: _tlf)));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Hjem'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
             },
           ),
           ListTile(

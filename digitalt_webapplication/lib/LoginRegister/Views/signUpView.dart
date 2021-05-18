@@ -2,13 +2,12 @@ import 'package:digitalt_application/AppManagement/ThemeManager.dart';
 import 'package:digitalt_application/LoginRegister/Model/signUpViewModel.dart';
 import 'package:digitalt_application/LoginRegister/navigationService.dart';
 import 'package:digitalt_application/LoginRegister/routeNames.dart';
-import 'package:digitalt_application/Pages/PrivacyPolicyPage.dart';
 import 'package:digitalt_application/Pages/UserTerms.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 import '../locator.dart';
 import '../uiHelpers.dart';
-import '../Widgets/busyButton.dart';
 import '../Widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -96,26 +95,39 @@ class _SignUpViewState extends State<SignUpView> {
                                 'Passordet må minst inneholde 6 karakterer.',
                           ),
                           verticalSpaceSmall,
-                          Row(
-                            children: [
-                              Text('Jeg godkjenner personvernerklæringene '),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Checkbox(
-                                value: agreedToSecurityTerms,
-                                activeColor: Colors.red,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    agreedToSecurityTerms = value;
-                                    if (value) {
-                                      needToAgree = '';
-                                    }
-                                  });
-                                },
-                              ),
-                              SizedBox(),
-                              MaterialButton(
+                          ResponsiveGridRow(children: [
+                            ResponsiveGridCol(
+                                xs: 12,
+                                sm: 12,
+                                md: 6,
+                                lg: 6,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                        'Jeg godkjenner personvernerklæringene '),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Checkbox(
+                                      value: agreedToSecurityTerms,
+                                      activeColor: Colors.red,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          agreedToSecurityTerms = value;
+                                          if (value) {
+                                            needToAgree = '';
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                )),
+                            ResponsiveGridCol(
+                              xs: 12,
+                              sm: 12,
+                              md: 6,
+                              lg: 6,
+                              child: MaterialButton(
                                 child: Text('Les personvernerklæring her'),
                                 onPressed: () {
                                   Navigator.push(
@@ -125,8 +137,8 @@ class _SignUpViewState extends State<SignUpView> {
                                               UserTermsPage()));
                                 },
                               ),
-                            ],
-                          ),
+                            )
+                          ]),
                           Text(
                             needToAgree,
                             style: TextStyle(color: Colors.red),

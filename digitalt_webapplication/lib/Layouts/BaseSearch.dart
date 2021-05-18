@@ -35,6 +35,15 @@ class BaseSearch extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
+      Center(
+          child: Text(
+        'Tøm',
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.brightness == Brightness.dark
+                ? Colors.red
+                : Colors.white,
+            fontSize: 17),
+      )),
       IconButton(
           onPressed: () {
             query = "";
