@@ -27,6 +27,8 @@ class UpdateInfoPage extends StatefulWidget {
 }
 
 class _UpdateInfoPageState extends State<UpdateInfoPage> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   String _contactUrl;
@@ -40,7 +42,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
   static List _authorList = [];
 
   Text _saveImageText = Text(
-    'Save new images',
+    'Lagre oppdaterte bilder',
     style: TextStyle(fontSize: 15),
   );
 
@@ -65,14 +67,28 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
       _textList = result['text'];
       _authorList = result['author'];
       _contactUrl = result['contactPhoto'];
-      _contactPhoto = Image.network(_contactUrl);
+      _contactPhoto = Image(
+        width: 500,
+        image: NetworkImage(_contactUrl),
+        fit: BoxFit.fitWidth,
+      );
       _date = result['date'];
       _email.text = result['email'];
       _textUrl = result['textPhoto'];
-      _textPhoto = Image.network(_textUrl);
+      _textPhoto = Image(
+        width: 500,
+        image: NetworkImage(_textUrl),
+        fit: BoxFit.fitWidth,
+      );
+      ;
       _tlf.text = result['tlf'];
       _backgroundUrl = result['backgroundPhoto'];
-      _backgroundPhoto = Image.network(_backgroundUrl);
+      _backgroundPhoto = Image(
+        width: 500,
+        image: NetworkImage(_backgroundUrl),
+        fit: BoxFit.fitWidth,
+      );
+      ;
     });
   }
 
@@ -122,14 +138,14 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
         _textPhotoInfo != null) {
       setState(() {
         _saveImageText = Text(
-          'Uploaded succesfully',
+          'Opplastning Fullført',
           style: TextStyle(color: Colors.green, fontSize: 15),
         );
       });
     } else {
       setState(() {
         _saveImageText = Text(
-          'No new Images, old will be kept',
+          'Ingen nye bilder, beholder de eksisterende',
           style: TextStyle(color: Colors.red, fontSize: 15),
         );
       });
@@ -246,7 +262,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                   children: [
                     Center(
                       child: Text(
-                        'Edit Info Page',
+                        'Rediger Informasjonsside',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -271,7 +287,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                         SizedBox(
                           width: 20,
                         ),
-                        Text('Contact Photo')
+                        Text('Kontakt Bilde')
                       ],
                     ),
                     SizedBox(
@@ -294,7 +310,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                         SizedBox(
                           width: 20,
                         ),
-                        Text('Info Photo')
+                        Text('Informasjons Bilde')
                       ],
                     ),
                     SizedBox(
@@ -319,7 +335,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                         SizedBox(
                           width: 20,
                         ),
-                        Text('Background Photo')
+                        Text('Bakgrunnsbilde')
                       ],
                     ),
                     SizedBox(
@@ -359,10 +375,12 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
                         controller: _email,
-                        decoration:
-                            InputDecoration(hintText: 'Enter your Email'),
+                        decoration: InputDecoration(
+                            hintText:
+                                'Skriv inn email du vil bli kontaktet på'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -383,9 +401,11 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
                         controller: _tlf,
-                        decoration: InputDecoration(hintText: 'Enter your tlf'),
+                        decoration: InputDecoration(
+                            hintText: 'Skriv inn tlf du vil bli kontaktet på'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -394,7 +414,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       height: 40,
                     ),
                     Text(
-                      'Author',
+                      'Forfatter',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -407,7 +427,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       height: 40,
                     ),
                     Text(
-                      'Date',
+                      'Dato',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -418,7 +438,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       children: [
                         RaisedButton(
                           onPressed: () => _selectDate(context),
-                          child: Text('Select date'),
+                          child: Text('Velg dato'),
                         ),
                         SizedBox(
                           width: 10,
@@ -435,7 +455,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     ),
 
                     Text(
-                      'Info Text',
+                      'Informasjonstekst',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -445,7 +465,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                     ),
                     Center(
                       child: Text(
-                        'Remember to save new images, before submitting',
+                        'Husk å lagre bildene ved endring før du publiserer',
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -454,15 +474,21 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
                       height: 40,
                     ),
                     Center(
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Submit'),
-                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Publiser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: logoGreen),
                       ),
                     )
                   ],
@@ -497,7 +523,7 @@ class _UpdateInfoPageState extends State<UpdateInfoPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Publisere endring av artikkel"),
+      title: Text("Publisere endring av Info side"),
       content: Text("Er du sikker på at du vil publisere denne endringen?"),
       actions: [
         cancelButton,

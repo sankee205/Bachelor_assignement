@@ -4,9 +4,9 @@ import 'package:digitalt_application/Layouts/BaseBottomAppBar.dart';
 import 'package:digitalt_application/Layouts/BaseCarouselSlider.dart';
 import 'package:digitalt_application/Layouts/BaseCaseBox.dart';
 import 'package:digitalt_application/Layouts/BaseSearch.dart';
+import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:digitalt_application/Pages/SingleCasePage.dart';
-import 'package:digitalt_application/Services/VippsApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -31,6 +31,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
   final DatabaseService _db = DatabaseService();
+
   List _newCases = [];
   List _allCases = [];
   List _popularCases = [];
@@ -73,31 +74,6 @@ class HomePageState extends State<HomePage> {
       _allCaseList.add(caseObject['title']);
     }
   }
-
-  /*_goToSingleCase(String title) {
-    var caseObject;
-    for (int i = 0; i < _allCases.length; i++) {
-      var caseVar = _allCases[i];
-      if (caseVar['title'] == title) {
-        caseObject = caseVar;
-      }
-    }
-    if (caseObject != null) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CasePage(
-                    image: caseObject['image'],
-                    title: caseObject['title'],
-                    author: caseObject['author'],
-                    publishedDate: caseObject['publishedDate'],
-                    introduction: caseObject['introduction'],
-                    text: caseObject['text'],
-                    lastEdited: caseObject['lastEdited'],
-                    searchBar: false,
-                  )));
-    }
-  }*/
 
   _setSearchBarList() {
     switch (_currentUserRole) {
@@ -429,6 +405,9 @@ class HomePageState extends State<HomePage> {
             onTap: () {
               if (_guestList.contains(caseObject['title'])) {
                 _goToCasePage(caseObject);
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()));
               }
             },
             child: alllist

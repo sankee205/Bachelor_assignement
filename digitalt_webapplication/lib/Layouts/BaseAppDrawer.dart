@@ -1,6 +1,8 @@
 import 'package:digitalt_application/AdminPages/AdminPage.dart';
-import 'package:digitalt_application/LoginRegister/Views/loginView.dart';
 import 'package:digitalt_application/LoginRegister/Views/startUpView.dart';
+import 'package:digitalt_application/LoginRegister/locator.dart';
+import 'package:digitalt_application/LoginRegister/navigationService.dart';
+import 'package:digitalt_application/LoginRegister/routeNames.dart';
 import 'package:digitalt_application/Pages/ProfilePage.dart';
 import 'package:digitalt_application/Pages/SettingsPage.dart';
 import 'package:digitalt_application/Pages/SubscriptionPage.dart';
@@ -24,7 +26,7 @@ class BaseAppDrawer extends StatefulWidget {
 }
 
 final AuthService _auth = AuthService();
-
+final NavigationService _navigationService = locator<NavigationService>();
 final DatabaseService _db = DatabaseService();
 List _infoList = [];
 List _text = [];
@@ -100,8 +102,16 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Hjem'),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.info),
-            title: Text('About'),
+            title: Text('Om Oss'),
             onTap: () {
               Navigator.push(
                   context,
@@ -119,16 +129,8 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.account_circle),
-            title: Text('Profile'),
+            title: Text('Min Profil'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ProfilePage()));
@@ -136,7 +138,7 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
+            title: Text('Innstillinger'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsPage()));
@@ -171,8 +173,9 @@ class _BaseAppDrawerState extends State<BaseAppDrawer> {
                   title: Text('Logg inn'),
                   onTap: () {
                     _signOut();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginView()));
+                    _navigationService.navigateTo(LoginViewRoute);
+                    /*Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginView()));*/
                   },
                 )
               : ListTile(

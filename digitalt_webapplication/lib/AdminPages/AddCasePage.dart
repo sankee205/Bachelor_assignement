@@ -27,6 +27,8 @@ class MyForm extends StatefulWidget {
 }
 
 class _MyFormState extends State<MyForm> {
+  final Color logoGreen = Color(0xff25bcbb);
+
   //get the database service
   final DatabaseService _db = DatabaseService();
 
@@ -160,7 +162,7 @@ class _MyFormState extends State<MyForm> {
                   children: [
                     Center(
                       child: Text(
-                        'Add Article',
+                        'Legg til ny artikkel',
                         style: TextStyle(
                             fontWeight: FontWeight.w700, fontSize: 25),
                       ),
@@ -170,16 +172,16 @@ class _MyFormState extends State<MyForm> {
                     ),
                     Center(
                       child: _imageWidget == null
-                          ? Text('No image selected.')
+                          ? Text('Bilde er ikke valgt.')
                           : _imageWidget,
                     ),
                     FloatingActionButton(
                       onPressed: _getImage,
-                      heroTag: 'PickImage',
+                      heroTag: 'Velg bilde fra maskinen',
                       child: Icon(Icons.add_a_photo),
                     ),
                     Text(
-                      'Title',
+                      'Tittel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -191,9 +193,10 @@ class _MyFormState extends State<MyForm> {
                       child: TextFormField(
                         controller: _title,
                         decoration:
-                            InputDecoration(hintText: 'Enter your Title'),
+                            InputDecoration(hintText: 'Skriv inn tittel her'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -202,7 +205,7 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Text(
-                      'Introduction',
+                      'Ingress',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -213,10 +216,11 @@ class _MyFormState extends State<MyForm> {
                       padding: const EdgeInsets.only(right: 32.0),
                       child: TextFormField(
                         controller: _introduction,
-                        decoration: InputDecoration(
-                            hintText: 'Enter your Introduction'),
+                        decoration:
+                            InputDecoration(hintText: 'Skriv inn ingress her'),
                         validator: (v) {
-                          if (v.trim().isEmpty) return 'Please enter something';
+                          if (v.trim().isEmpty)
+                            return 'Dette feltet kan ikke være tomt';
                           return null;
                         },
                       ),
@@ -225,7 +229,7 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Text(
-                      'Author',
+                      'Forfatter/ Forfattere',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -237,7 +241,7 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Row(
-                      children: [Text("Date: "), Text(_getDate())],
+                      children: [Text("Dato: "), Text(_getDate())],
                     ),
                     SizedBox(
                       height: 40,
@@ -252,14 +256,14 @@ class _MyFormState extends State<MyForm> {
                         SizedBox(
                           width: 10,
                         ),
-                        Text('Last opp tekst fil av typen (.txt)')
+                        Text('Her kan du laste opp tekstfil av typen (.txt)')
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      'Description',
+                      'Hoveddel',
                       style:
                           TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
                     ),
@@ -314,15 +318,21 @@ class _MyFormState extends State<MyForm> {
                       height: 40,
                     ),
                     Center(
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             _showAlertPublishDialog(context);
                           }
                         },
-                        child: Text('Submit'),
-                        color: Colors.green,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Publiser',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(primary: logoGreen),
                       ),
                     ),
                     SizedBox(
@@ -343,7 +353,7 @@ class _MyFormState extends State<MyForm> {
   ///and formats it before returning the value
   String _getDate() {
     DateTime selectedDate = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy hh:mm');
+    final DateFormat formatter = DateFormat('dd-MM-yyyy H:mm');
     final String formatted = formatter.format(selectedDate);
     return formatted;
   }

@@ -38,6 +38,10 @@ class DatabaseService {
     }
   }
 
+  Future deleteUser(String id) async {
+    return await _userCollection.doc(id).delete();
+  }
+
   //------------------case item methods-----------------------------------------
   Future updateCaseItemData(String id, String image, String title, List author,
       String publishedDate, String introduction, List text) async {
@@ -121,6 +125,50 @@ class DatabaseService {
     List infoList = [];
     await FirebaseFirestore.instance
         .collection('InfoPageContent')
+        .get()
+        .then((value) => {
+              value.docs.forEach((element) {
+                infoList.add(element);
+              })
+            });
+    return infoList;
+  }
+
+  //--------------------------Terms methods--------------------------------------
+  Future updateGdprContent(String text, String date) async {
+    return await FirebaseFirestore.instance
+        .collection('GDPR')
+        .doc('GGR6mGOSrcVFjhug1gpi')
+        .set({
+      'text': text,
+      'date': date,
+    });
+  }
+
+  Future getGdprContent() async {
+    List infoList = [];
+    await FirebaseFirestore.instance.collection('GDPR').get().then((value) => {
+          value.docs.forEach((element) {
+            infoList.add(element);
+          })
+        });
+    return infoList;
+  }
+
+  Future updateUserTermsContent(String text, String date) async {
+    return await FirebaseFirestore.instance
+        .collection('UserTerms')
+        .doc('rEjKUjviUjXpVCme4ljJ')
+        .set({
+      'text': text,
+      'date': date,
+    });
+  }
+
+  Future getUserTermsContent() async {
+    List infoList = [];
+    await FirebaseFirestore.instance
+        .collection('UserTerms')
         .get()
         .then((value) => {
               value.docs.forEach((element) {

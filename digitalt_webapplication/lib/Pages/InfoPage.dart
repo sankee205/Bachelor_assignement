@@ -5,7 +5,7 @@ import 'package:digitalt_application/Services/DataBaseService.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
-/**
+/*
  * this is the infopage. it consists of information about digi-talt.no and
  * contact inofrmation
  */
@@ -84,7 +84,7 @@ class _InfoPageState extends State<InfoPage> {
         //creates the menu in the appbar(drawer)
         drawer: BaseAppDrawer(),
         body: Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: NetworkImage(widget.backgroundPhoto), fit: BoxFit.cover),
@@ -114,7 +114,7 @@ class _InfoPageState extends State<InfoPage> {
                             child: Padding(
                               padding: EdgeInsets.all(10),
                               child: Text(
-                                'Om Digi-talt',
+                                'Om DIGI-TALT.NO',
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -208,36 +208,60 @@ class _InfoPageState extends State<InfoPage> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(
-                            height: 10,
+                            height: 30,
                           ),
-                          SizedBox(
-                            child: Image(
-                              image: NetworkImage(widget.contactPhoto),
-                              fit: BoxFit.contain,
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      width: 2.0, color: Colors.grey)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'Kontakt oss',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                           //this is the title
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: Text(
-                              'Kontakt oss',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: 400,
+                            child: Image(
+                              image: NetworkImage(widget.contactPhoto),
+                              fit: BoxFit.contain,
                             ),
                           ),
                           SizedBox(
                             height: 10,
                           ),
 
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(width: 2.0, color: Colors.grey),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Text('Telefon: ' + widget.tlf)),
+                                Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Text('Email: ' + widget.email)),
+                              ],
+                            ),
+                          ),
                           //this is the description of the case. the main text
-                          Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text('Telefon: ' + widget.tlf)),
-                          Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Text('Email: ' + widget.email)),
                         ],
                       ),
                     ),

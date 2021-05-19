@@ -16,9 +16,11 @@ import 'AppManagement/ThemeManager.dart';
 
 import 'Services/dialogService.dart';
 import 'LoginRegister/dialogManager.dart';
+import 'UrlStrategy/configure_nonweb.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureApp();
   await Firebase.initializeApp();
 
   setupLocator();
